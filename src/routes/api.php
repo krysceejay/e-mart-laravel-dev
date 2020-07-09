@@ -18,4 +18,6 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::get('/users', 'ApiController@allUsers');
+Route::get('/users', 'Api\UserController@allUsers');
+Route::post('/login', 'Api\UserController@userLogin');
+Route::post('/register', 'Api\UserController@userRegister');
