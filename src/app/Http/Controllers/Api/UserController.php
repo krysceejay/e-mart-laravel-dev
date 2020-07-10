@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Validator;
 use App\User;
+use App\Model\Cart;
 
 class UserController extends Controller
 {
@@ -71,5 +72,44 @@ class UserController extends Controller
     }
 
   }
-  
+
+  public function addCart(Request $request)
+  {
+    return response()->json([], 201);
+    // Validate the inputs
+    // $validator = Validator::make($request->all(), [
+    //   'uid' => ['required', 'integer'],
+    //   'itemid' => ['required', 'integer'],
+    //   'unit' => ['required', 'integer'],
+    //
+    // ]);
+    //   // Throw error if validation fails
+    // if ($validator->fails()) {
+    //   return response()->json(['message' => $validator->errors()], 400);
+    // }
+    // // Check for existing item in the Cart Table
+    // $usercart = Cart::where('user_id', $request->input('uid'))->where('item_id', $request->input('itemid'))->first();
+    // // If the cart is empty
+    // if (empty($usercart)) {
+    //   // Add New item in the cart
+    //   $addtocart = Cart::create([
+    //     'user_id' => $request->input('uid'),
+    //     'item_id' => $request->input('itemid'),
+    //     'unit' => $request->input('unit')
+    //
+    //   ]);
+    //     // If successfully added to cart, send success feedback
+    //   if ($addtocart) {
+    //     return response()->json(['message' => 'Item added to cart successfully.'], 200);
+    //   } else {
+    //     // Otherwise, send failure message
+    //     return response()->json(['message' => 'Unsuccessful. Please check your internet connection.'], 500);
+    //   }
+    //
+    // } else {
+    //   return response()->json(['message' => 'Item already added to cart.'], 200);
+    // }
+
+  }
+
 }

@@ -21,3 +21,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/users', 'Api\UserController@allUsers');
 Route::post('/login', 'Api\UserController@userLogin');
 Route::post('/register', 'Api\UserController@userRegister');
+Route::post('/cart', 'Api\UserController@addCart');
