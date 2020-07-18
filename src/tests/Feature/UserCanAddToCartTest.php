@@ -9,6 +9,7 @@ use Tests\TestCase;
 use App\User;
 use App\Model\Item;
 use App\Model\Cart;
+use App\Model\Apikeys;
 
 class UserCanAddToCartTest extends TestCase
 {
@@ -19,7 +20,8 @@ class UserCanAddToCartTest extends TestCase
       $this->withoutExceptionHandling();
         // $user = factory(User::class)->create();
         // $cart = factory(Cart::class)->create();
-        $response = $this->withHeaders(['APP-KEY' => 'lPjWNGBIbLRDSji2j9JcL4aGnTV4Cdp2x3yPTYKRndAfE9mcCf4aCWy0BfgDZXDD'])
+        $apiKey = factory(Apikeys::class)->create();
+        $response = $this->withHeaders([$apiKey->name => $apiKey->key])
                         ->postJson('/api/cart', ['uid' => 2, 'itemid' => 3, 'unit' => 4]);
 
        $response

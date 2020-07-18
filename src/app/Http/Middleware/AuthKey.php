@@ -23,7 +23,7 @@ class AuthKey
       if($getKey->isEmpty()){
         return response()->json(['message' => 'unauthorized'], 401);
       }
-      // if($token != 'lPjWNGBIbLRDSji2j9JcL4aGnTV4Cdp2x3yPTYKRndAfE9mcCf4aCWy0BfgDZXDD'){
+      // if($token != 'jhgfdfghjklkjhgfdsdfghjkx3yPTYKRndAfE9mcCf4aCWy0BfgDZXDD'){
       //   return response()->json(['message' => 'unauthorized'], 401);
       // }
         return $next($request);
