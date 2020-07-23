@@ -25,7 +25,10 @@ class UserCanAddToCartTest extends TestCase
                         ->postJson('/api/cart', ['uid' => 2, 'itemid' => 3, 'unit' => 4]);
 
        $response
-           ->assertStatus(201);
+           ->assertStatus(200)
+           ->assertJson([
+                'message' => 'Item added to cart successfully.',
+            ]);
     }
 
     /** @test*/
