@@ -111,4 +111,37 @@ class UserController extends Controller
 
   }
 
+  public function updateCart(Request $request)
+  {
+    // Validate the inputs
+    $validator = Validator::make($request->all(), [
+      'id' => ['required', 'integer'],
+      'unit' => ['required', 'integer']
+    ]);
+      // Throw error if validation fails
+    if ($validator->fails()) {
+      return response()->json(['message' => $validator->errors()], 400);
+    }
+    $cartID = $request->input('id');
+    $unit = $request->input('unit');
+    // Check for existing item in the Cart Table
+    $item_exists = Cart::where(['id' => $cartID])->exists();
+    // If the item exists
+    if ($item_exists) {
+      // Update the item from the cart
+      $updatecart = Cart::where(['id' => $cartID])->update(['unit' => $unit]);
+        // If successfully updated in cart, send success feedback
+      if ($updatecart) {
+        return response()->json(['message' => 'Cart updated successfully.'], 200);
+      } else {
+        // Otherwise, send failure message
+        return response()->json(['message' => 'Unsuccessful. Please check your internet connection.'], 500);
+      }
+
+    } else {
+      return response()->json(['message' => 'Item is not in cart'], 404);
+    }
+
+  }
+
 }

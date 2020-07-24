@@ -18,8 +18,6 @@ class UserCanAddToCartTest extends TestCase
     public function it_can_add_item_to_cart()
     {
       //$this->withoutExceptionHandling();
-        // $user = factory(User::class)->create();
-        // $cart = factory(Cart::class)->create();
         $apiKey = factory(Apikeys::class)->create();
         $response = $this->withHeaders([$apiKey->name => $apiKey->key])
                         ->postJson('/api/cart', ['uid' => 2, 'itemid' => 3, 'unit' => 4]);

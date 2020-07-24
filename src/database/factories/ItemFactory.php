@@ -12,7 +12,7 @@ $factory->define(Item::class, function (Faker $faker) {
     $slug = Str::slug($name, '-');
 
     return [
-      'user_id' => 2,
+      'user_id' => 1,
       'name' => $name,
       'old_price' => 2000,
       'new_price' => 1500,

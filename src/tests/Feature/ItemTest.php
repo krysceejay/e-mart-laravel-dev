@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 use App\Model\Item;
@@ -26,10 +27,11 @@ class ItemTest extends TestCase
     /** @test*/
     public function view_single_item()
     {
+      Event::fake();
       $apiKey = factory(Apikeys::class)->create();
       $item = factory(Item::class)->create();
       $response = $this->withHeaders([$apiKey->name => $apiKey->key])
-                      ->getJson('/api/item/'. $item->slug);
+                       ->getJson('/api/item/'. $item->slug);
 
         $response->assertOk()
                  ->assertJson([
@@ -55,5 +57,16 @@ class ItemTest extends TestCase
                       ->getJson('/api/item/slug');
 
         $response->assertNotFound();
+    }
+
+    /** @test */
+    public function filter_item()
+    {
+      $apiKey = factory(Apikeys::class)->create();
+      $response = $this->withHeaders([$apiKey->name => $apiKey->key])
+                      ->getJson('/api/filteritem?itemname=&pricefrom=&priceto=&review=');
+
+      $response->assertOk()
+               ->assertSee('data');
     }
 }
