@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-use App\Model\Apikeys;
+use App\Models\Apikeys;
 
 class AuthKey
 {

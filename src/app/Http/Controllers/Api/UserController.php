@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Validator;
 use App\User;
-use App\Model\Cart;
+use App\Models\Cart;
 
 class UserController extends Controller
 {
@@ -116,7 +116,8 @@ class UserController extends Controller
     // Validate the inputs
     $validator = Validator::make($request->all(), [
       'id' => ['required', 'integer'],
-      'unit' => ['required', 'integer']
+      'unit' => ['required', 'integer'],
+      'uid' => ['required', 'integer'],
     ]);
       // Throw error if validation fails
     if ($validator->fails()) {
@@ -125,7 +126,7 @@ class UserController extends Controller
     $cartID = $request->input('id');
     $unit = $request->input('unit');
     // Check for existing item in the Cart Table
-    $item_exists = Cart::where(['id' => $cartID])->exists();
+    $item_exists = Cart::where(['id' => $cartID, 'user_id' => $request->input('uid')])->exists();
     // If the item exists
     if ($item_exists) {
       // Update the item from the cart
@@ -140,6 +141,71 @@ class UserController extends Controller
 
     } else {
       return response()->json(['message' => 'Item is not in cart'], 404);
+    }
+
+  }
+
+  public function removeCartItem(Request $request)
+  {
+    // Validate the inputs
+    $validator = Validator::make($request->all(), [
+      'id' => ['required', 'integer'],
+      'uid' => ['required', 'integer'],
+    ]);
+      // Throw error if validation fails
+    if ($validator->fails()) {
+      return response()->json(['message' => $validator->errors()], 400);
+    }
+    $cartID = $request->input('id');
+    // Check for existing item in the Cart Table
+    $item_exists = Cart::where(['id' => $cartID, 'user_id' => $request->input('uid')])->exists();
+    // If the item exists
+    if ($item_exists) {
+      // Delete the item from the cart
+      $removecart = Cart::where(['id' => $cartID])->delete();
+        // If successfully removed from cart, send success feedback
+      if ($removecart) {
+        return response()->json(['message' => 'Item removed from cart successfully.'], 200);
+      } else {
+        // Otherwise, send failure message
+        return response()->json(['message' => 'Unsuccessful. Please check your internet connection.'], 500);
+      }
+
+    } else {
+      return response()->json(['message' => 'Item is not in cart'], 404);
+    }
+
+  }
+
+  public function clearCart(Request $request)
+  {
+    // Validate the inputs
+    $validator = Validator::make($request->all(), [
+      'uid' => ['required', 'integer'],
+    ]);
+    // Throw error if validation fails
+    if ($validator->fails()) {
+      return response()->json(['message' => $validator->errors()], 400);
+    }
+    $userID = $request->input('uid');
+    // Clear all user items from the cart
+    $cartCleared = Cart::where(['user_id' => $userID])->delete();
+
+    return response()->json(['message' => 'User cart has been cleared.'], 200);
+  }
+
+  public function getUserOrders($id)
+  {
+    $userSponsorships = Sponsorship::where('user_id', $id)->orderBy('id', 'DESC')->get();
+    foreach ($userSponsorships as $sponsorship) {
+      $farm_details = Farm::where('id', $sponsorship->farm_id)->select('farmtype_id', 'slug', 'roi', 'price_perunit', 'farm_image')->first();
+      $farm_details->farmtype = FarmType::where('id', $farm_details->farmtype_id)->select('farmtype')->first();
+      $sponsorship->farm_details = $farm_details;
+    }
+    if (!$userSponsorships->isEmpty()) {
+      return response()->json(['data' => $userSponsorships], 200);
+    } else {
+      return response()->json(['message' => 'No sponsorship by this user.'], 404);
     }
 
   }

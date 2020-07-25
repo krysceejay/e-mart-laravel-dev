@@ -23,6 +23,8 @@ Route::post('/login', 'Api\UserController@userLogin');
 Route::post('/register', 'Api\UserController@userRegister');
 Route::post('/cart', 'Api\UserController@addCart');
 Route::post('/updatecart','Api\UserController@updateCart');
+Route::post('/removecartitem','Api\UserController@removeCartItem');
+Route::post('/clearcart','Api\UserController@clearCart');
 
 Route::get('/items', 'Api\HomeController@allItems');
 Route::get('/item/{slug}', 'Api\HomeController@item');

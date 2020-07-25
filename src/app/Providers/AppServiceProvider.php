@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 
 use App\Observers\ItemObserver;
-use App\Model\Item;
+use App\Models\Item;
 
 class AppServiceProvider extends ServiceProvider
 {

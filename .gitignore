@@ -2,3 +2,4 @@
 .idea
 /mysql
 /nginx
+docker-compose.prod.yml

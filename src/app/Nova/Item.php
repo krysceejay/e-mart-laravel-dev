@@ -18,7 +18,7 @@ class Item extends Resource
      *
      * @var string
      */
-    public static $model = \App\Model\Item::class;
+    public static $model = \App\Models\Item::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

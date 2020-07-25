@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Model;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\User;
 
-class Apikeys extends Model
+class Item extends Model
 {
   protected $fillable = [
-      'user_id','name', 'key','active',
+      'user_id','name', 'old_price','new_price','description','display_image',
   ];
 
   public function user()

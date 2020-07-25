@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Model\Item;
+use App\Models\Item;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 

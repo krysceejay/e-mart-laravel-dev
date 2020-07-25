@@ -7,8 +7,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-use App\Model\Item;
-use App\Model\Apikeys;
+use App\Models\Item;
+use App\Models\Apikeys;
 
 class ItemTest extends TestCase
 {
