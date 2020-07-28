@@ -2,46 +2,36 @@
 
 @section('content')
 
-    <!-- Slideshow container -->
-    <section class="slideshow-container">
-      <div class="slideshow">
-        <div class="slide active-slide">
-          <div class="content">
-            <h1>Healthy Savings</h1>
-            <p>
-              Get Up To 30% off
-            </p>
-            <a href="allitems.html" class="btn-shop-now">Shop Now</a>
-          </div>
-        </div>
-        <div class="slide">
-          <div class="content">
-            <h1>Big Deal</h1>
-            <p>
-              Get Best Offer up to 20%
-            </p>
-            <a href="allitems.html" class="btn-shop-now">Shop Now</a>
-          </div>
-        </div>
-        <div class="slide">
-          <div class="content">
-            <h1>Big Save</h1>
-            <p>
-              Get Flat 10% Back
-            </p>
-            <a href="allitems.html" class="btn-shop-now">Shop Now</a>
-          </div>
+  <!-- Slideshow container -->
+  <section class="slideshow-container">
+    <div class="slideshow">
+      @foreach ($slides as $key => $slide)
+
+      <div
+        class="slide {{ $key == 0 ? 'active-slide' : '' }}"
+        style="background: url('/storage/{{ $slide->slide_image }}') no-repeat center; background-size: cover;"
+      >
+        <div class="content">
+          <h1>Healthy Savings</h1>
+          <p>
+            Get Up To 30% off
+          </p>
+          <a href="{{ route('items') }}" class="btn-shop-now">Shop Now</a>
         </div>
       </div>
 
-      <button id="prev" class="btn-slide">
-        <i class="fa fa-arrow-left"></i>
-      </button>
-      <button id="next" class="btn-slide">
-        <i class="fa fa-arrow-right"></i>
-      </button>
-    </section>
-    <!-- / End Slide -->
+      @endforeach
+
+    </div>
+
+    <button id="prev" class="btn-slide">
+      <i class="fa fa-arrow-left"></i>
+    </button>
+    <button id="next" class="btn-slide">
+      <i class="fa fa-arrow-right"></i>
+    </button>
+  </section>
+  <!-- / End Slide -->
 
     <!-- <section class="horizontal-scroll">
       <div class="item">Item2</div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Item;
+use App\Models\Slide;
 
 class HomeController extends Controller
 {
@@ -26,7 +27,9 @@ class HomeController extends Controller
     public function index()
     {
       $allItems = Item::orderBy('id', 'DESC')->get();
-      return view('home.index', compact('allItems'));
+      $slides = Slide::where('active', 1)->get();
+      
+      return view('home.index', compact('allItems', 'slides'));
     }
 
     public function allItems()
