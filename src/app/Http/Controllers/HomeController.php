@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Item;
+
 class HomeController extends Controller
 {
     /**
@@ -11,10 +13,10 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
 
     /**
      * Show the application dashboard.
@@ -23,6 +25,18 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+      $allItems = Item::orderBy('id', 'DESC')->get();
+      return view('home.index', compact('allItems'));
+    }
+
+    public function allItems()
+    {
+      $allItems = Item::orderBy('id', 'DESC')->paginate(20);
+      return view('home.allitems', compact('allItems'));
+    }
+
+    public function item()
+    {
+      return view('home.item');
     }
 }
