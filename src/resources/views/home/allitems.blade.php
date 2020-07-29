@@ -102,12 +102,12 @@
             @foreach ($allItems as $key => $item)
               <div class="main-prod-view-single">
                 <div class="prod-img">
-                  <a href="{{ route('item') }}">
+                  <a href="{{ route('item', $item->slug ) }}">
                     <img src="/storage/{{ $item->display_image }}" alt="" />
                   </a>
                 </div>
                 <div class="prod-text">
-                  <a href="{{ route('item') }}">
+                  <a href="{{ route('item', $item->slug ) }}">
                     <div class="prod-text-name">
 
                       {{ $item->name }}
@@ -139,7 +139,7 @@
 
 
         </div>
-        <ul class="paginate-links-menu py-3">
+        {{-- <ul class="paginate-links-menu py-3">
           <li class="">
             <a href="" class="btn-lighten">
               <i class="fa fa-angle-left"></i>
@@ -171,7 +171,7 @@
               <i class="fa fa-angle-right"></i>
             </a>
           </li>
-        </ul>
+        </ul> --}}
       </section>
     </main>
         @endsection

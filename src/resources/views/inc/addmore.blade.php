@@ -16,9 +16,12 @@
         </div>
       </div>
       <ul class="hs">
-        <li class="hs__item">
+
+
+
+        {{-- <li class="hs__item">
           <div class="hs__item__image__wrapper">
-            <a href="{{ route('item') }}" class="img-link">
+            <a href="/" class="img-link">
               <img
                 class="hs__item__image"
                 src="/storage/img/sneakers-white.jpg"
@@ -30,7 +33,7 @@
           </div>
 
           <div class="hs__item__description">
-            <a href="{{ route('item') }}">
+            <a href="/">
               <span class="hs__item__title">Suade Shoe Men</span>
             </a>
             <div class="hs__item__subtitle">
@@ -43,271 +46,8 @@
             </div>
             <button class="btn-add-to-cart">Add To Cart</button>
           </div>
-        </li>
-        <li class="hs__item">
-          <div class="hs__item__image__wrapper">
-            <a href="{{ route('item') }}" class="img-link">
-              <img
-                class="hs__item__image"
-                src="/storage/img/vaseline.jpg"
-                alt="first image"
-              />
-            </a>
-          </div>
+        </li> --}}
 
-          <div class="hs__item__description">
-            <a href="{{ route('item') }}">
-              <span class="hs__item__title">Suade Shoe Men</span>
-            </a>
-            <div class="hs__item__subtitle">
-              <del class="old-price">
-                &#8358;100
-              </del>
-              <span class="new-price">
-                &#8358;70
-              </span>
-            </div>
-            <button class="btn-add-to-cart">Add To Cart</button>
-          </div>
-        </li>
-        <li class="hs__item">
-          <div class="hs__item__image__wrapper">
-            <a href="{{ route('item') }}" class="img-link">
-              <img
-                class="hs__item__image"
-                src="/storage/img/bracelet.png"
-                alt="first image"
-              />
-            </a>
-
-            <span class="badge-new">New</span>
-          </div>
-
-          <div class="hs__item__description">
-            <a href="{{ route('item') }}">
-              <span class="hs__item__title">Suade Shoe Men</span>
-            </a>
-            <div class="hs__item__subtitle">
-              <del class="old-price">
-                &#8358;100
-              </del>
-              <span class="new-price">
-                &#8358;70
-              </span>
-            </div>
-            <button class="btn-add-to-cart">Add To Cart</button>
-          </div>
-        </li>
-        <li class="hs__item">
-          <div class="hs__item__image__wrapper">
-            <a href="{{ route('item') }}" class="img-link">
-              <img
-                class="hs__item__image"
-                src="/storage/img/jbl2.jpg"
-                alt="first image"
-              />
-            </a>
-
-            <span class="badge-new">New</span>
-          </div>
-
-          <div class="hs__item__description">
-            <a href="{{ route('item') }}">
-              <span class="hs__item__title">Suade Shoe Men</span>
-            </a>
-            <div class="hs__item__subtitle">
-              <del class="old-price">
-                &#8358;100
-              </del>
-              <span class="new-price">
-                &#8358;70
-              </span>
-            </div>
-            <button class="btn-add-to-cart">Add To Cart</button>
-          </div>
-        </li>
-        <li class="hs__item">
-          <div class="hs__item__image__wrapper">
-            <a href="{{ route('item') }}" class="img-link">
-              <img
-                class="hs__item__image"
-                src="/storage/img/ombra-oud.jpg"
-                alt="first image"
-              />
-            </a>
-          </div>
-
-          <div class="hs__item__description">
-            <a href="{{ route('item') }}">
-              <span class="hs__item__title">Suade Shoe Men</span>
-            </a>
-            <div class="hs__item__subtitle">
-              <del class="old-price">
-                &#8358;100
-              </del>
-              <span class="new-price">
-                &#8358;70
-              </span>
-            </div>
-            <button class="btn-add-to-cart">Add To Cart</button>
-          </div>
-        </li>
-        <li class="hs__item">
-          <div class="hs__item__image__wrapper">
-            <a href="{{ route('item') }}" class="img-link">
-              <img
-                class="hs__item__image"
-                src="/storage/img/pepsi-can.jpg"
-                alt="first image"
-              />
-            </a>
-          </div>
-
-          <div class="hs__item__description">
-            <a href="{{ route('item') }}">
-              <span class="hs__item__title">Suade Shoe Men</span>
-            </a>
-            <div class="hs__item__subtitle">
-              <del class="old-price">
-                &#8358;100
-              </del>
-              <span class="new-price">
-                &#8358;70
-              </span>
-            </div>
-            <button class="btn-add-to-cart">Add To Cart</button>
-          </div>
-        </li>
-        <li class="hs__item">
-          <div class="hs__item__image__wrapper">
-            <a href="{{ route('item') }}" class="img-link">
-              <img
-                class="hs__item__image"
-                src="/storage/img/jbl2.jpg"
-                alt="first image"
-              />
-            </a>
-          </div>
-
-          <div class="hs__item__description">
-            <a href="{{ route('item') }}">
-              <span class="hs__item__title">Suade Shoe Men</span>
-            </a>
-            <div class="hs__item__subtitle">
-              <del class="old-price">
-                &#8358;100
-              </del>
-              <span class="new-price">
-                &#8358;70
-              </span>
-            </div>
-            <button class="btn-add-to-cart">Add To Cart</button>
-          </div>
-        </li>
-        <li class="hs__item">
-          <div class="hs__item__image__wrapper">
-            <a href="{{ route('item') }}" class="img-link">
-              <img
-                class="hs__item__image"
-                src="/storage/img/suade-img.jpg"
-                alt="first image"
-              />
-            </a>
-          </div>
-
-          <div class="hs__item__description">
-            <a href="{{ route('item') }}">
-              <span class="hs__item__title">Suade Shoe Men</span>
-            </a>
-            <div class="hs__item__subtitle">
-              <del class="old-price">
-                &#8358;100
-              </del>
-              <span class="new-price">
-                &#8358;70
-              </span>
-            </div>
-            <button class="btn-add-to-cart">Add To Cart</button>
-          </div>
-        </li>
-        <li class="hs__item">
-          <div class="hs__item__image__wrapper">
-            <a href="{{ route('item') }}" class="img-link">
-              <img
-                class="hs__item__image"
-                src="/storage/img/vaseline.jpg"
-                alt="first image"
-              />
-            </a>
-          </div>
-
-          <div class="hs__item__description">
-            <a href="{{ route('item') }}">
-              <span class="hs__item__title">Suade Shoe Men</span>
-            </a>
-            <div class="hs__item__subtitle">
-              <del class="old-price">
-                &#8358;100
-              </del>
-              <span class="new-price">
-                &#8358;70
-              </span>
-            </div>
-            <button class="btn-add-to-cart">Add To Cart</button>
-          </div>
-        </li>
-        <li class="hs__item">
-          <div class="hs__item__image__wrapper">
-            <a href="{{ route('item') }}" class="img-link">
-              <img
-                class="hs__item__image"
-                src="/storage/img/soft.jpg"
-                alt="first image"
-              />
-            </a>
-          </div>
-
-          <div class="hs__item__description">
-            <a href="{{ route('item') }}">
-              <span class="hs__item__title">Suade Shoe Men</span>
-            </a>
-            <div class="hs__item__subtitle">
-              <del class="old-price">
-                &#8358;100
-              </del>
-              <span class="new-price">
-                &#8358;70
-              </span>
-            </div>
-            <button class="btn-add-to-cart">Add To Cart</button>
-          </div>
-        </li>
-        <li class="hs__item">
-          <div class="hs__item__image__wrapper">
-            <a href="{{ route('item') }}" class="img-link">
-              <img
-                class="hs__item__image"
-                src="/storage/img/smirnoff.jpg"
-                alt="first image"
-              />
-            </a>
-          </div>
-
-          <div class="hs__item__description">
-            <a href="{{ route('item') }}">
-              <span class="hs__item__title">Suade Shoe Men</span>
-            </a>
-            <div class="hs__item__subtitle">
-              <del class="old-price">
-                &#8358;100
-              </del>
-              <span class="new-price">
-                &#8358;70
-              </span>
-            </div>
-            <button class="btn-add-to-cart">Add To Cart</button>
-          </div>
-        </li>
       </ul>
     </div>
   </div>

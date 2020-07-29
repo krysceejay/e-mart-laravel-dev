@@ -73,7 +73,7 @@
                 <a href="details.html" class="img-link">
                   <img
                     class="hs__item__image"
-                    src="/storage/img/sneakers-white.jpg"
+                    src="/storage/{{ $item->display_image }}"
                     alt="first image"
                   />
                 </a>
@@ -81,14 +81,16 @@
 
               <div class="hs__item__description">
                 <a href="details.html">
-                  <span class="hs__item__title">Suade Shoe Men</span>
+                  <span class="hs__item__title">{{ $item->name }}</span>
                 </a>
                 <div class="hs__item__subtitle">
-                  <del class="old-price">
-                    &#8358;100
-                  </del>
+                  @if ($item->old_price != null || !empty($item->old_price))
+                    <del class="old-price">
+                      &#8358;{{ number_format($item->old_price) }}
+                    </del>
+                  @endif
                   <span class="new-price">
-                    &#8358;70
+                    &#8358;{{ number_format($item->new_price) }}
                   </span>
                 </div>
                 <button class="btn-add-to-cart">Add To Cart</button>
@@ -125,7 +127,7 @@
                 <a href="details.html" class="img-link">
                   <img
                     class="hs__item__image"
-                    src="/storage/img/ombra-oud.jpg"
+                    src="/storage/{{ $item->display_image }}"
                     alt="first image"
                   />
                 </a>
@@ -134,14 +136,16 @@
 
               <div class="hs__item__description">
                 <a href="details.html">
-                  <span class="hs__item__title">Suade Shoe Men</span>
+                  <span class="hs__item__title">{{ $item->name }}</span>
                 </a>
                 <div class="hs__item__subtitle">
-                  <del class="old-price">
-                    &#8358;100
-                  </del>
+                  @if ($item->old_price != null || !empty($item->old_price))
+                    <del class="old-price">
+                      &#8358;{{ number_format($item->old_price) }}
+                    </del>
+                  @endif
                   <span class="new-price">
-                    &#8358;70
+                    &#8358;{{ number_format($item->new_price) }}
                   </span>
                 </div>
                 <button class="btn-add-to-cart">Add To Cart</button>

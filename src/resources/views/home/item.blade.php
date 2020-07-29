@@ -7,32 +7,28 @@
         <div class="image-sec">
           <div
             id="main-img"
-            style="background: url('/storage/img/watch.jpg') no-repeat center; background-size: contain;">
+            style="background: url('/storage/{{ $item->display_image }}') no-repeat center; background-size: contain;">
 
           </div>
           <div class="all-imgs">
-            <img src="/storage/img/watch.jpg" class="active-img" alt="" />
-            <img src="/storage/img/earpods.jpg" alt="" />
-            <img src="/storage/img/jacket.jpeg" alt="" />
-            <img src="/storage/img/suade-img.jpg" alt="" />
-            <img src="/storage/img/bag-img.jpeg" alt="" />
+            <img src="/storage/{{ $item->display_image }}" class="active-img" alt="" />
+
+            @if (!$itemImages->isEmpty())
+              @foreach ($itemImages as $key => $itemImage)
+                <img src="/storage/{{ $itemImage->img }}" alt="" />
+              @endforeach
+            @endif
           </div>
         </div>
         <div class="text-sec">
-          <div class="item-name">Hand Bag</div>
+          <div class="item-name">{{ $item->name }}</div>
           <span class="stars" style="--rating: 3.5;"></span>
           <a href="review.html" class="rate-text">3.5 of 12 reviews</a>
           <div class="item-price">
-            &#8358;5,100
+            &#8358;{{ number_format($item->new_price) }}
           </div>
           <div class="item-description">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo
-            deleniti rerum tenetur modi quis nesciunt beatae eius aspernatur
-            iure, explicabo sapiente assumenda sint dolor architecto hic
-            mollitia. Illo, alias consectetur! Lorem ipsum dolor sit amet,
-            consectetur adipisicing elit. Nemo deleniti rerum tenetur modi quis
-            nesciunt beatae eius aspernatur iure, explicabo sapiente assumenda
-            sint dolor architecto hic mollitia. Illo, alias consectetur!
+            {{ $item->description }}
           </div>
           <div class="item-control">
             <div class="quantity-control">

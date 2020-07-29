@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Item;
 use App\Models\Slide;
+use App\Models\ItemImage;
 
 class HomeController extends Controller
 {
@@ -28,7 +29,7 @@ class HomeController extends Controller
     {
       $allItems = Item::orderBy('id', 'DESC')->get();
       $slides = Slide::where('active', 1)->get();
-      
+
       return view('home.index', compact('allItems', 'slides'));
     }
 
@@ -38,8 +39,10 @@ class HomeController extends Controller
       return view('home.allitems', compact('allItems'));
     }
 
-    public function item()
+    public function item($slug)
     {
-      return view('home.item');
+      $item = Item::where('slug', $slug)->first();
+      $itemImages = ItemImage::where('item_id', $item->id)->get();
+      return view('home.item', compact('item', 'itemImages'));
     }
 }
