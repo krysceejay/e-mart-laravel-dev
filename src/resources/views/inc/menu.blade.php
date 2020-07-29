@@ -1,13 +1,34 @@
 <nav id="main-nav">
   <!-- <img src="img/logo.png" alt="My Portfolio" id="logo" /> -->
+  <a href="{{ route('home') }}">
   <h1><span class="text-primary">WONDERFUL</span>LOGO</h1>
+  </a>
   <div>
     <ul>
       <li><i class="fa fa-phone"></i> +234 123 456 7890</li>
-      <li><a href="{{ route('login') }}">Login</a></li>
-      <li><a href="{{ route('register') }}">Register</a></li>
+      @guest
+        <li><a href="{{ route('login') }}">Login</a></li>
+        @if (Route::has('register'))
+          <li><a href="{{ route('register') }}">Register</a></li>
+        @endif
+      @else
+        <li>{{ Auth::user()->first_name }}</li>
+        <li><a href="{{ route('logout') }}" onclick="event.preventDefault();
+                      document.getElementById('logout-form').submit();">
+                      {{ __('Logout') }}
+                    </a>
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+              @csrf
+          </form>
+        </li>
+
+      @endguest
+
       <li>
-        <a href="{{ route('cart') }}"><i class="fa fa-shopping-cart cart-nav"></i></a>
+        <a href="{{ route('cart') }}" class="cart-icon">
+          <i class="fa fa-shopping-cart cart-nav"></i>
+          <span>9</span>
+        </a>
       </li>
     </ul>
 

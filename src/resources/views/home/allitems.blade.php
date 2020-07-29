@@ -98,7 +98,6 @@
       <section id="main-sec-prod">
         <div class="main-prod-view">
           @if (!$allItems->isEmpty())
-
             @foreach ($allItems as $key => $item)
               <div class="main-prod-view-single">
                 <div class="prod-img">
@@ -115,11 +114,13 @@
                   </a>
 
                   <div class="prod-text-price">
-                    <del class="old-price">
-                      &#8358;{{ $item->old_price }}
-                    </del>
+                    @if ($item->old_price != null || !empty($item->old_price))
+                      <del class="old-price">
+                        &#8358;{{ number_format($item->old_price) }}
+                      </del>
+                    @endif
                     <span class="new-price">
-                      &#8358;{{ $item->new_price }}
+                      &#8358;{{ number_format($item->new_price) }}
                     </span>
                   </div>
                   <button class="btn-add-to-cart">Add To Cart</button>
@@ -127,18 +128,13 @@
                 </div>
               </div>
             @endforeach
-
-          @else
-            <div class="col-12 text-center">
-                <h4>Oops!</h4>
-                <p>Looks like there are no farms here.</p>
-            </div>
-        @endif
-
-
-
-
         </div>
+            @else
+              <div class="col-12 text-center">
+                  <h4>Oops!</h4>
+                  <p>Looks like there are no items here.</p>
+              </div>
+            @endif
         {{-- <ul class="paginate-links-menu py-3">
           <li class="">
             <a href="" class="btn-lighten">

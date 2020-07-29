@@ -70,7 +70,7 @@
 
             <li class="hs__item">
               <div class="hs__item__image__wrapper">
-                <a href="details.html" class="img-link">
+                <a href="{{ route('item', $item->slug ) }}" class="img-link">
                   <img
                     class="hs__item__image"
                     src="/storage/{{ $item->display_image }}"
@@ -80,7 +80,7 @@
               </div>
 
               <div class="hs__item__description">
-                <a href="details.html">
+                <a href="{{ route('item', $item->slug ) }}">
                   <span class="hs__item__title">{{ $item->name }}</span>
                 </a>
                 <div class="hs__item__subtitle">
@@ -124,7 +124,7 @@
               @foreach ($allItems as $key => $item)
             <li class="hs__item">
               <div class="hs__item__image__wrapper">
-                <a href="details.html" class="img-link">
+                <a href="{{ route('item', $item->slug ) }}" class="img-link">
                   <img
                     class="hs__item__image"
                     src="/storage/{{ $item->display_image }}"
@@ -135,7 +135,7 @@
               </div>
 
               <div class="hs__item__description">
-                <a href="details.html">
+                <a href="{{ route('item', $item->slug ) }}">
                   <span class="hs__item__title">{{ $item->name }}</span>
                 </a>
                 <div class="hs__item__subtitle">
