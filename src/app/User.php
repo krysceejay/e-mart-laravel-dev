@@ -6,8 +6,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-use App\Model\Cart;
-use App\Model\Item;
+use App\Models\Cart;
+use App\Models\Item;
 
 class User extends Authenticatable
 {

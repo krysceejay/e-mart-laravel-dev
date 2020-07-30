@@ -1,22 +1,29 @@
 <section id="slide-cart">
+
   <div class="cart-header">
     <h3>Cart</h3>
     <span id="cart-close">&#215;</span>
   </div>
+  @guest
+    <h1>please login</h1>
+  @else
   <div class="cart-items-wrap">
-    <div class="cart-items-single">
+    @if (!$cartList->isEmpty())
+      @foreach ($cartList as $key => $cart)
+
+    <div id="cart{{ $cart->item->id }}" class="cart-items-single">
       <div class="cart-item-img">
-        <a href="">
-          <img src="/storage/img/handbag2-img.jpg" alt="" />
+        <a href="{{ route('item', $cart->item->slug ) }}">
+          <img src="/storage/{{ $cart->item->display_image }}" alt="" />
         </a>
       </div>
 
       <div class="cart-item-text">
         <div class="cart-item-text-name">
-          Suade Shoe Men
+          {{ $cart->item->name }}
         </div>
         <div class="cart-item-text-price">
-          &#8358;3,000
+          &#8358;{{ number_format($cart->item->new_price) }}
         </div>
         <div class="quantity-control">
           <button
@@ -25,7 +32,7 @@
           >
             &#x2212;
           </button>
-          <input min="1" max="100" value="5" type="number" />
+          <input min="1" max="100" value="1" type="number" />
           <button
             class="plus"
             onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
@@ -36,135 +43,14 @@
       </div>
       <span class="cart-item-remove">&#215;</span>
     </div>
-    <div class="cart-items-single">
-      <div class="cart-item-img">
-        <a href="">
-          <img src="/storage/img/bracelet.png" alt="" />
-        </a>
-      </div>
 
-      <div class="cart-item-text">
-        <div class="cart-item-text-name">
-          Suade Shoe Men
-        </div>
-        <div class="cart-item-text-price">
-          &#8358;3,000
-        </div>
-        <div class="quantity-control">
-          <button
-            class="minus"
-            onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
-          >
-            &#x2212;
-          </button>
-          <input min="1" max="100" value="5" type="number" />
-          <button
-            class="plus"
-            onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
-          >
-            &#x2b;
-          </button>
-        </div>
-      </div>
-      <span class="cart-item-remove">&#215;</span>
-    </div>
-    <div class="cart-items-single">
-      <div class="cart-item-img">
-        <a href="">
-          <img src="/storage/img/watch.jpg" alt="" />
-        </a>
-      </div>
-
-      <div class="cart-item-text">
-        <div class="cart-item-text-name">
-          Suade Shoe Men
-        </div>
-        <div class="cart-item-text-price">
-          &#8358;3,000
-        </div>
-        <div class="quantity-control">
-          <button
-            class="minus"
-            onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
-          >
-            &#x2212;
-          </button>
-          <input min="1" max="100" value="5" type="number" />
-          <button
-            class="plus"
-            onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
-          >
-            &#x2b;
-          </button>
-        </div>
-      </div>
-      <span class="cart-item-remove">&#215;</span>
-    </div>
-    <div class="cart-items-single">
-      <div class="cart-item-img">
-        <a href="">
-          <img src="/storage/img/watch.jpg" alt="" />
-        </a>
-      </div>
-
-      <div class="cart-item-text">
-        <div class="cart-item-text-name">
-          Suade Shoe Men
-        </div>
-        <div class="cart-item-text-price">
-          &#8358;3,000
-        </div>
-        <div class="quantity-control">
-          <button
-            class="minus"
-            onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
-          >
-            &#x2212;
-          </button>
-          <input min="1" max="100" value="5" type="number" />
-          <button
-            class="plus"
-            onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
-          >
-            &#x2b;
-          </button>
-        </div>
-      </div>
-      <span class="cart-item-remove">&#215;</span>
-    </div>
-    <div class="cart-items-single">
-      <div class="cart-item-img">
-        <a href="">
-          <img src="/storage/img/watch2.jpg" alt="" />
-        </a>
-      </div>
-
-      <div class="cart-item-text">
-        <div class="cart-item-text-name">
-          Suade Shoe Men
-        </div>
-        <div class="cart-item-text-price">
-          &#8358;3,000
-        </div>
-        <div class="quantity-control">
-          <button
-            class="minus"
-            onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
-          >
-            &#x2212;
-          </button>
-          <input min="1" max="100" value="5" type="number" />
-          <button
-            class="plus"
-            onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
-          >
-            &#x2b;
-          </button>
-        </div>
-      </div>
-      <span class="cart-item-remove">&#215;</span>
-    </div>
+  @endforeach
+@endif
   </div>
+  @endguest
+
+  @guest
+  @else
   <div class="cart-total">
     <div class="cart-total-sub">
       <span class="cart-total-head">Subtotal</span>
@@ -185,4 +71,6 @@
       <a href="{{ route('cart') }}" class="btn btn-view-cart">View Cart</a>
     </div>
   </div>
+  @endguest
+
 </section>

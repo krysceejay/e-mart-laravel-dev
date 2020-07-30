@@ -1,3 +1,4 @@
+const axios = require('axios');
 $(document).ready(function () {
   const auto = true;
   const intervalTime = 5000;
@@ -53,7 +54,118 @@ $(document).ready(function () {
   }
 
   $(".btn-add-to-cart").click(function () {
-    $("#slide-cart").addClass("show-cart");
+    // const iid = $(this).attr("iid");
+    // axios.post('/cart', {
+    //   iid: iid
+    //
+    // })
+    // .then(function (cart) {
+    //   let cartItem = '';
+    //   $.each(cart.data, function(key, value) {
+    //     cartItem += `
+    //     <div class="cart-items-single">
+    //       <div class="cart-item-img">
+    //         <a href="">
+    //           <img src="/storage/${value.image}" alt="" />
+    //         </a>
+    //       </div>
+    //
+    //       <div class="cart-item-text">
+    //         <div class="cart-item-text-name">
+    //           ${value.name}
+    //         </div>
+    //         <div class="cart-item-text-price">
+    //           &#8358;${value.price}
+    //         </div>
+    //         <div class="quantity-control">
+    //           <button
+    //             class="minus"
+    //             onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+    //           >
+    //             &#x2212;
+    //           </button>
+    //           <input min="1" max="100" value="1" type="number" />
+    //           <button
+    //             class="plus"
+    //             onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+    //           >
+    //             &#x2b;
+    //           </button>
+    //         </div>
+    //       </div>
+    //       <span class="cart-item-remove">&#215;</span>
+    //     </div>
+    //     `;
+    //
+    //   });
+    //     $('.cart-items-wrap').html(cartItem);
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // });
+    // $("#slide-cart").addClass("show-cart");
+    //$(".cart-items-wrap").prepend(cartItem);
+    //$(this).off("click");
+    const iid = $(this).attr("iid");
+    const sl = $(this).attr("sl");
+    const img = $(this).attr("img");
+    const p = $(this).attr("p");
+    const inm = $(this).attr("inm");
+
+    const cartSingle = $(".cart-items-wrap").find(`#cart${iid}`).length;
+
+    if(cartSingle == 0){
+        let cartItem = `
+        <div id="cart${iid}" class="cart-items-single">
+          <div class="cart-item-img">
+            <a href="/item/${sl}">
+              <img src="/storage/${img}" alt="" />
+            </a>
+          </div>
+
+          <div class="cart-item-text">
+            <div class="cart-item-text-name">
+              ${inm}
+            </div>
+            <div class="cart-item-text-price">
+              &#8358;${p}
+            </div>
+            <div class="quantity-control">
+              <button
+                class="minus"
+                onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+              >
+                &#x2212;
+              </button>
+              <input min="1" max="100" value="1" type="number" />
+              <button
+                class="plus"
+                onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+              >
+                &#x2b;
+              </button>
+            </div>
+          </div>
+          <span class="cart-item-remove">&#215;</span>
+        </div>
+        `;
+
+        $(".cart-items-wrap").prepend(cartItem);
+        axios.post('/cart', {
+          iid: iid
+
+        })
+        .then(function (cart) {
+          // TODO: return a message to the user
+          console.log(cart);
+        })
+        .catch(function (error) {
+          // TODO: return a message to the user
+          console.log(error);
+        });
+      }
+      $("#slide-cart").addClass("show-cart");
+
   });
 
   $("#cart-close").click(function () {
