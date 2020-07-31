@@ -4,10 +4,9 @@
     <h3>Cart</h3>
     <span id="cart-close">&#215;</span>
   </div>
-  @guest
-    <h1>please login</h1>
-  @else
   <div class="cart-items-wrap">
+  @guest
+  @else
     @if (!$cartList->isEmpty())
       @foreach ($cartList as $key => $cart)
 
@@ -43,13 +42,37 @@
       </div>
       <span class="cart-item-remove">&#215;</span>
     </div>
-
-  @endforeach
-@endif
+    @endforeach
+  @endif
+@endguest
   </div>
-  @endguest
 
   @guest
+    <div class="cart-total">
+      <div class="cart-total-sub">
+        <span class="cart-total-head">Subtotal</span>
+        <span class="cart-total-price">&#8358;4,000</span>
+      </div>
+      <div class="cart-total-delivery">
+        <span class="cart-total-head">Delivery Fee</span>
+        <span class="cart-total-price">&#8358;1,000</span>
+      </div>
+      <div class="cart-total-all">
+        <span class="cart-total-head">Total</span>
+        <span class="cart-total-all-price">&#8358;5,000</span>
+      </div>
+      <div class="cart-total-checkout">
+        <a href="login.html" class="btn btn-shop-now" id="loginBtn">
+          Login To Check Out
+        </a>
+        <a href="#" class="btn btn-shop-now" id="guestBtn">
+          Check Out As Guest
+        </a>
+        </div>
+      <div class="view-cart">
+        <a href="{{ route('cart') }}" class="btn btn-view-cart">View Cart</a>
+      </div>
+    </div>
   @else
   <div class="cart-total">
     <div class="cart-total-sub">

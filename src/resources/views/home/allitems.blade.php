@@ -123,7 +123,16 @@
                       &#8358;{{ number_format($item->new_price) }}
                     </span>
                   </div>
-                  <button class="btn-add-to-cart" img="{{ $item->display_image }}" inm="{{ $item->name }}" p="{{ number_format($item->new_price) }}" iid="{{ $item->id }}" sl="{{ $item->slug }}">
+                  <button class="btn-add-to-cart"
+                    img="{{ $item->display_image }}"
+                    inm="{{ $item->name }}"
+                    p="{{ number_format($item->new_price) }}"
+                    iid="{{ $item->id }}"
+                    sl="{{ $item->slug }}"
+                    @guest
+                    gt=""  
+                    @endguest
+                  >
                     Add To Cart
                   </button>
                   <span class="badge-new">New</span>

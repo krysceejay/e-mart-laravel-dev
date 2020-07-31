@@ -2113,6 +2113,8 @@ __webpack_require__(/*! ./script */ "./resources/js/script.js");
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
 $(document).ready(function () {
@@ -2171,6 +2173,14 @@ $(document).ready(function () {
     slideInterval = setInterval(nextSlide, intervalTime);
   }
 
+  var storedValue = JSON.parse(localStorage.getItem("mart-cart")); //console.log(storedValue);
+
+  var cartItem = '';
+  $.each(storedValue, function (key, value) {
+    //console.log(value.iid +' '+ value.sl);
+    cartItem += "\n      <div id=\"cart".concat(value.iid, "\" class=\"cart-items-single\">\n        <div class=\"cart-item-img\">\n          <a href=\"/item/").concat(value.sl, "\">\n            <img src=\"/storage/").concat(value.img, "\" alt=\"\" />\n          </a>\n        </div>\n\n        <div class=\"cart-item-text\">\n          <div class=\"cart-item-text-name\">\n            ").concat(value.inm, "\n          </div>\n          <div class=\"cart-item-text-price\">\n            &#8358;").concat(value.p, "\n          </div>\n          <div class=\"quantity-control\">\n            <button\n              class=\"minus\"\n              onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n            >\n              &#x2212;\n            </button>\n            <input min=\"1\" max=\"100\" value=\"1\" type=\"number\" />\n            <button\n              class=\"plus\"\n              onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n            >\n              &#x2b;\n            </button>\n          </div>\n        </div>\n        <span class=\"cart-item-remove\">&#215;</span>\n      </div>\n      ");
+  });
+  $('.cart-items-wrap').html(cartItem);
   $(".btn-add-to-cart").click(function () {
     // const iid = $(this).attr("iid");
     // axios.post('/cart', {
@@ -2229,20 +2239,43 @@ $(document).ready(function () {
     var img = $(this).attr("img");
     var p = $(this).attr("p");
     var inm = $(this).attr("inm");
+    var gt = $(this).attr('gt');
+    var cartList;
     var cartSingle = $(".cart-items-wrap").find("#cart".concat(iid)).length;
 
     if (cartSingle == 0) {
-      var cartItem = "\n        <div id=\"cart".concat(iid, "\" class=\"cart-items-single\">\n          <div class=\"cart-item-img\">\n            <a href=\"/item/").concat(sl, "\">\n              <img src=\"/storage/").concat(img, "\" alt=\"\" />\n            </a>\n          </div>\n\n          <div class=\"cart-item-text\">\n            <div class=\"cart-item-text-name\">\n              ").concat(inm, "\n            </div>\n            <div class=\"cart-item-text-price\">\n              &#8358;").concat(p, "\n            </div>\n            <div class=\"quantity-control\">\n              <button\n                class=\"minus\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n              >\n                &#x2212;\n              </button>\n              <input min=\"1\" max=\"100\" value=\"1\" type=\"number\" />\n              <button\n                class=\"plus\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n              >\n                &#x2b;\n              </button>\n            </div>\n          </div>\n          <span class=\"cart-item-remove\">&#215;</span>\n        </div>\n        ");
-      $(".cart-items-wrap").prepend(cartItem);
-      axios.post('/cart', {
-        iid: iid
-      }).then(function (cart) {
-        // TODO: return a message to the user
-        console.log(cart);
-      })["catch"](function (error) {
-        // TODO: return a message to the user
-        console.log(error);
-      });
+      var _cartItem = "\n        <div id=\"cart".concat(iid, "\" class=\"cart-items-single\">\n          <div class=\"cart-item-img\">\n            <a href=\"/item/").concat(sl, "\">\n              <img src=\"/storage/").concat(img, "\" alt=\"\" />\n            </a>\n          </div>\n\n          <div class=\"cart-item-text\">\n            <div class=\"cart-item-text-name\">\n              ").concat(inm, "\n            </div>\n            <div class=\"cart-item-text-price\">\n              &#8358;").concat(p, "\n            </div>\n            <div class=\"quantity-control\">\n              <button\n                class=\"minus\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n              >\n                &#x2212;\n              </button>\n              <input min=\"1\" max=\"100\" value=\"1\" type=\"number\" />\n              <button\n                class=\"plus\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n              >\n                &#x2b;\n              </button>\n            </div>\n          </div>\n          <span class=\"cart-item-remove\">&#215;</span>\n        </div>\n        ");
+
+      $(".cart-items-wrap").prepend(_cartItem);
+
+      if (_typeof(gt) !== ( true ? "undefined" : undefined) && gt !== false) {
+        //alert('has it');
+        if (localStorage.getItem("mart-cart") === null) {
+          cartList = [];
+        } else {
+          cartList = JSON.parse(localStorage.getItem("mart-cart"));
+        }
+
+        cartList.unshift({
+          iid: iid,
+          sl: sl,
+          img: img,
+          p: p,
+          inm: inm
+        });
+        localStorage.setItem("mart-cart", JSON.stringify(cartList));
+      } else {
+        //alert('no');
+        axios.post('/cart', {
+          iid: iid
+        }).then(function (cart) {
+          // TODO: return a message to the user
+          console.log(cart);
+        })["catch"](function (error) {
+          // TODO: return a message to the user
+          console.log(error);
+        });
+      }
     }
 
     $("#slide-cart").addClass("show-cart");

@@ -53,6 +53,48 @@ $(document).ready(function () {
     slideInterval = setInterval(nextSlide, intervalTime);
   }
 
+  const storedValue = JSON.parse(localStorage.getItem("mart-cart"));
+  //console.log(storedValue);
+  let cartItem = '';
+  $.each(storedValue, function(key, value) {
+  //console.log(value.iid +' '+ value.sl);
+      cartItem += `
+      <div id="cart${value.iid}" class="cart-items-single">
+        <div class="cart-item-img">
+          <a href="/item/${value.sl}">
+            <img src="/storage/${value.img}" alt="" />
+          </a>
+        </div>
+
+        <div class="cart-item-text">
+          <div class="cart-item-text-name">
+            ${value.inm}
+          </div>
+          <div class="cart-item-text-price">
+            &#8358;${value.p}
+          </div>
+          <div class="quantity-control">
+            <button
+              class="minus"
+              onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+            >
+              &#x2212;
+            </button>
+            <input min="1" max="100" value="1" type="number" />
+            <button
+              class="plus"
+              onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+            >
+              &#x2b;
+            </button>
+          </div>
+        </div>
+        <span class="cart-item-remove">&#215;</span>
+      </div>
+      `;
+    });
+    $('.cart-items-wrap').html(cartItem);
+
   $(".btn-add-to-cart").click(function () {
     // const iid = $(this).attr("iid");
     // axios.post('/cart', {
@@ -111,6 +153,9 @@ $(document).ready(function () {
     const img = $(this).attr("img");
     const p = $(this).attr("p");
     const inm = $(this).attr("inm");
+    const gt = $(this).attr('gt');
+    let cartList;
+
 
     const cartSingle = $(".cart-items-wrap").find(`#cart${iid}`).length;
 
@@ -151,6 +196,22 @@ $(document).ready(function () {
         `;
 
         $(".cart-items-wrap").prepend(cartItem);
+
+        if (typeof gt !== typeof undefined && gt !== false) {
+            //alert('has it');
+            if (localStorage.getItem("mart-cart") === null) {
+                cartList = [];
+
+              }else{
+                cartList = JSON.parse(localStorage.getItem("mart-cart"));
+              }
+
+              cartList.unshift({iid, sl, img, p, inm});
+              localStorage.setItem("mart-cart", JSON.stringify(cartList));
+
+        }else{
+          //alert('no');
+
         axios.post('/cart', {
           iid: iid
 
@@ -163,6 +224,7 @@ $(document).ready(function () {
           // TODO: return a message to the user
           console.log(error);
         });
+        }
       }
       $("#slide-cart").addClass("show-cart");
 
