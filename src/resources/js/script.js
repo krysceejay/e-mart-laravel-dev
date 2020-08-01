@@ -57,7 +57,6 @@ $(document).ready(function () {
   //console.log(storedValue);
   let cartItem = '';
   $.each(storedValue, function(key, value) {
-  //console.log(value.iid +' '+ value.sl);
       cartItem += `
       <div id="cart${value.iid}" class="cart-items-single">
         <div class="cart-item-img">
@@ -93,7 +92,7 @@ $(document).ready(function () {
       </div>
       `;
     });
-    $('.cart-items-wrap').html(cartItem);
+    $('#gcart').html(cartItem);
 
   $(".btn-add-to-cart").click(function () {
     // const iid = $(this).attr("iid");
@@ -173,19 +172,21 @@ $(document).ready(function () {
               ${inm}
             </div>
             <div class="cart-item-text-price">
-              &#8358;${p}
+              &#8358;<span id="ctotal${iid}">${p}</span>
             </div>
             <div class="quantity-control">
               <button
-                class="minus"
+                class="minus getval"
                 onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                iid="${iid}" p="${p}"
               >
                 &#x2212;
               </button>
-              <input min="1" max="100" value="1" type="number" />
+              <input class="catnumber${iid}" min="1" max="100" value="1" type="number" />
               <button
-                class="plus"
+                class="plus getval"
                 onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                iid="${iid}" p="${p}"
               >
                 &#x2b;
               </button>
@@ -214,7 +215,6 @@ $(document).ready(function () {
 
         axios.post('/cart', {
           iid: iid
-
         })
         .then(function (cart) {
           // TODO: return a message to the user
@@ -229,6 +229,37 @@ $(document).ready(function () {
       $("#slide-cart").addClass("show-cart");
 
   });
+
+  $(document).on('click','.getval',function(e){
+    e.preventDefault();
+      const iid = $(this).attr("iid");
+      const p = $(this).attr("p");
+      const q = $(".catnumber"+iid).val();
+      caltotalct(p,iid,q);
+  });
+
+  const caltotalct = (p,iid,q) => {
+    let ctotalid = $('*[id^="ctotal"]');
+    const sum = p * Number(q);
+    $("#ctotal"+iid).html(sum);
+
+    // let totalsponsorship = 0;
+    //
+    // for(let i = 0 ; i < ctotalid.length; i++){
+    //   totalsponsorship += parseInt($(ctotalid[i]).html());
+    // }
+    //
+    // let mgmfee = 0.02 * totalsponsorship;
+    //
+    // let sumtotal = mgmfee + totalsponsorship;
+    //
+    // $("#totalsponsorship").html(totalsponsorship);
+    //
+    // $("#mgmfee").html(mgmfee.toFixed(2));
+    //
+    // $("#sumtotalsponsorship").html(sumtotal.toFixed(2));
+
+  }
 
   $("#cart-close").click(function () {
     $("#slide-cart").removeClass("show-cart");

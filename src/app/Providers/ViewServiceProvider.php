@@ -29,11 +29,11 @@ class ViewServiceProvider extends ServiceProvider
       view()->composer('inc.cart', function ($view) {
         $user = Auth::user();
         if($user){
-          $cart = Cart::where('user_id', $user->id)->get();
+          $cart = Cart::where('user_id', $user->id)->orderBy('id', 'DESC')->get();
         }else{
           $cart = [];
         }
-      
+
         $view->with('cartList', $cart);
 
       });

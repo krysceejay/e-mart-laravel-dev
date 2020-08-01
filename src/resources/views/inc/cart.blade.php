@@ -4,13 +4,15 @@
     <h3>Cart</h3>
     <span id="cart-close">&#215;</span>
   </div>
-  <div class="cart-items-wrap">
+
   @guest
+    <div id="gcart" class="cart-items-wrap"></div>
   @else
+    <div id="ucart" class="cart-items-wrap">
     @if (!$cartList->isEmpty())
       @foreach ($cartList as $key => $cart)
 
-    <div id="cart{{ $cart->item->id }}" class="cart-items-single">
+    <div id="cart{{ $cart->item_id }}" class="cart-items-single">
       <div class="cart-item-img">
         <a href="{{ route('item', $cart->item->slug ) }}">
           <img src="/storage/{{ $cart->item->display_image }}" alt="" />
@@ -22,19 +24,21 @@
           {{ $cart->item->name }}
         </div>
         <div class="cart-item-text-price">
-          &#8358;{{ number_format($cart->item->new_price) }}
+          &#8358; <span id="ctotal{{ $cart->item_id }}">{{ $cart->item->new_price * $cart->unit }}</span>
         </div>
         <div class="quantity-control">
           <button
-            class="minus"
+            class="minus getval"
             onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+            iid="{{ $cart->item_id }}" p="{{ $cart->item->new_price }}"
           >
             &#x2212;
           </button>
-          <input min="1" max="100" value="1" type="number" />
+          <input class="catnumber{{ $cart->item_id }}" min="1" max="100" value="1" type="number" />
           <button
-            class="plus"
+            class="plus getval"
             onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+            iid="{{ $cart->item_id }}" p="{{ $cart->item->new_price }}"
           >
             &#x2b;
           </button>
@@ -44,8 +48,9 @@
     </div>
     @endforeach
   @endif
-@endguest
   </div>
+@endguest
+
 
   @guest
     <div class="cart-total">

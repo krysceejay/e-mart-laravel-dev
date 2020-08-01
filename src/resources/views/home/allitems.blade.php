@@ -126,11 +126,11 @@
                   <button class="btn-add-to-cart"
                     img="{{ $item->display_image }}"
                     inm="{{ $item->name }}"
-                    p="{{ number_format($item->new_price) }}"
+                    p="{{ $item->new_price }}"
                     iid="{{ $item->id }}"
                     sl="{{ $item->slug }}"
                     @guest
-                    gt=""  
+                    gt=""
                     @endguest
                   >
                     Add To Cart

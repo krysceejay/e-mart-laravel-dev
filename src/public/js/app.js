@@ -2177,10 +2177,9 @@ $(document).ready(function () {
 
   var cartItem = '';
   $.each(storedValue, function (key, value) {
-    //console.log(value.iid +' '+ value.sl);
     cartItem += "\n      <div id=\"cart".concat(value.iid, "\" class=\"cart-items-single\">\n        <div class=\"cart-item-img\">\n          <a href=\"/item/").concat(value.sl, "\">\n            <img src=\"/storage/").concat(value.img, "\" alt=\"\" />\n          </a>\n        </div>\n\n        <div class=\"cart-item-text\">\n          <div class=\"cart-item-text-name\">\n            ").concat(value.inm, "\n          </div>\n          <div class=\"cart-item-text-price\">\n            &#8358;").concat(value.p, "\n          </div>\n          <div class=\"quantity-control\">\n            <button\n              class=\"minus\"\n              onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n            >\n              &#x2212;\n            </button>\n            <input min=\"1\" max=\"100\" value=\"1\" type=\"number\" />\n            <button\n              class=\"plus\"\n              onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n            >\n              &#x2b;\n            </button>\n          </div>\n        </div>\n        <span class=\"cart-item-remove\">&#215;</span>\n      </div>\n      ");
   });
-  $('.cart-items-wrap').html(cartItem);
+  $('#gcart').html(cartItem);
   $(".btn-add-to-cart").click(function () {
     // const iid = $(this).attr("iid");
     // axios.post('/cart', {
@@ -2244,7 +2243,7 @@ $(document).ready(function () {
     var cartSingle = $(".cart-items-wrap").find("#cart".concat(iid)).length;
 
     if (cartSingle == 0) {
-      var _cartItem = "\n        <div id=\"cart".concat(iid, "\" class=\"cart-items-single\">\n          <div class=\"cart-item-img\">\n            <a href=\"/item/").concat(sl, "\">\n              <img src=\"/storage/").concat(img, "\" alt=\"\" />\n            </a>\n          </div>\n\n          <div class=\"cart-item-text\">\n            <div class=\"cart-item-text-name\">\n              ").concat(inm, "\n            </div>\n            <div class=\"cart-item-text-price\">\n              &#8358;").concat(p, "\n            </div>\n            <div class=\"quantity-control\">\n              <button\n                class=\"minus\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n              >\n                &#x2212;\n              </button>\n              <input min=\"1\" max=\"100\" value=\"1\" type=\"number\" />\n              <button\n                class=\"plus\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n              >\n                &#x2b;\n              </button>\n            </div>\n          </div>\n          <span class=\"cart-item-remove\">&#215;</span>\n        </div>\n        ");
+      var _cartItem = "\n        <div id=\"cart".concat(iid, "\" class=\"cart-items-single\">\n          <div class=\"cart-item-img\">\n            <a href=\"/item/").concat(sl, "\">\n              <img src=\"/storage/").concat(img, "\" alt=\"\" />\n            </a>\n          </div>\n\n          <div class=\"cart-item-text\">\n            <div class=\"cart-item-text-name\">\n              ").concat(inm, "\n            </div>\n            <div class=\"cart-item-text-price\">\n              &#8358;<span id=\"ctotal").concat(iid, "\">").concat(p, "</span>\n            </div>\n            <div class=\"quantity-control\">\n              <button\n                class=\"minus getval\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n                iid=\"").concat(iid, "\" p=\"").concat(p, "\"\n              >\n                &#x2212;\n              </button>\n              <input class=\"catnumber").concat(iid, "\" min=\"1\" max=\"100\" value=\"1\" type=\"number\" />\n              <button\n                class=\"plus getval\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n                iid=\"").concat(iid, "\" p=\"").concat(p, "\"\n              >\n                &#x2b;\n              </button>\n            </div>\n          </div>\n          <span class=\"cart-item-remove\">&#215;</span>\n        </div>\n        ");
 
       $(".cart-items-wrap").prepend(_cartItem);
 
@@ -2280,6 +2279,34 @@ $(document).ready(function () {
 
     $("#slide-cart").addClass("show-cart");
   });
+  $(document).on('click', '.getval', function (e) {
+    e.preventDefault();
+    var iid = $(this).attr("iid");
+    var p = $(this).attr("p");
+    var q = $(".catnumber" + iid).val();
+    caltotalct(p, iid, q);
+  });
+
+  var caltotalct = function caltotalct(p, iid, q) {
+    var ctotalid = $('*[id^="ctotal"]');
+    var sum = p * Number(q);
+    $("#ctotal" + iid).html(sum); // let totalsponsorship = 0;
+    //
+    // for(let i = 0 ; i < ctotalid.length; i++){
+    //   totalsponsorship += parseInt($(ctotalid[i]).html());
+    // }
+    //
+    // let mgmfee = 0.02 * totalsponsorship;
+    //
+    // let sumtotal = mgmfee + totalsponsorship;
+    //
+    // $("#totalsponsorship").html(totalsponsorship);
+    //
+    // $("#mgmfee").html(mgmfee.toFixed(2));
+    //
+    // $("#sumtotalsponsorship").html(sumtotal.toFixed(2));
+  };
+
   $("#cart-close").click(function () {
     $("#slide-cart").removeClass("show-cart");
   });
