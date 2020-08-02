@@ -5,6 +5,13 @@
     <span id="cart-close">&#215;</span>
   </div>
 
+  <div id="loader-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+
   @guest
     <div id="gcart" class="cart-items-wrap"></div>
   @else

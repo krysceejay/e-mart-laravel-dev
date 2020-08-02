@@ -158,7 +158,6 @@ $(document).ready(function () {
     const gt = $(this).attr('gt');
     let cartList;
 
-
     const cartSingle = $(".cart-items-wrap").find(`#cart${iid}`).length;
 
     if(cartSingle == 0){
@@ -217,13 +216,15 @@ $(document).ready(function () {
 
         }else{
           //alert('no');
-
+        $("#loader-ring").addClass("lds-ring");
         axios.post('/cart', {
           iid: iid
         })
         .then(function (cart) {
           // TODO: return a message to the user
+
           console.log(cart);
+          $('#loader-ring').removeClass("lds-ring");
         })
         .catch(function (error) {
           // TODO: return a message to the user
@@ -252,12 +253,15 @@ $(document).ready(function () {
     if (typeof gt !== typeof undefined && gt !== false) {
         alert('has it');
     }else{
+      $("#loader-ring").addClass("lds-ring");
       axios.post('/removecart', {
         iid: iid
       })
       .then(function (cart) {
         // TODO: return a message to the user
+
         console.log(cart);
+        $('#loader-ring').removeClass("lds-ring");
       })
       .catch(function (error) {
         // TODO: return a message to the user

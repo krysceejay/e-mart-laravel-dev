@@ -2271,11 +2271,13 @@ $(document).ready(function () {
         localStorage.setItem("mart-cart", JSON.stringify(cartList));
       } else {
         //alert('no');
+        $("#loader-ring").addClass("lds-ring");
         axios.post('/cart', {
           iid: iid
         }).then(function (cart) {
           // TODO: return a message to the user
           console.log(cart);
+          $('#loader-ring').removeClass("lds-ring");
         })["catch"](function (error) {
           // TODO: return a message to the user
           console.log(error);
@@ -2301,11 +2303,13 @@ $(document).ready(function () {
     if ((typeof gt === "undefined" ? "undefined" : _typeof(gt)) !== ( true ? "undefined" : undefined) && gt !== false) {
       alert('has it');
     } else {
+      $("#loader-ring").addClass("lds-ring");
       axios.post('/removecart', {
         iid: iid
       }).then(function (cart) {
         // TODO: return a message to the user
         console.log(cart);
+        $('#loader-ring').removeClass("lds-ring");
       })["catch"](function (error) {
         // TODO: return a message to the user
         console.log(error);
