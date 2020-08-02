@@ -24,7 +24,7 @@
           {{ $cart->item->name }}
         </div>
         <div class="cart-item-text-price">
-          &#8358; <span id="ctotal{{ $cart->item_id }}">{{ $cart->item->new_price * $cart->unit }}</span>
+          &#8358; <span id="ctotal{{ $cart->item_id }}">{{ number_format($cart->item->new_price * $cart->unit) }}</span>
         </div>
         <div class="quantity-control">
           <button
@@ -34,7 +34,7 @@
           >
             &#x2212;
           </button>
-          <input class="catnumber{{ $cart->item_id }}" min="1" max="100" value="1" type="number" />
+          <input class="catnumber{{ $cart->item_id }}" min="1" max="2000" value="1" type="number" />
           <button
             class="plus getval"
             onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
@@ -44,27 +44,36 @@
           </button>
         </div>
       </div>
-      <span class="cart-item-remove">&#215;</span>
+      <span class="cart-item-remove" iid="{{ $cart->item_id }}">&#215;</span>
     </div>
     @endforeach
   @endif
   </div>
 @endguest
 
-
   @guest
     <div class="cart-total">
       <div class="cart-total-sub">
         <span class="cart-total-head">Subtotal</span>
-        <span class="cart-total-price">&#8358;4,000</span>
+        <span class="cart-total-price">&#8358;
+
+          <span id="sub-total">4,000</span>
+        </span>
+
       </div>
       <div class="cart-total-delivery">
         <span class="cart-total-head">Delivery Fee</span>
-        <span class="cart-total-price">&#8358;1,000</span>
+        <span class="cart-total-price">&#8358;
+
+          <span id="dlvry">1,000</span>
+        </span>
       </div>
       <div class="cart-total-all">
         <span class="cart-total-head">Total</span>
-        <span class="cart-total-all-price">&#8358;5,000</span>
+        <span class="cart-total-all-price">&#8358;
+
+          <span id="total-sum">5,000</span>
+        </span>
       </div>
       <div class="cart-total-checkout">
         <a href="login.html" class="btn btn-shop-now" id="loginBtn">
@@ -82,15 +91,21 @@
   <div class="cart-total">
     <div class="cart-total-sub">
       <span class="cart-total-head">Subtotal</span>
-      <span class="cart-total-price">&#8358;4,000</span>
+      <span class="cart-total-price">&#8358;
+        <span id="sub-total">4,000</span>
+      </span>
     </div>
     <div class="cart-total-delivery">
       <span class="cart-total-head">Delivery Fee</span>
-      <span class="cart-total-price">&#8358;1,000</span>
+      <span class="cart-total-price">&#8358;
+        <span id="dlvry">1,000</span>
+      </span>
     </div>
     <div class="cart-total-all">
       <span class="cart-total-head">Total</span>
-      <span class="cart-total-all-price">&#8358;5,000</span>
+      <span class="cart-total-all-price">&#8358;
+        <span id="total-sum">5,000</span>
+      </span>
     </div>
     <div class="cart-total-checkout">
       <button class="btn btn-shop-now" id="myBtn">Check Out</button>

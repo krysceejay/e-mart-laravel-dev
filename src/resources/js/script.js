@@ -1,4 +1,7 @@
 const axios = require('axios');
+const numberWithCommas = (x) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 $(document).ready(function () {
   const auto = true;
   const intervalTime = 5000;
@@ -79,7 +82,7 @@ $(document).ready(function () {
             >
               &#x2212;
             </button>
-            <input min="1" max="100" value="1" type="number" />
+            <input min="1" max="2000" value="1" type="number" />
             <button
               class="plus"
               onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
@@ -172,7 +175,7 @@ $(document).ready(function () {
               ${inm}
             </div>
             <div class="cart-item-text-price">
-              &#8358;<span id="ctotal${iid}">${p}</span>
+              &#8358;<span id="ctotal${iid}">${numberWithCommas(p)}</span>
             </div>
             <div class="quantity-control">
               <button
@@ -182,7 +185,7 @@ $(document).ready(function () {
               >
                 &#x2212;
               </button>
-              <input class="catnumber${iid}" min="1" max="100" value="1" type="number" />
+              <input class="catnumber${iid}" min="1" max="2000" value="1" type="number" />
               <button
                 class="plus getval"
                 onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
@@ -192,11 +195,13 @@ $(document).ready(function () {
               </button>
             </div>
           </div>
-          <span class="cart-item-remove">&#215;</span>
+          <span class="cart-item-remove" iid="${iid}">&#215;</span>
         </div>
         `;
 
         $(".cart-items-wrap").prepend(cartItem);
+        const q = $(".catnumber"+iid).val();
+        caltotalct(p,iid,q);
 
         if (typeof gt !== typeof undefined && gt !== false) {
             //alert('has it');
@@ -238,27 +243,78 @@ $(document).ready(function () {
       caltotalct(p,iid,q);
   });
 
+  $(document).on('click','.cart-item-remove',function(e){
+    e.preventDefault();
+    const iid = $(this).attr("iid");
+    $(".cart-items-wrap").children(`#cart${iid}`).remove();
+    calAmount();
+
+    if (typeof gt !== typeof undefined && gt !== false) {
+        alert('has it');
+    }else{
+      axios.post('/removecart', {
+        iid: iid
+      })
+      .then(function (cart) {
+        // TODO: return a message to the user
+        console.log(cart);
+      })
+      .catch(function (error) {
+        // TODO: return a message to the user
+        console.log(error);
+      });
+    }
+  });
+
+  // $(".delcart").click(function(){
+  //
+  //
+  //   let cid = $(this).attr('cid');
+  //
+  //   axios.post('/removecart', {
+  //     cid: cid
+  //
+  //   })
+  //   .then(function (data) {
+  //
+  //     if(data){
+  //       location.reload(true);
+  //     }
+  //
+  //   })
+  //   .catch(function (error) {
+  //     const msg = '<div class="alert alert-danger" role="alert">Something went wrong, please check your connection</div>';
+  //     $('#delmsg').html(msg);
+  //   });
+  //
+  // });
+
   const caltotalct = (p,iid,q) => {
-    let ctotalid = $('*[id^="ctotal"]');
     const sum = p * Number(q);
-    $("#ctotal"+iid).html(sum);
+    $("#ctotal"+iid).html(numberWithCommas(sum));
+    calAmount();
 
-    // let totalsponsorship = 0;
-    //
-    // for(let i = 0 ; i < ctotalid.length; i++){
-    //   totalsponsorship += parseInt($(ctotalid[i]).html());
-    // }
-    //
-    // let mgmfee = 0.02 * totalsponsorship;
-    //
-    // let sumtotal = mgmfee + totalsponsorship;
-    //
-    // $("#totalsponsorship").html(totalsponsorship);
-    //
-    // $("#mgmfee").html(mgmfee.toFixed(2));
-    //
-    // $("#sumtotalsponsorship").html(sumtotal.toFixed(2));
+  }
 
+  const calAmount = () => {
+    const ctotalid = $('*[id^="ctotal"]');
+    let subTotal = 0;
+
+    for(let i = 0 ; i < ctotalid.length; i++){
+      const rComm = $(ctotalid[i]).html().replace(",", "");
+      subTotal += parseInt(rComm);
+    }
+
+    //const delivery = 1000;
+    const delivery = parseInt($("#dlvry").html().replace(",", ""));
+
+    let sumtotal = delivery + subTotal;
+
+    $("#sub-total").html(numberWithCommas(subTotal));
+
+    $("#dlvry").html(numberWithCommas(delivery));
+
+    $("#total-sum").html(numberWithCommas(sumtotal));
   }
 
   $("#cart-close").click(function () {

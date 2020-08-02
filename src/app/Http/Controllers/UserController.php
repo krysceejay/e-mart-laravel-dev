@@ -22,7 +22,6 @@ class UserController extends Controller
   public function addCart(Request $request)
   {
     $user = Auth::user();
-    $newCartlist = [];
     $usercart = Cart::where('user_id', $user->id)->where('item_id', $request->input('iid'))->first();
     if (empty($usercart)) {
         $this->validate($request, [
@@ -35,16 +34,19 @@ class UserController extends Controller
 
         ]);
     }
-
-    // $userCartItems = Cart::where('user_id', $user->id)->orderBy('id', 'DESC')->get();
-    // foreach ($userCartItems as $item) {
-    //   $item['image'] = $item->item->display_image;
-    //   $item['price'] = $item->item->new_price;
-    //   $item['name'] = $item->item->name;
-    //
-    //   array_push($newCartlist, $item);
-    // }
     return 'true';
+  }
+
+  public function removeCart(Request $request)
+  {
+    $user = Auth::user();
+    $usercart = Cart::where('user_id', $user->id)->where('item_id', $request->input('iid'))->first();
+    if (!empty($usercart)) {
+        $usercart->delete();
+        return 'removed';
+    } else {
+        return 'Error Deleting';
+    }
   }
 
   public function orderReceived()
