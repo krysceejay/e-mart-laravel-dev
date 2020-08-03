@@ -56,46 +56,69 @@ $(document).ready(function () {
     slideInterval = setInterval(nextSlide, intervalTime);
   }
 
-  const storedValue = JSON.parse(localStorage.getItem("mart-cart"));
-  //console.log(storedValue);
-  let cartItem = '';
-  $.each(storedValue, function(key, value) {
-      cartItem += `
-      <div id="cart${value.iid}" class="cart-items-single">
-        <div class="cart-item-img">
-          <a href="/item/${value.sl}">
-            <img src="/storage/${value.img}" alt="" />
-          </a>
-        </div>
+  if($("#slide-cart").length){
+    const storedValue = JSON.parse(localStorage.getItem("mart-cart"));
+    if(typeof storedValue !== typeof undefined && storedValue instanceof Array){
+      if (storedValue.length !== 0) {
+        if (typeof $("#slide-cart").attr('gt') !== typeof undefined && $("#slide-cart").attr('gt') !== false) {
+          let cartItem = '';
+          $.each(storedValue, function(key, value) {
+              cartItem += `
+              <div id="cart${value.iid}" class="cart-items-single">
+                <div class="cart-item-img">
+                  <a href="/item/${value.sl}">
+                    <img src="/storage/${value.img}" alt="" />
+                  </a>
+                </div>
 
-        <div class="cart-item-text">
-          <div class="cart-item-text-name">
-            ${value.inm}
-          </div>
-          <div class="cart-item-text-price">
-            &#8358;${value.p}
-          </div>
-          <div class="quantity-control">
-            <button
-              class="minus"
-              onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
-            >
-              &#x2212;
-            </button>
-            <input min="1" max="2000" value="1" type="number" />
-            <button
-              class="plus"
-              onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
-            >
-              &#x2b;
-            </button>
-          </div>
-        </div>
-        <span class="cart-item-remove">&#215;</span>
-      </div>
-      `;
-    });
-    $('#gcart').html(cartItem);
+                <div class="cart-item-text">
+                  <div class="cart-item-text-name">
+                    ${value.inm}
+                  </div>
+                  <div class="cart-item-text-price">
+                    &#8358;<span id="ctotal${value.iid}">${numberWithCommas(value.p)}</span>
+                  </div>
+                  <div class="quantity-control">
+                    <button
+                      class="minus getval"
+                      onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                      iid="${value.iid}" p="${value.p}"
+                    >
+                      &#x2212;
+                    </button>
+                    <input class="catnumber${value.iid}" min="1" max="2000" value="1" type="number" />
+                    <button
+                      class="plus getval"
+                      onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                      iid="${value.iid}" p="${value.p}"
+                    >
+                      &#x2b;
+                    </button>
+                  </div>
+                </div>
+                <span class="cart-item-remove" iid="${value.iid}">&#215;</span>
+              </div>
+              `;
+            });
+            $('#gcart').html(cartItem);
+        }else{
+          //alert('user');
+          axios.post('/loadcart', {
+            storedValue: storedValue
+          })
+          .then(function (cart) {
+            // TODO: return a message to the user
+            console.log(cart);
+            localStorage.removeItem("mart-cart");
+          })
+          .catch(function (error) {
+            // TODO: return a message to the user
+            console.log(error);
+          });
+        }
+      }
+    }
+  }
 
   $(".btn-add-to-cart").click(function () {
     // const iid = $(this).attr("iid");
@@ -211,7 +234,7 @@ $(document).ready(function () {
                 cartList = JSON.parse(localStorage.getItem("mart-cart"));
               }
 
-              cartList.unshift({iid, sl, img, p, inm});
+              cartList.unshift({iid, sl, img, p, inm, unit: 1});
               localStorage.setItem("mart-cart", JSON.stringify(cartList));
 
         }else{
@@ -229,6 +252,7 @@ $(document).ready(function () {
         .catch(function (error) {
           // TODO: return a message to the user
           console.log(error);
+          $('#loader-ring').removeClass("lds-ring");
         });
         }
       }
@@ -249,9 +273,18 @@ $(document).ready(function () {
     const iid = $(this).attr("iid");
     $(".cart-items-wrap").children(`#cart${iid}`).remove();
     calAmount();
-
-    if (typeof gt !== typeof undefined && gt !== false) {
-        alert('has it');
+    const storedValue = JSON.parse(localStorage.getItem("mart-cart"));
+    if(typeof storedValue !== typeof undefined && storedValue instanceof Array){
+      if (storedValue.length !== 0) {
+        const item = $.grep(storedValue, function(obj){return obj.iid === iid;})[0];
+        if(item){
+          const itemIndex = storedValue.indexOf(item);
+          storedValue.splice(itemIndex, 1);
+          localStorage.setItem("mart-cart", JSON.stringify(storedValue));
+        }else{
+          console.log('not found');
+        }
+      }
     }else{
       $("#loader-ring").addClass("lds-ring");
       axios.post('/removecart', {
@@ -266,32 +299,10 @@ $(document).ready(function () {
       .catch(function (error) {
         // TODO: return a message to the user
         console.log(error);
+        $('#loader-ring').removeClass("lds-ring");
       });
     }
   });
-
-  // $(".delcart").click(function(){
-  //
-  //
-  //   let cid = $(this).attr('cid');
-  //
-  //   axios.post('/removecart', {
-  //     cid: cid
-  //
-  //   })
-  //   .then(function (data) {
-  //
-  //     if(data){
-  //       location.reload(true);
-  //     }
-  //
-  //   })
-  //   .catch(function (error) {
-  //     const msg = '<div class="alert alert-danger" role="alert">Something went wrong, please check your connection</div>';
-  //     $('#delmsg').html(msg);
-  //   });
-  //
-  // });
 
   const caltotalct = (p,iid,q) => {
     const sum = p * Number(q);

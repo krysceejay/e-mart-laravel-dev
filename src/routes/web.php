@@ -26,4 +26,5 @@ Route::get('/item/{slug}', 'HomeController@item')->name('item');
 Route::get('/cart', 'UserController@cart')->name('cart');
 Route::post('/cart', 'UserController@addCart');
 Route::post('/removecart','UserController@removeCart');
+Route::post('/loadcart','UserController@loadCart');
 Route::get('/order-received', 'UserController@orderReceived')->name('order-received');

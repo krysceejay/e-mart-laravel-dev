@@ -1,4 +1,7 @@
-<section id="slide-cart">
+<section id="slide-cart"
+@guest
+gt=""
+@endguest>
 
   <div class="cart-header">
     <h3>Cart</h3>
@@ -51,7 +54,9 @@
           </button>
         </div>
       </div>
-      <span class="cart-item-remove" iid="{{ $cart->item_id }}">&#215;</span>
+      <span class="cart-item-remove"
+      iid="{{ $cart->item_id }}"
+      >&#215;</span>
     </div>
     @endforeach
   @endif

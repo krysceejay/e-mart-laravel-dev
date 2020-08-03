@@ -49,6 +49,31 @@ class UserController extends Controller
     }
   }
 
+  public function loadCart(Request $request)
+  {
+    $newValue = [];
+    $user = Auth::user();
+    $localStorageCart = $request->input('storedValue');
+    foreach ($localStorageCart as $key => $value) {
+      //array_push($newValue, $value['iid']);
+      $iid = (int)$value['iid'];
+      $unit = (int)$value['unit'];
+      if ($iid == 0 || $unit == 0) {
+        return false;
+      }
+      $usercart = Cart::where('user_id', $user->id)->where('item_id', $iid)->first();
+      if (empty($usercart)) {
+
+          $user->cart()->create([
+              'item_id' => $iid,
+              'unit' => $unit,
+
+          ]);
+      }
+    }
+    return 'true';
+  }
+
   public function orderReceived()
   {
     return view('users.orderreceived');

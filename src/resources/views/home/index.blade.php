@@ -63,105 +63,32 @@
               ></a>
             </div>
           </div>
-          <ul class="hs">
-
-              @if (!$allItems->isEmpty())
-                @foreach ($allItems as $key => $item)
-
-            <li class="hs__item">
-              <div class="hs__item__image__wrapper">
-                <a href="{{ route('item', $item->slug ) }}" class="img-link">
-                  <img
-                    class="hs__item__image"
-                    src="/storage/{{ $item->display_image }}"
-                    alt="first image"
-                  />
-                </a>
-              </div>
-
-              <div class="hs__item__description">
-                <a href="{{ route('item', $item->slug ) }}">
-                  <span class="hs__item__title">{{ $item->name }}</span>
-                </a>
-                <div class="hs__item__subtitle">
-                  @if ($item->old_price != null || !empty($item->old_price))
-                    <del class="old-price">
-                      &#8358;{{ number_format($item->old_price) }}
-                    </del>
-                  @endif
-                  <span class="new-price">
-                    &#8358;{{ number_format($item->new_price) }}
-                  </span>
-                </div>
-                <button class="btn-add-to-cart">Add To Cart</button>
-              </div>
-            </li>
-            @endforeach
-            @endif
-
-
-          </ul>
+        @include('inc.slideitems')
         </div>
 
-        <!-- Best seller section -->
-        <div class="hs__wrapper py-3">
-          <div class="hs__header">
-            <div class="hs__arrows">
-              <a class="arrow disabled arrow-prev"
-                ><i class="fa fa-angle-left fa-2x"></i
-              ></a>
-            </div>
-            <h2 class="hs__headline">Best Seller</h2>
-            <div class="hs__arrows">
-              <a class="arrow arrow-next"
-                ><i class="fa fa-angle-right fa-2x"></i
-              ></a>
-            </div>
-          </div>
-          <ul class="hs">
+      <!-- / End Just Arrived section -->
 
-            @if (!$allItems->isEmpty())
-              @foreach ($allItems as $key => $item)
-            <li class="hs__item">
-              <div class="hs__item__image__wrapper">
-                <a href="{{ route('item', $item->slug ) }}" class="img-link">
-                  <img
-                    class="hs__item__image"
-                    src="/storage/{{ $item->display_image }}"
-                    alt="first image"
-                  />
-                </a>
-                <span class="badge-new">New</span>
+      <!-- Best seller section -->
+          <div class="hs__wrapper py-3">
+            <div class="hs__header">
+              <div class="hs__arrows">
+                <a class="arrow disabled arrow-prev"
+                  ><i class="fa fa-angle-left fa-2x"></i
+                ></a>
               </div>
-
-              <div class="hs__item__description">
-                <a href="{{ route('item', $item->slug ) }}">
-                  <span class="hs__item__title">{{ $item->name }}</span>
-                </a>
-                <div class="hs__item__subtitle">
-                  @if ($item->old_price != null || !empty($item->old_price))
-                    <del class="old-price">
-                      &#8358;{{ number_format($item->old_price) }}
-                    </del>
-                  @endif
-                  <span class="new-price">
-                    &#8358;{{ number_format($item->new_price) }}
-                  </span>
-                </div>
-                <button class="btn-add-to-cart">Add To Cart</button>
+              <h2 class="hs__headline">Best Seller</h2>
+              <div class="hs__arrows">
+                <a class="arrow arrow-next"
+                  ><i class="fa fa-angle-right fa-2x"></i
+                ></a>
               </div>
-            </li>
+            </div>
+        @include('inc.slideitems')
+      </div>
 
-            @endforeach
-
-            @endif
-
-          </ul>
-        </div>
-        <!-- / End Best seller section -->
       </div>
     </section>
-    <!-- / End section -->
+    <!-- / End Best seller section -->
 
     <!-- Featured section -->
 
