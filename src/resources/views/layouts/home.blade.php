@@ -116,6 +116,8 @@
       Copyright &copy; 2020, All Rights Reserved
     </footer>
 
+@guest
+@else
     <!-- The Modal -->
     <div id="myModal" class="modal">
       <!-- Modal content -->
@@ -337,6 +339,7 @@
         </div>
       </div>
     </div>
+    @endguest
 
     <script
       src="https://code.jquery.com/jquery-3.4.1.min.js"

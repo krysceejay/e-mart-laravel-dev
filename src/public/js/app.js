@@ -2177,17 +2177,24 @@ $(document).ready(function () {
     slideInterval = setInterval(nextSlide, intervalTime);
   }
 
-  if ($("#slide-cart").length) {
-    var storedValue = JSON.parse(localStorage.getItem("mart-cart"));
+  var storedValue = JSON.parse(localStorage.getItem("mart-cart"));
 
+  if ($("#slide-cart").length) {
     if (_typeof(storedValue) !== ( true ? "undefined" : undefined) && storedValue instanceof Array) {
       if (storedValue.length !== 0) {
         if (_typeof($("#slide-cart").attr('gt')) !== ( true ? "undefined" : undefined) && $("#slide-cart").attr('gt') !== false) {
           var cartItem = '';
+          var subTotal = 0;
           $.each(storedValue, function (key, value) {
             cartItem += "\n              <div id=\"cart".concat(value.iid, "\" class=\"cart-items-single\">\n                <div class=\"cart-item-img\">\n                  <a href=\"/item/").concat(value.sl, "\">\n                    <img src=\"/storage/").concat(value.img, "\" alt=\"\" />\n                  </a>\n                </div>\n\n                <div class=\"cart-item-text\">\n                  <div class=\"cart-item-text-name\">\n                    ").concat(value.inm, "\n                  </div>\n                  <div class=\"cart-item-text-price\">\n                    &#8358;<span id=\"ctotal").concat(value.iid, "\">").concat(numberWithCommas(value.p), "</span>\n                  </div>\n                  <div class=\"quantity-control\">\n                    <button\n                      class=\"minus getval\"\n                      onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n                      iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n                    >\n                      &#x2212;\n                    </button>\n                    <input class=\"catnumber").concat(value.iid, "\" min=\"1\" max=\"2000\" value=\"1\" type=\"number\" />\n                    <button\n                      class=\"plus getval\"\n                      onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n                      iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n                    >\n                      &#x2b;\n                    </button>\n                  </div>\n                </div>\n                <span class=\"cart-item-remove\" iid=\"").concat(value.iid, "\">&#215;</span>\n              </div>\n              ");
+            subTotal += Number(value.p);
           });
+          var delivery = parseInt($("#dlvry").html().replace(",", ""));
+          var sumtotal = delivery + subTotal;
           $('#gcart').html(cartItem);
+          $("#sub-total").html(numberWithCommas(subTotal));
+          $("#dlvry").html(numberWithCommas(delivery));
+          $("#total-sum").html(numberWithCommas(sumtotal));
         } else {
           //alert('user');
           axios.post('/loadcart', {
@@ -2201,7 +2208,16 @@ $(document).ready(function () {
             console.log(error);
           });
         }
+      } else {
+        localStorage.removeItem("mart-cart");
       }
+    }
+  }
+
+  if (_typeof(storedValue) !== ( true ? "undefined" : undefined) && storedValue instanceof Array) {
+    if (_typeof($("#cart-count").attr('gt')) !== ( true ? "undefined" : undefined) && $("#cart-count").attr('gt') !== false) {
+      var cartCount = parseInt(storedValue.length);
+      $("#cart-count").html(cartCount);
     }
   }
 
@@ -2271,6 +2287,10 @@ $(document).ready(function () {
       var _cartItem = "\n        <div id=\"cart".concat(iid, "\" class=\"cart-items-single\">\n          <div class=\"cart-item-img\">\n            <a href=\"/item/").concat(sl, "\">\n              <img src=\"/storage/").concat(img, "\" alt=\"\" />\n            </a>\n          </div>\n\n          <div class=\"cart-item-text\">\n            <div class=\"cart-item-text-name\">\n              ").concat(inm, "\n            </div>\n            <div class=\"cart-item-text-price\">\n              &#8358;<span id=\"ctotal").concat(iid, "\">").concat(numberWithCommas(p), "</span>\n            </div>\n            <div class=\"quantity-control\">\n              <button\n                class=\"minus getval\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n                iid=\"").concat(iid, "\" p=\"").concat(p, "\"\n              >\n                &#x2212;\n              </button>\n              <input class=\"catnumber").concat(iid, "\" min=\"1\" max=\"2000\" value=\"1\" type=\"number\" />\n              <button\n                class=\"plus getval\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n                iid=\"").concat(iid, "\" p=\"").concat(p, "\"\n              >\n                &#x2b;\n              </button>\n            </div>\n          </div>\n          <span class=\"cart-item-remove\" iid=\"").concat(iid, "\">&#215;</span>\n        </div>\n        ");
 
       $(".cart-items-wrap").prepend(_cartItem);
+
+      var _cartCount = parseInt($("#cart-count").html()) + 1;
+
+      $("#cart-count").html(_cartCount);
       var q = $(".catnumber" + iid).val();
       caltotalct(p, iid, q);
 
@@ -2320,20 +2340,22 @@ $(document).ready(function () {
   $(document).on('click', '.cart-item-remove', function (e) {
     e.preventDefault();
     var iid = $(this).attr("iid");
+    var cartCount = parseInt($("#cart-count").html()) - 1;
     $(".cart-items-wrap").children("#cart".concat(iid)).remove();
+    $("#cart-count").html(cartCount);
     calAmount();
-    var storedValue = JSON.parse(localStorage.getItem("mart-cart"));
+    var cartArray = JSON.parse(localStorage.getItem("mart-cart"));
 
-    if (_typeof(storedValue) !== ( true ? "undefined" : undefined) && storedValue instanceof Array) {
-      if (storedValue.length !== 0) {
-        var item = $.grep(storedValue, function (obj) {
+    if (_typeof(cartArray) !== ( true ? "undefined" : undefined) && cartArray instanceof Array) {
+      if (cartArray.length !== 0) {
+        var item = $.grep(cartArray, function (obj) {
           return obj.iid === iid;
         })[0];
 
         if (item) {
-          var itemIndex = storedValue.indexOf(item);
-          storedValue.splice(itemIndex, 1);
-          localStorage.setItem("mart-cart", JSON.stringify(storedValue));
+          var itemIndex = cartArray.indexOf(item);
+          cartArray.splice(itemIndex, 1);
+          localStorage.setItem("mart-cart", JSON.stringify(cartArray));
         } else {
           console.log('not found');
         }

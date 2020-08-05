@@ -56,12 +56,14 @@ $(document).ready(function () {
     slideInterval = setInterval(nextSlide, intervalTime);
   }
 
+  const storedValue = JSON.parse(localStorage.getItem("mart-cart"));
   if($("#slide-cart").length){
-    const storedValue = JSON.parse(localStorage.getItem("mart-cart"));
+
     if(typeof storedValue !== typeof undefined && storedValue instanceof Array){
       if (storedValue.length !== 0) {
         if (typeof $("#slide-cart").attr('gt') !== typeof undefined && $("#slide-cart").attr('gt') !== false) {
           let cartItem = '';
+          let subTotal = 0;
           $.each(storedValue, function(key, value) {
               cartItem += `
               <div id="cart${value.iid}" class="cart-items-single">
@@ -99,8 +101,18 @@ $(document).ready(function () {
                 <span class="cart-item-remove" iid="${value.iid}">&#215;</span>
               </div>
               `;
+              subTotal += Number(value.p);
             });
+
+            const delivery = parseInt($("#dlvry").html().replace(",", ""));
+
+            let sumtotal = delivery + subTotal;
             $('#gcart').html(cartItem);
+            $("#sub-total").html(numberWithCommas(subTotal));
+
+            $("#dlvry").html(numberWithCommas(delivery));
+
+            $("#total-sum").html(numberWithCommas(sumtotal));
         }else{
           //alert('user');
           axios.post('/loadcart', {
@@ -116,9 +128,19 @@ $(document).ready(function () {
             console.log(error);
           });
         }
+      }else{
+        localStorage.removeItem("mart-cart");
       }
     }
   }
+
+  if(typeof storedValue !== typeof undefined && storedValue instanceof Array){
+    if (typeof $("#cart-count").attr('gt') !== typeof undefined && $("#cart-count").attr('gt') !== false){
+      const cartCount = parseInt(storedValue.length);
+      $("#cart-count").html(cartCount);
+    }
+  }
+
 
   $(".btn-add-to-cart").click(function () {
     // const iid = $(this).attr("iid");
@@ -222,6 +244,9 @@ $(document).ready(function () {
         `;
 
         $(".cart-items-wrap").prepend(cartItem);
+        const cartCount = parseInt($("#cart-count").html()) + 1;
+        $("#cart-count").html(cartCount);
+
         const q = $(".catnumber"+iid).val();
         caltotalct(p,iid,q);
 
@@ -271,16 +296,18 @@ $(document).ready(function () {
   $(document).on('click','.cart-item-remove',function(e){
     e.preventDefault();
     const iid = $(this).attr("iid");
+    const cartCount = parseInt($("#cart-count").html()) - 1;
     $(".cart-items-wrap").children(`#cart${iid}`).remove();
+    $("#cart-count").html(cartCount);
     calAmount();
-    const storedValue = JSON.parse(localStorage.getItem("mart-cart"));
-    if(typeof storedValue !== typeof undefined && storedValue instanceof Array){
-      if (storedValue.length !== 0) {
-        const item = $.grep(storedValue, function(obj){return obj.iid === iid;})[0];
+    const cartArray = JSON.parse(localStorage.getItem("mart-cart"));
+    if(typeof cartArray !== typeof undefined && cartArray instanceof Array){
+      if (cartArray.length !== 0) {
+        const item = $.grep(cartArray, function(obj){return obj.iid === iid;})[0];
         if(item){
-          const itemIndex = storedValue.indexOf(item);
-          storedValue.splice(itemIndex, 1);
-          localStorage.setItem("mart-cart", JSON.stringify(storedValue));
+          const itemIndex = cartArray.indexOf(item);
+          cartArray.splice(itemIndex, 1);
+          localStorage.setItem("mart-cart", JSON.stringify(cartArray));
         }else{
           console.log('not found');
         }

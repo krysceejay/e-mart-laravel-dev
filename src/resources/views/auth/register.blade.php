@@ -14,41 +14,73 @@
               <span>Register with Facebook</span></a
             >
             <div class="auth-or">or</div>
-            <form action="">
+            <form method="POST" action="{{ route('register') }}">
+                @csrf
               <div class="form-group">
-                <label for="fname">First Name</label>
+                <label for="firstname">First Name</label>
                 <input
                   type="text"
-                  name=""
+                  name="firstname"
                   placeholder="Enter your first name"
-                  id=""
+                  required
                 />
+                @error('firstname')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
               </div>
               <div class="form-group">
-                <label for="fname">Last Name</label>
+                <label for="lastname">Last Name</label>
                 <input
                   type="text"
-                  name=""
+                  name="lastname"
                   placeholder="Enter your first name"
-                  id=""
+                  required
                 />
+                @error('lastname')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
               </div>
               <div class="form-group">
                 <label for="email">Email</label>
                 <input
                   type="email"
-                  name=""
+                  name="email"
                   placeholder="Enter your email"
-                  id=""
+                  required
                 />
+                @error('email')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
               </div>
               <div class="form-group">
                 <label for="password">Password</label>
                 <input
                   type="password"
-                  name=""
+                  name="password"
                   placeholder="Enter your password"
-                  id=""
+                  required
+                />
+                @error('password')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+              </div>
+
+              <div class="form-group">
+                <label for="password">Confirm Password</label>
+                <input
+                  type="password"
+                  name="password_confirmation"
+                  placeholder="Confirm your password"
+                  required
+                  autocomplete="new-password"
                 />
               </div>
 

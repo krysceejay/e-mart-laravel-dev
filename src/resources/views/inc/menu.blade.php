@@ -27,7 +27,20 @@
       <li>
         <a href="{{ route('cart') }}" class="cart-icon">
           <i class="fa fa-shopping-cart cart-nav"></i>
-          <span>9</span>
+          @guest
+            <span
+            id="cart-count"
+            gt=""
+            >
+            0
+            </span>
+          @else
+          <span
+          id="cart-count"
+          >
+            {{ $cartCount }}
+          </span>
+          @endguest
         </a>
       </li>
     </ul>

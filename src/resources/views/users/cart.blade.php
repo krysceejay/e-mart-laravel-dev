@@ -40,7 +40,7 @@
               </a>
             </div>
             <div class="cart-item-text-name">
-              Suade Shoe Men
+              Suadebbnnnnn
             </div>
             <div class="cart-item-text-price">
               &#8358;3,000

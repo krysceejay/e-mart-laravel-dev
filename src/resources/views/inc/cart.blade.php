@@ -88,7 +88,7 @@ gt=""
         </span>
       </div>
       <div class="cart-total-checkout">
-        <a href="login.html" class="btn btn-shop-now" id="loginBtn">
+        <a href="{{ route('cart') }}" class="btn btn-shop-now" id="loginBtn">
           Login To Check Out
         </a>
         <a href="#" class="btn btn-shop-now" id="guestBtn">
@@ -104,19 +104,19 @@ gt=""
     <div class="cart-total-sub">
       <span class="cart-total-head">Subtotal</span>
       <span class="cart-total-price">&#8358;
-        <span id="sub-total">4,000</span>
+        <span id="sub-total">{{ number_format($total) }}</span>
       </span>
     </div>
     <div class="cart-total-delivery">
       <span class="cart-total-head">Delivery Fee</span>
       <span class="cart-total-price">&#8358;
-        <span id="dlvry">1,000</span>
+        <span id="dlvry">{{ number_format($delivery) }}</span>
       </span>
     </div>
     <div class="cart-total-all">
       <span class="cart-total-head">Total</span>
       <span class="cart-total-all-price">&#8358;
-        <span id="total-sum">5,000</span>
+        <span id="total-sum">{{ number_format($total + $delivery) }}</span>
       </span>
     </div>
     <div class="cart-total-checkout">
