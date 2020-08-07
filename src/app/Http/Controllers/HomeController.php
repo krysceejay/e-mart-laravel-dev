@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Item;
 use App\Models\Slide;
@@ -44,5 +45,16 @@ class HomeController extends Controller
       $item = Item::where('slug', $slug)->first();
       $itemImages = ItemImage::where('item_id', $item->id)->get();
       return view('home.item', compact('item', 'itemImages'));
+    }
+
+    public function cart()
+    {
+      $user = Auth::user();
+      if($user){
+        return redirect('/cart');
+      }else{
+        return view('home.gcart');
+      }
+
     }
 }

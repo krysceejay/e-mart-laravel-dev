@@ -58,7 +58,6 @@ $(document).ready(function () {
 
   const storedValue = JSON.parse(localStorage.getItem("mart-cart"));
   if($("#slide-cart").length){
-
     if(typeof storedValue !== typeof undefined && storedValue instanceof Array){
       if (storedValue.length !== 0) {
         if (typeof $("#slide-cart").attr('gt') !== typeof undefined && $("#slide-cart").attr('gt') !== false) {
@@ -130,6 +129,49 @@ $(document).ready(function () {
         }
       }else{
         localStorage.removeItem("mart-cart");
+      }
+    }
+  }
+
+  if($(".gcart-sec").length){
+    if(typeof storedValue !== typeof undefined && storedValue instanceof Array){
+      if (storedValue.length !== 0) {
+        let cartItem = '';
+        let subTotal = 0;
+        $.each(storedValue, function(key, value) {
+          cartItem +=`
+          <div class="cart-items-single">
+            <div class="cart-item-img">
+              <a href="/item/${value.sl}">
+                <img src="/storage/${value.img}" alt="" />
+              </a>
+            </div>
+            <div class="cart-item-text-name">
+              ${value.inm}
+            </div>
+            <div class="cart-item-text-price">
+              &#8358;${numberWithCommas(value.p)}
+            </div>
+            <div class="quantity-control">
+              <button
+                class="minus"
+                onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+              >
+                &#x2212;
+              </button>
+              <input min="1" max="100" value="5" type="number" />
+              <button
+                class="plus"
+                onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+              >
+                &#x2b;
+              </button>
+            </div>
+            <span class="cart-item-remove">&#215;</span>
+          </div>
+          `;
+        });
+        $('#gcart-wrap').html(cartItem);
       }
     }
   }
