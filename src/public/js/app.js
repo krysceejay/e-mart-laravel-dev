@@ -2186,7 +2186,7 @@ $(document).ready(function () {
           var cartItem = '';
           var subTotal = 0;
           $.each(storedValue, function (key, value) {
-            cartItem += "\n              <div id=\"cart".concat(value.iid, "\" class=\"cart-items-single\">\n                <div class=\"cart-item-img\">\n                  <a href=\"/item/").concat(value.sl, "\">\n                    <img src=\"/storage/").concat(value.img, "\" alt=\"\" />\n                  </a>\n                </div>\n\n                <div class=\"cart-item-text\">\n                  <div class=\"cart-item-text-name\">\n                    ").concat(value.inm, "\n                  </div>\n                  <div class=\"cart-item-text-price\">\n                    &#8358;<span id=\"ctotal").concat(value.iid, "\">").concat(numberWithCommas(value.p), "</span>\n                  </div>\n                  <div class=\"quantity-control\">\n                    <button\n                      class=\"minus getval\"\n                      onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n                      iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n                    >\n                      &#x2212;\n                    </button>\n                    <input class=\"catnumber").concat(value.iid, "\" min=\"1\" max=\"2000\" value=\"1\" type=\"number\" />\n                    <button\n                      class=\"plus getval\"\n                      onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n                      iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n                    >\n                      &#x2b;\n                    </button>\n                  </div>\n                </div>\n                <span class=\"cart-item-remove\" iid=\"").concat(value.iid, "\">&#215;</span>\n              </div>\n              ");
+            cartItem += "\n              <div id=\"cart".concat(value.iid, "\" class=\"cart-items-single\">\n                <div class=\"cart-item-img\">\n                  <a href=\"/item/").concat(value.sl, "\">\n                    <img src=\"/storage/").concat(value.img, "\" alt=\"\" />\n                  </a>\n                </div>\n\n                <div class=\"cart-item-text\">\n                  <div class=\"cart-item-text-name\">\n                    ").concat(value.inm, "\n                  </div>\n                  <div class=\"cart-item-text-price\">\n                    &#8358; <span id=\"ctotal").concat(value.iid, "\">").concat(numberWithCommas(value.p), "</span>\n                  </div>\n                  <div class=\"quantity-control\">\n                    <button\n                      class=\"minus getval\"\n                      onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n                      iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n                    >\n                      &#x2212;\n                    </button>\n                    <input class=\"catnumber").concat(value.iid, "\" min=\"1\" max=\"2000\" value=\"").concat(value.unit, "\" type=\"number\" />\n                    <button\n                      class=\"plus getval\"\n                      onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n                      iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n                    >\n                      &#x2b;\n                    </button>\n                  </div>\n                </div>\n                <span class=\"cart-item-remove\" iid=\"").concat(value.iid, "\">&#215;</span>\n              </div>\n              ");
             subTotal += Number(value.p);
           });
           var delivery = parseInt($("#dlvry").html().replace(",", ""));
@@ -2220,9 +2220,18 @@ $(document).ready(function () {
         var _cartItem = '';
         var _subTotal = 0;
         $.each(storedValue, function (key, value) {
-          _cartItem += "\n          <div class=\"cart-items-single\">\n            <div class=\"cart-item-img\">\n              <a href=\"/item/".concat(value.sl, "\">\n                <img src=\"/storage/").concat(value.img, "\" alt=\"\" />\n              </a>\n            </div>\n            <div class=\"cart-item-text-name\">\n              ").concat(value.inm, "\n            </div>\n            <div class=\"cart-item-text-price\">\n              &#8358;").concat(numberWithCommas(value.p), "\n            </div>\n            <div class=\"quantity-control\">\n              <button\n                class=\"minus\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n              >\n                &#x2212;\n              </button>\n              <input min=\"1\" max=\"100\" value=\"5\" type=\"number\" />\n              <button\n                class=\"plus\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n              >\n                &#x2b;\n              </button>\n            </div>\n            <span class=\"cart-item-remove\">&#215;</span>\n          </div>\n          ");
+          _cartItem += "\n          <div id=\"cart".concat(value.iid, "\" class=\"cart-items-single\">\n            <div class=\"cart-item-img\">\n              <a href=\"/item/").concat(value.sl, "\">\n                <img src=\"/storage/").concat(value.img, "\" alt=\"\" />\n              </a>\n            </div>\n            <div class=\"cart-item-text-name\">\n              ").concat(value.inm, "\n            </div>\n            <div class=\"cart-item-text-price\">\n              &#8358; <span id=\"ctotal").concat(value.iid, "\">").concat(numberWithCommas(value.p), "</span>\n            </div>\n            <div class=\"quantity-control\">\n              <button\n                class=\"minus getval\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n                iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n              >\n                &#x2212;\n              </button>\n              <input class=\"catnumber").concat(value.iid, "\" min=\"1\" max=\"2000\" value=\"").concat(value.unit, "\" type=\"number\" />\n              <button\n                class=\"plus getval\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n                iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n              >\n                &#x2b;\n              </button>\n            </div>\n            <span class=\"cart-item-remove\" iid=\"").concat(value.iid, "\">&#215;</span>\n          </div>\n          ");
+          _subTotal += Number(value.p);
         });
+
+        var _delivery = parseInt($("#dlvry").html().replace(",", ""));
+
+        var _sumtotal = _delivery + _subTotal;
+
         $('#gcart-wrap').html(_cartItem);
+        $("#sub-total").html(numberWithCommas(_subTotal));
+        $("#dlvry").html(numberWithCommas(_delivery));
+        $("#total-sum").html(numberWithCommas(_sumtotal));
       }
     }
   }
@@ -2354,7 +2363,7 @@ $(document).ready(function () {
     e.preventDefault();
     var iid = $(this).attr("iid");
     var cartCount = parseInt($("#cart-count").html()) - 1;
-    $(".cart-items-wrap").children("#cart".concat(iid)).remove();
+    $(".ctwrapper").children("#cart".concat(iid)).remove();
     $("#cart-count").html(cartCount);
     calAmount();
     var cartArray = JSON.parse(localStorage.getItem("mart-cart"));

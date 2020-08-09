@@ -77,7 +77,7 @@ $(document).ready(function () {
                     ${value.inm}
                   </div>
                   <div class="cart-item-text-price">
-                    &#8358;<span id="ctotal${value.iid}">${numberWithCommas(value.p)}</span>
+                    &#8358; <span id="ctotal${value.iid}">${numberWithCommas(value.p)}</span>
                   </div>
                   <div class="quantity-control">
                     <button
@@ -87,7 +87,7 @@ $(document).ready(function () {
                     >
                       &#x2212;
                     </button>
-                    <input class="catnumber${value.iid}" min="1" max="2000" value="1" type="number" />
+                    <input class="catnumber${value.iid}" min="1" max="2000" value="${value.unit}" type="number" />
                     <button
                       class="plus getval"
                       onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
@@ -140,7 +140,7 @@ $(document).ready(function () {
         let subTotal = 0;
         $.each(storedValue, function(key, value) {
           cartItem +=`
-          <div class="cart-items-single">
+          <div id="cart${value.iid}" class="cart-items-single">
             <div class="cart-item-img">
               <a href="/item/${value.sl}">
                 <img src="/storage/${value.img}" alt="" />
@@ -150,28 +150,38 @@ $(document).ready(function () {
               ${value.inm}
             </div>
             <div class="cart-item-text-price">
-              &#8358;${numberWithCommas(value.p)}
+              &#8358; <span id="ctotal${value.iid}">${numberWithCommas(value.p)}</span>
             </div>
             <div class="quantity-control">
               <button
-                class="minus"
+                class="minus getval"
                 onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                iid="${value.iid}" p="${value.p}"
               >
                 &#x2212;
               </button>
-              <input min="1" max="100" value="5" type="number" />
+              <input class="catnumber${value.iid}" min="1" max="2000" value="${value.unit}" type="number" />
               <button
-                class="plus"
+                class="plus getval"
                 onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                iid="${value.iid}" p="${value.p}"
               >
                 &#x2b;
               </button>
             </div>
-            <span class="cart-item-remove">&#215;</span>
+            <span class="cart-item-remove" iid="${value.iid}">&#215;</span>
           </div>
           `;
+          subTotal += Number(value.p);
         });
+        const delivery = parseInt($("#dlvry").html().replace(",", ""));
+        let sumtotal = delivery + subTotal;
         $('#gcart-wrap').html(cartItem);
+        $("#sub-total").html(numberWithCommas(subTotal));
+
+        $("#dlvry").html(numberWithCommas(delivery));
+
+        $("#total-sum").html(numberWithCommas(sumtotal));
       }
     }
   }
@@ -339,7 +349,7 @@ $(document).ready(function () {
     e.preventDefault();
     const iid = $(this).attr("iid");
     const cartCount = parseInt($("#cart-count").html()) - 1;
-    $(".cart-items-wrap").children(`#cart${iid}`).remove();
+    $(".ctwrapper").children(`#cart${iid}`).remove();
     $("#cart-count").html(cartCount);
     calAmount();
     const cartArray = JSON.parse(localStorage.getItem("mart-cart"));

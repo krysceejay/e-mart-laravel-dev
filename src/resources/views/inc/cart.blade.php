@@ -16,9 +16,9 @@ gt=""
       </div>
 
   @guest
-    <div id="gcart" class="cart-items-wrap"></div>
+    <div id="gcart" class="cart-items-wrap ctwrapper"></div>
   @else
-    <div id="ucart" class="cart-items-wrap">
+    <div id="ucart" class="cart-items-wrap ctwrapper">
     @if (!$cartList->isEmpty())
       @foreach ($cartList as $key => $cart)
 
@@ -69,7 +69,7 @@ gt=""
         <span class="cart-total-head">Subtotal</span>
         <span class="cart-total-price">&#8358;
 
-          <span id="sub-total">4,000</span>
+          <span id="sub-total">0</span>
         </span>
 
       </div>
@@ -84,7 +84,7 @@ gt=""
         <span class="cart-total-head">Total</span>
         <span class="cart-total-all-price">&#8358;
 
-          <span id="total-sum">5,000</span>
+          <span id="total-sum">1,000</span>
         </span>
       </div>
       <div class="cart-total-checkout">

@@ -21,7 +21,7 @@
     <title>{{ config('app.name', 'Emart') }}</title>
   </head>
   <body>
-    @if (Route::current()->getName() !== 'cart')
+    @if (Route::current()->getName() !== 'cart' && Route::current()->getName() !== 'user-cart')
       {{-- Add cart Section --}}
       @include('inc.cart')
     @endif

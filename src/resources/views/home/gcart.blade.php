@@ -4,7 +4,7 @@
 <main id="cart-sec" class="gcart-sec py-3">
       <section id="cart-items-wrap">
         <h4>My Cart</h4>
-        <div id="gcart-wrap" class="cart-items-wrapper"></div>
+        <div id="gcart-wrap" class="cart-items-wrapper ctwrapper"></div>
         <div class="enter-promo">
           <div class="enter-promo-text">
             <i class="fa fa-tag"></i> Enter Promo Code
@@ -20,15 +20,21 @@
         <div class="cart-total">
           <div class="cart-total-sub">
             <span class="cart-total-head">Subtotal</span>
-            <span class="cart-total-price">&#8358;4,000</span>
+            <span class="cart-total-price">&#8358;
+              <span id="sub-total">0</span>
+            </span>
           </div>
           <div class="cart-total-delivery">
             <span class="cart-total-head">Delivery Fee</span>
-            <span class="cart-total-price">&#8358;1,000</span>
+            <span class="cart-total-price">&#8358;
+              <span id="dlvry">1,000</span>
+            </span>
           </div>
           <div class="cart-total-all">
             <span class="cart-total-all-head">Total</span>
-            <span class="cart-total-all-price">&#8358;5,000</span>
+            <span class="cart-total-all-price">&#8358;
+              <span id="total-sum">1,000</span>
+            </span>
           </div>
           <div class="cart-total-checkout">
             <button class="btn-shop-now" id="myBtn">Check Out</button>
