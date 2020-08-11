@@ -28,18 +28,21 @@
             &#8358;{{ number_format($item->new_price) }}
           </span>
         </div>
-        <button
-          class="btn-add-to-cart"
-          img="{{ $item->display_image }}"
-          inm="{{ $item->name }}"
-          p="{{ $item->new_price }}"
-          iid="{{ $item->id }}"
-          sl="{{ $item->slug }}"
-          @guest
-          gt=""
-          @endguest
-        >Add To Cart
-      </button>
+        <div class="add-to-crt">
+          <button
+            class="btn-add-to-cart"
+            img="{{ $item->display_image }}"
+            inm="{{ $item->name }}"
+            p="{{ $item->new_price }}"
+            iid="{{ $item->id }}"
+            sl="{{ $item->slug }}"
+            @guest
+            gt=""
+            @endguest
+          > <i class="fa fa-cart-plus"></i> Add To Cart
+        </button>
+        </div>
+
       </div>
     </li>
     @endforeach
