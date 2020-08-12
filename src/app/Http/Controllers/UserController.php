@@ -16,7 +16,16 @@ class UserController extends Controller
 
   public function cart()
   {
-      return view('users.cart');
+    $user = Auth::user();
+    $delivery = 1000;
+    $total = 0;
+    $cartList = Cart::where('user_id', $user->id)->orderBy('id', 'DESC')->get();
+    if (!empty($cartList)){
+      foreach ($cartList as $key => $value) {
+          $total += ($value->item->new_price) * ($value->unit);
+      }
+    }
+    return view('users.cart', compact('cartList', 'total', 'delivery'));
   }
 
   public function addCart(Request $request)
@@ -71,7 +80,17 @@ class UserController extends Controller
           ]);
       }
     }
-    return 'true';
+    $cartList = Cart::where('user_id', $user->id)->orderBy('id', 'DESC')->get();
+    foreach ($cartList as $crt) {
+      $crt['iid'] = $crt->item_id;
+      $crt['img'] = $crt->item->display_image;
+      $crt['sl'] = $crt->item->slug;
+      $crt['inm'] = $crt->item->name;
+      $crt['p'] = $crt->item->new_price;
+
+      array_push($newValue, $crt);
+    }
+    return json_encode($newValue);
   }
 
   public function orderReceived()

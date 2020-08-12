@@ -56,62 +56,68 @@ $(document).ready(function () {
     slideInterval = setInterval(nextSlide, intervalTime);
   }
 
+  const popCart = (cartValue) => {
+    let cartItem = '';
+    let subTotal = 0;
+    $.each(cartValue, function(key, value) {
+        cartItem += `
+        <div id="cart${value.iid}" class="cart-items-single">
+          <div class="cart-item-img">
+            <a href="/item/${value.sl}">
+              <img src="/storage/${value.img}" alt="" />
+            </a>
+          </div>
+
+          <div class="cart-item-text">
+            <div class="cart-item-text-name">
+              ${value.inm}
+            </div>
+            <div class="cart-item-text-price">
+              &#8358; <span id="ctotal${value.iid}">${numberWithCommas(value.p)}</span>
+            </div>
+            <div class="quantity-control">
+              <button
+                class="minus getval"
+                onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                iid="${value.iid}" p="${value.p}"
+              >
+                &#x2212;
+              </button>
+              <input class="catnumber${value.iid}" min="1" max="2000" value="${value.unit}" type="number" />
+              <button
+                class="plus getval"
+                onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                iid="${value.iid}" p="${value.p}"
+              >
+                &#x2b;
+              </button>
+            </div>
+          </div>
+          <span class="cart-item-remove" iid="${value.iid}">&#215;</span>
+        </div>
+        `;
+        subTotal += Number(value.p);
+      });
+
+      const delivery = parseInt($("#dlvry").html().replace(",", ""));
+
+      let sumtotal = delivery + subTotal;
+      $('#gcart').html(cartItem);
+      $("#sub-total").html(numberWithCommas(subTotal));
+
+      $("#dlvry").html(numberWithCommas(delivery));
+
+      $("#total-sum").html(numberWithCommas(sumtotal));
+  }
+
   const storedValue = JSON.parse(localStorage.getItem("mart-cart"));
   if($("#slide-cart").length){
     if(typeof storedValue !== typeof undefined && storedValue instanceof Array){
       if (storedValue.length !== 0) {
+
         if (typeof $("#slide-cart").attr('gt') !== typeof undefined && $("#slide-cart").attr('gt') !== false) {
-          let cartItem = '';
-          let subTotal = 0;
-          $.each(storedValue, function(key, value) {
-              cartItem += `
-              <div id="cart${value.iid}" class="cart-items-single">
-                <div class="cart-item-img">
-                  <a href="/item/${value.sl}">
-                    <img src="/storage/${value.img}" alt="" />
-                  </a>
-                </div>
 
-                <div class="cart-item-text">
-                  <div class="cart-item-text-name">
-                    ${value.inm}
-                  </div>
-                  <div class="cart-item-text-price">
-                    &#8358; <span id="ctotal${value.iid}">${numberWithCommas(value.p)}</span>
-                  </div>
-                  <div class="quantity-control">
-                    <button
-                      class="minus getval"
-                      onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
-                      iid="${value.iid}" p="${value.p}"
-                    >
-                      &#x2212;
-                    </button>
-                    <input class="catnumber${value.iid}" min="1" max="2000" value="${value.unit}" type="number" />
-                    <button
-                      class="plus getval"
-                      onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
-                      iid="${value.iid}" p="${value.p}"
-                    >
-                      &#x2b;
-                    </button>
-                  </div>
-                </div>
-                <span class="cart-item-remove" iid="${value.iid}">&#215;</span>
-              </div>
-              `;
-              subTotal += Number(value.p);
-            });
-
-            const delivery = parseInt($("#dlvry").html().replace(",", ""));
-
-            let sumtotal = delivery + subTotal;
-            $('#gcart').html(cartItem);
-            $("#sub-total").html(numberWithCommas(subTotal));
-
-            $("#dlvry").html(numberWithCommas(delivery));
-
-            $("#total-sum").html(numberWithCommas(sumtotal));
+         popCart(storedValue);
         }else{
           //alert('user');
           axios.post('/loadcart', {
@@ -119,7 +125,10 @@ $(document).ready(function () {
           })
           .then(function (cart) {
             // TODO: return a message to the user
-            console.log(cart);
+            //console.log(cart);
+            popCart(cart.data);
+            const cartCount = parseInt(cart.data.length);
+            $("#cart-count").html(cartCount);
             localStorage.removeItem("mart-cart");
           })
           .catch(function (error) {
@@ -256,6 +265,7 @@ $(document).ready(function () {
     let cartList;
 
     const cartSingle = $(".cart-items-wrap").find(`#cart${iid}`).length;
+    console.log(cartSingle);
 
     if(cartSingle == 0){
         let cartItem = `

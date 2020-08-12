@@ -18,7 +18,7 @@ gt=""
   @guest
     <div id="gcart" class="cart-items-wrap ctwrapper"></div>
   @else
-    <div id="ucart" class="cart-items-wrap ctwrapper">
+    <div id="gcart" class="cart-items-wrap ctwrapper">
     @if (!$cartList->isEmpty())
       @foreach ($cartList as $key => $cart)
 

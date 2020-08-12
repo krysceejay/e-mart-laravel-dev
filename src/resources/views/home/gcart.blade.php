@@ -37,7 +37,12 @@
             </span>
           </div>
           <div class="cart-total-checkout">
-            <button class="btn-shop-now" id="myBtn">Check Out</button>
+            <a href="{{ route('cart') }}" class="btn btn-shop-now" id="loginBtn">
+              Login To Check Out
+            </a>
+            <a href="#" class="btn btn-shop-now" id="guestBtn">
+              Check Out As Guest
+            </a>
           </div>
         </div>
       </aside>
