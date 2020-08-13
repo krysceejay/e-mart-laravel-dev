@@ -2177,11 +2177,26 @@ $(document).ready(function () {
     slideInterval = setInterval(nextSlide, intervalTime);
   }
 
-  var popCart = function popCart(cartValue) {
+  var containerForCart = function containerForCart(value, ex) {
+    var contain;
+
+    switch (ex) {
+      case 1:
+        contain = "\n    <div class=\"cart-item-text-name\">\n      ".concat(value.inm, "\n    </div>\n    <div class=\"cart-item-text-price\">\n      &#8358; <span id=\"ctotal").concat(value.iid, "\">").concat(numberWithCommas(value.p), "</span>\n    </div>\n    <div class=\"quantity-control\">\n      <button\n        class=\"minus getval\"\n        onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n        iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n      >\n        &#x2212;\n      </button>\n      <input class=\"catnumber").concat(value.iid, "\" min=\"1\" max=\"2000\" value=\"").concat(value.unit, "\" type=\"number\" />\n      <button\n        class=\"plus getval\"\n        onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n        iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n      >\n        &#x2b;\n      </button>\n    </div>\n    ");
+        break;
+
+      default:
+        contain = "\n    <div class=\"cart-item-text\">\n      <div class=\"cart-item-text-name\">\n        ".concat(value.inm, "\n      </div>\n      <div class=\"cart-item-text-price\">\n        &#8358; <span id=\"ctotal").concat(value.iid, "\">").concat(numberWithCommas(value.p), "</span>\n      </div>\n      <div class=\"quantity-control\">\n        <button\n          class=\"minus getval\"\n          onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n          iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n        >\n          &#x2212;\n        </button>\n        <input class=\"catnumber").concat(value.iid, "\" min=\"1\" max=\"2000\" value=\"").concat(value.unit, "\" type=\"number\" />\n        <button\n          class=\"plus getval\"\n          onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n          iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n        >\n          &#x2b;\n        </button>\n      </div>\n    </div>\n    ");
+    }
+
+    return contain;
+  };
+
+  var popCart = function popCart(cartValue, exp) {
     var cartItem = '';
     var subTotal = 0;
     $.each(cartValue, function (key, value) {
-      cartItem += "\n        <div id=\"cart".concat(value.iid, "\" class=\"cart-items-single\">\n          <div class=\"cart-item-img\">\n            <a href=\"/item/").concat(value.sl, "\">\n              <img src=\"/storage/").concat(value.img, "\" alt=\"\" />\n            </a>\n          </div>\n\n          <div class=\"cart-item-text\">\n            <div class=\"cart-item-text-name\">\n              ").concat(value.inm, "\n            </div>\n            <div class=\"cart-item-text-price\">\n              &#8358; <span id=\"ctotal").concat(value.iid, "\">").concat(numberWithCommas(value.p), "</span>\n            </div>\n            <div class=\"quantity-control\">\n              <button\n                class=\"minus getval\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n                iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n              >\n                &#x2212;\n              </button>\n              <input class=\"catnumber").concat(value.iid, "\" min=\"1\" max=\"2000\" value=\"").concat(value.unit, "\" type=\"number\" />\n              <button\n                class=\"plus getval\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n                iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n              >\n                &#x2b;\n              </button>\n            </div>\n          </div>\n          <span class=\"cart-item-remove\" iid=\"").concat(value.iid, "\">&#215;</span>\n        </div>\n        ");
+      cartItem += "\n        <div id=\"cart".concat(value.iid, "\" class=\"cart-items-single\">\n          <div class=\"cart-item-img\">\n            <a href=\"/item/").concat(value.sl, "\">\n              <img src=\"/storage/").concat(value.img, "\" alt=\"\" />\n            </a>\n          </div>\n          ").concat(containerForCart(value, exp), "\n          <span class=\"cart-item-remove\" iid=\"").concat(value.iid, "\">&#215;</span>\n        </div>\n        ");
       subTotal += Number(value.p);
     });
     var delivery = parseInt($("#dlvry").html().replace(",", ""));
@@ -2198,7 +2213,7 @@ $(document).ready(function () {
     if (_typeof(storedValue) !== ( true ? "undefined" : undefined) && storedValue instanceof Array) {
       if (storedValue.length !== 0) {
         if (_typeof($("#slide-cart").attr('gt')) !== ( true ? "undefined" : undefined) && $("#slide-cart").attr('gt') !== false) {
-          popCart(storedValue);
+          popCart(storedValue, 0);
         } else {
           //alert('user');
           axios.post('/loadcart', {
@@ -2206,7 +2221,7 @@ $(document).ready(function () {
           }).then(function (cart) {
             // TODO: return a message to the user
             //console.log(cart);
-            popCart(cart.data);
+            popCart(cart.data, 0);
             var cartCount = parseInt(cart.data.length);
             $("#cart-count").html(cartCount);
             localStorage.removeItem("mart-cart");
@@ -2224,18 +2239,24 @@ $(document).ready(function () {
   if ($(".gcart-sec").length) {
     if (_typeof(storedValue) !== ( true ? "undefined" : undefined) && storedValue instanceof Array) {
       if (storedValue.length !== 0) {
-        var cartItem = '';
-        var subTotal = 0;
-        $.each(storedValue, function (key, value) {
-          cartItem += "\n          <div id=\"cart".concat(value.iid, "\" class=\"cart-items-single\">\n            <div class=\"cart-item-img\">\n              <a href=\"/item/").concat(value.sl, "\">\n                <img src=\"/storage/").concat(value.img, "\" alt=\"\" />\n              </a>\n            </div>\n            <div class=\"cart-item-text-name\">\n              ").concat(value.inm, "\n            </div>\n            <div class=\"cart-item-text-price\">\n              &#8358; <span id=\"ctotal").concat(value.iid, "\">").concat(numberWithCommas(value.p), "</span>\n            </div>\n            <div class=\"quantity-control\">\n              <button\n                class=\"minus getval\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n                iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n              >\n                &#x2212;\n              </button>\n              <input class=\"catnumber").concat(value.iid, "\" min=\"1\" max=\"2000\" value=\"").concat(value.unit, "\" type=\"number\" />\n              <button\n                class=\"plus getval\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n                iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n              >\n                &#x2b;\n              </button>\n            </div>\n            <span class=\"cart-item-remove\" iid=\"").concat(value.iid, "\">&#215;</span>\n          </div>\n          ");
-          subTotal += Number(value.p);
-        });
-        var delivery = parseInt($("#dlvry").html().replace(",", ""));
-        var sumtotal = delivery + subTotal;
-        $('#gcart-wrap').html(cartItem);
-        $("#sub-total").html(numberWithCommas(subTotal));
-        $("#dlvry").html(numberWithCommas(delivery));
-        $("#total-sum").html(numberWithCommas(sumtotal));
+        if (_typeof($(".gcart-sec").attr('gt')) !== ( true ? "undefined" : undefined) && $(".gcart-sec").attr('gt') !== false) {
+          popCart(storedValue, 1);
+        } else {
+          //alert('user');
+          axios.post('/loadcart', {
+            storedValue: storedValue
+          }).then(function (cart) {
+            // TODO: return a message to the user
+            //console.log(cart);
+            popCart(cart.data, 1);
+            var cartCount = parseInt(cart.data.length);
+            $("#cart-count").html(cartCount);
+            localStorage.removeItem("mart-cart");
+          })["catch"](function (error) {
+            // TODO: return a message to the user
+            console.log(error);
+          });
+        }
       }
     }
   }
@@ -2311,9 +2332,8 @@ $(document).ready(function () {
     console.log(cartSingle);
 
     if (cartSingle == 0) {
-      var _cartItem = "\n        <div id=\"cart".concat(iid, "\" class=\"cart-items-single\">\n          <div class=\"cart-item-img\">\n            <a href=\"/item/").concat(sl, "\">\n              <img src=\"/storage/").concat(img, "\" alt=\"\" />\n            </a>\n          </div>\n\n          <div class=\"cart-item-text\">\n            <div class=\"cart-item-text-name\">\n              ").concat(inm, "\n            </div>\n            <div class=\"cart-item-text-price\">\n              &#8358;<span id=\"ctotal").concat(iid, "\">").concat(numberWithCommas(p), "</span>\n            </div>\n            <div class=\"quantity-control\">\n              <button\n                class=\"minus getval\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n                iid=\"").concat(iid, "\" p=\"").concat(p, "\"\n              >\n                &#x2212;\n              </button>\n              <input class=\"catnumber").concat(iid, "\" min=\"1\" max=\"2000\" value=\"1\" type=\"number\" />\n              <button\n                class=\"plus getval\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n                iid=\"").concat(iid, "\" p=\"").concat(p, "\"\n              >\n                &#x2b;\n              </button>\n            </div>\n          </div>\n          <span class=\"cart-item-remove\" iid=\"").concat(iid, "\">&#215;</span>\n        </div>\n        ");
-
-      $(".cart-items-wrap").prepend(_cartItem);
+      var cartItem = "\n        <div id=\"cart".concat(iid, "\" class=\"cart-items-single\">\n          <div class=\"cart-item-img\">\n            <a href=\"/item/").concat(sl, "\">\n              <img src=\"/storage/").concat(img, "\" alt=\"\" />\n            </a>\n          </div>\n\n          <div class=\"cart-item-text\">\n            <div class=\"cart-item-text-name\">\n              ").concat(inm, "\n            </div>\n            <div class=\"cart-item-text-price\">\n              &#8358;<span id=\"ctotal").concat(iid, "\">").concat(numberWithCommas(p), "</span>\n            </div>\n            <div class=\"quantity-control\">\n              <button\n                class=\"minus getval\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n                iid=\"").concat(iid, "\" p=\"").concat(p, "\"\n              >\n                &#x2212;\n              </button>\n              <input class=\"catnumber").concat(iid, "\" min=\"1\" max=\"2000\" value=\"1\" type=\"number\" />\n              <button\n                class=\"plus getval\"\n                onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n                iid=\"").concat(iid, "\" p=\"").concat(p, "\"\n              >\n                &#x2b;\n              </button>\n            </div>\n          </div>\n          <span class=\"cart-item-remove\" iid=\"").concat(iid, "\">&#215;</span>\n        </div>\n        ");
+      $(".cart-items-wrap").prepend(cartItem);
 
       var _cartCount = parseInt($("#cart-count").html()) + 1;
 

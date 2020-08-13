@@ -1,6 +1,6 @@
 @extends('layouts.home')
 @section('content')
-<main id="cart-sec" class="py-3">
+<main id="cart-sec" class="gcart-sec py-3">
       <section id="cart-items-wrap">
         <h4>My Cart</h4>
         <div id="loader-ring">
@@ -9,7 +9,7 @@
               <div></div>
               <div></div>
             </div>
-        <div class="cart-items-wrapper ctwrapper">
+        <div id="gcart" class="cart-items-wrapper ctwrapper">
           @foreach ($cartList as $cart)
 
           <div id="cart{{ $cart->item_id }}" class="cart-items-single">

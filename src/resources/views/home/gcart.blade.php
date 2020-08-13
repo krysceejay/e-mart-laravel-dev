@@ -1,10 +1,10 @@
 @extends('layouts.home')
 @section('content')
   @guest
-<main id="cart-sec" class="gcart-sec py-3">
+<main id="cart-sec" class="gcart-sec py-3" gt="">
       <section id="cart-items-wrap">
         <h4>My Cart</h4>
-        <div id="gcart-wrap" class="cart-items-wrapper ctwrapper"></div>
+        <div id="gcart" class="cart-items-wrapper ctwrapper"></div>
         <div class="enter-promo">
           <div class="enter-promo-text">
             <i class="fa fa-tag"></i> Enter Promo Code
