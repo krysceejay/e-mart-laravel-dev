@@ -277,7 +277,6 @@ const containerForCart = (value, ex) => {
     let cartList;
 
     const cartSingle = $(".cart-items-wrap").find(`#cart${iid}`).length;
-    console.log(cartSingle);
 
     if(cartSingle == 0){
         let cartItem = `
