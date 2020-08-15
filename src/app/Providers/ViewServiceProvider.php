@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Cart;
+use App\Models\Item;
 
 
 class ViewServiceProvider extends ServiceProvider
@@ -62,6 +63,13 @@ class ViewServiceProvider extends ServiceProvider
         }
 
         $view->with('cartCount', $cartCount);
+
+      });
+
+      view()->composer('inc.addmore', function ($view) {
+        $allItems = Item::orderBy('id', 'DESC')->get();
+
+        $view->with('allItems', $allItems);
 
       });
     }

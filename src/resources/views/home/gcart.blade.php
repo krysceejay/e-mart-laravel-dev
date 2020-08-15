@@ -1,5 +1,6 @@
 @extends('layouts.home')
 @section('content')
+  @include('inc.msg')
   @guest
 <main id="cart-sec" class="gcart-sec crt-wrp py-3" gt="">
       <section id="cart-items-wrap">

@@ -2199,7 +2199,7 @@ $(document).ready(function () {
       cartItem += "\n        <div id=\"cart".concat(value.iid, "\" class=\"cart-items-single\">\n          <div class=\"cart-item-img\">\n            <a href=\"/item/").concat(value.sl, "\">\n              <img src=\"/storage/").concat(value.img, "\" alt=\"\" />\n            </a>\n          </div>\n          ").concat(containerForCart(value, exp), "\n          <span class=\"cart-item-remove\" iid=\"").concat(value.iid, "\">&#215;</span>\n        </div>\n        ");
       subTotal += Number(value.p);
     });
-    var delivery = parseInt($("#dlvry").html().replace(",", ""));
+    var delivery = parseInt($("#dlvry").html().replace(/\,/g, ""));
     var sumtotal = delivery + subTotal;
     $('#gcart').html(cartItem);
     $("#sub-total").html(numberWithCommas(subTotal));
@@ -2276,58 +2276,6 @@ $(document).ready(function () {
   }
 
   $(".btn-add-to-cart").click(function () {
-    // const iid = $(this).attr("iid");
-    // axios.post('/cart', {
-    //   iid: iid
-    //
-    // })
-    // .then(function (cart) {
-    //   let cartItem = '';
-    //   $.each(cart.data, function(key, value) {
-    //     cartItem += `
-    //     <div class="cart-items-single">
-    //       <div class="cart-item-img">
-    //         <a href="">
-    //           <img src="/storage/${value.image}" alt="" />
-    //         </a>
-    //       </div>
-    //
-    //       <div class="cart-item-text">
-    //         <div class="cart-item-text-name">
-    //           ${value.name}
-    //         </div>
-    //         <div class="cart-item-text-price">
-    //           &#8358;${value.price}
-    //         </div>
-    //         <div class="quantity-control">
-    //           <button
-    //             class="minus"
-    //             onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
-    //           >
-    //             &#x2212;
-    //           </button>
-    //           <input min="1" max="100" value="1" type="number" />
-    //           <button
-    //             class="plus"
-    //             onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
-    //           >
-    //             &#x2b;
-    //           </button>
-    //         </div>
-    //       </div>
-    //       <span class="cart-item-remove">&#215;</span>
-    //     </div>
-    //     `;
-    //
-    //   });
-    //     $('.cart-items-wrap').html(cartItem);
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
-    // $("#slide-cart").addClass("show-cart");
-    //$(".cart-items-wrap").prepend(cartItem);
-    //$(this).off("click");
     var iid = $(this).attr("iid");
     var sl = $(this).attr("sl");
     var img = $(this).attr("img");
@@ -2350,11 +2298,14 @@ $(document).ready(function () {
         $('.empty-state').addClass("hide-div");
       }
 
+      var msg = "\n            <div class=\"pop pop-info\">\n            Item added to cart\n          </div>\n        ";
       $(".ctwrapper").prepend(cartItem);
 
       var _cartCount = parseInt($("#cart-count").html()) + 1;
 
       $("#cart-count").html(_cartCount);
+      $(".flash-msg").html(msg);
+      $('.flash-msg').fadeIn().delay(3000).fadeOut();
       var q = $(".catnumber" + iid).val();
       caltotalct(p, iid, q);
 
@@ -2457,12 +2408,12 @@ $(document).ready(function () {
     var subTotal = 0;
 
     for (var i = 0; i < ctotalid.length; i++) {
-      var rComm = $(ctotalid[i]).html().replace(",", "");
+      var rComm = $(ctotalid[i]).html().replace(/\,/g, "");
       subTotal += parseInt(rComm);
     } //const delivery = 1000;
 
 
-    var delivery = parseInt($("#dlvry").html().replace(",", ""));
+    var delivery = parseInt($("#dlvry").html().replace(/\,/g, ""));
     var sumtotal = delivery + subTotal;
     $("#sub-total").html(numberWithCommas(subTotal));
     $("#dlvry").html(numberWithCommas(delivery));

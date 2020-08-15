@@ -136,7 +136,7 @@ const containerForCart = (value, ex) => {
         subTotal += Number(value.p);
       });
 
-      const delivery = parseInt($("#dlvry").html().replace(",", ""));
+      const delivery = parseInt($("#dlvry").html().replace(/\,/g, ""));
 
       let sumtotal = delivery + subTotal;
       $('#gcart').html(cartItem);
@@ -222,58 +222,6 @@ const containerForCart = (value, ex) => {
   }
 
   $(".btn-add-to-cart").click(function () {
-    // const iid = $(this).attr("iid");
-    // axios.post('/cart', {
-    //   iid: iid
-    //
-    // })
-    // .then(function (cart) {
-    //   let cartItem = '';
-    //   $.each(cart.data, function(key, value) {
-    //     cartItem += `
-    //     <div class="cart-items-single">
-    //       <div class="cart-item-img">
-    //         <a href="">
-    //           <img src="/storage/${value.image}" alt="" />
-    //         </a>
-    //       </div>
-    //
-    //       <div class="cart-item-text">
-    //         <div class="cart-item-text-name">
-    //           ${value.name}
-    //         </div>
-    //         <div class="cart-item-text-price">
-    //           &#8358;${value.price}
-    //         </div>
-    //         <div class="quantity-control">
-    //           <button
-    //             class="minus"
-    //             onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
-    //           >
-    //             &#x2212;
-    //           </button>
-    //           <input min="1" max="100" value="1" type="number" />
-    //           <button
-    //             class="plus"
-    //             onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
-    //           >
-    //             &#x2b;
-    //           </button>
-    //         </div>
-    //       </div>
-    //       <span class="cart-item-remove">&#215;</span>
-    //     </div>
-    //     `;
-    //
-    //   });
-    //     $('.cart-items-wrap').html(cartItem);
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
-    // $("#slide-cart").addClass("show-cart");
-    //$(".cart-items-wrap").prepend(cartItem);
-    //$(this).off("click");
     const iid = $(this).attr("iid");
     const sl = $(this).attr("sl");
     const img = $(this).attr("img");
@@ -364,10 +312,17 @@ const containerForCart = (value, ex) => {
           $('.crt-wrp').removeClass("hide-div");
           $('.empty-state').addClass("hide-div");
         }
+        const msg = `
+            <div class="pop pop-info">
+            Item added to cart
+          </div>
+        `;
 
         $(".ctwrapper").prepend(cartItem);
         const cartCount = parseInt($("#cart-count").html()) + 1;
         $("#cart-count").html(cartCount);
+        $(".flash-msg").html(msg);
+        $('.flash-msg').fadeIn().delay(3000).fadeOut();
 
         const q = $(".catnumber"+iid).val();
         caltotalct(p,iid,q);
@@ -469,12 +424,12 @@ const containerForCart = (value, ex) => {
     let subTotal = 0;
 
     for(let i = 0 ; i < ctotalid.length; i++){
-      const rComm = $(ctotalid[i]).html().replace(",", "");
+      const rComm = $(ctotalid[i]).html().replace(/\,/g, "");
       subTotal += parseInt(rComm);
     }
 
     //const delivery = 1000;
-    const delivery = parseInt($("#dlvry").html().replace(",", ""));
+    const delivery = parseInt($("#dlvry").html().replace(/\,/g, ""));
 
     let sumtotal = delivery + subTotal;
 
