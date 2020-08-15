@@ -15,40 +15,7 @@
           ></a>
         </div>
       </div>
-      <ul class="hs">
-
-
-
-        {{-- <li class="hs__item">
-          <div class="hs__item__image__wrapper">
-            <a href="/" class="img-link">
-              <img
-                class="hs__item__image"
-                src="/storage/img/sneakers-white.jpg"
-                alt="first image"
-              />
-            </a>
-
-            <span class="badge-new">New</span>
-          </div>
-
-          <div class="hs__item__description">
-            <a href="/">
-              <span class="hs__item__title">Suade Shoe Men</span>
-            </a>
-            <div class="hs__item__subtitle">
-              <del class="old-price">
-                &#8358;100
-              </del>
-              <span class="new-price">
-                &#8358;70
-              </span>
-            </div>
-            <button class="btn-add-to-cart">Add To Cart</button>
-          </div>
-        </li> --}}
-
-      </ul>
+      @include('inc.slideitems')
     </div>
   </div>
 </section>

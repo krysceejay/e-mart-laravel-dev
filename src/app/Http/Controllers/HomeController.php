@@ -50,10 +50,11 @@ class HomeController extends Controller
     public function cart()
     {
       $user = Auth::user();
+      $allItems = Item::orderBy('id', 'DESC')->get();
       if($user){
         return redirect('/cart');
       }else{
-        return view('home.gcart');
+        return view('home.gcart', compact('allItems'));
       }
 
     }

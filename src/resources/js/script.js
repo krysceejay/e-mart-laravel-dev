@@ -214,6 +214,12 @@ const containerForCart = (value, ex) => {
     }
   }
 
+  if ($("#gcart").length) {
+     if ($('#gcart').children().length == 0 ) {
+      $('.empty-state').removeClass("hide-div");
+      $('.crt-wrp').addClass("hide-div");
+    }
+  }
 
   $(".btn-add-to-cart").click(function () {
     // const iid = $(this).attr("iid");
@@ -275,48 +281,91 @@ const containerForCart = (value, ex) => {
     const inm = $(this).attr("inm");
     const gt = $(this).attr('gt');
     let cartList;
+    let cartItem;
 
-    const cartSingle = $(".cart-items-wrap").find(`#cart${iid}`).length;
+    const cartSingle = $(".ctwrapper").find(`#cart${iid}`).length;
 
     if(cartSingle == 0){
-        let cartItem = `
-        <div id="cart${iid}" class="cart-items-single">
-          <div class="cart-item-img">
-            <a href="/item/${sl}">
-              <img src="/storage/${img}" alt="" />
-            </a>
-          </div>
+      if($(".gcart-sec").length){
+        cartItem = `
+          <div id="cart${iid}" class="cart-items-single">
+            <div class="cart-item-img">
+              <a href="/item/${sl}">
+                <img src="/storage/${img}" alt="" />
+              </a>
+            </div>
+              <div class="cart-item-text-name">
+                ${inm}
+              </div>
+              <div class="cart-item-text-price">
+                &#8358;<span id="ctotal${iid}">${numberWithCommas(p)}</span>
+              </div>
+              <div class="quantity-control">
+                <button
+                  class="minus getval"
+                  onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                  iid="${iid}" p="${p}"
+                >
+                  &#x2212;
+                </button>
+                <input class="catnumber${iid}" min="1" max="2000" value="1" type="number" />
+                <button
+                  class="plus getval"
+                  onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                  iid="${iid}" p="${p}"
+                >
+                  &#x2b;
+                </button>
+              </div>
 
-          <div class="cart-item-text">
-            <div class="cart-item-text-name">
-              ${inm}
-            </div>
-            <div class="cart-item-text-price">
-              &#8358;<span id="ctotal${iid}">${numberWithCommas(p)}</span>
-            </div>
-            <div class="quantity-control">
-              <button
-                class="minus getval"
-                onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
-                iid="${iid}" p="${p}"
-              >
-                &#x2212;
-              </button>
-              <input class="catnumber${iid}" min="1" max="2000" value="1" type="number" />
-              <button
-                class="plus getval"
-                onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
-                iid="${iid}" p="${p}"
-              >
-                &#x2b;
-              </button>
-            </div>
+            <span class="cart-item-remove" iid="${iid}">&#215;</span>
           </div>
-          <span class="cart-item-remove" iid="${iid}">&#215;</span>
-        </div>
-        `;
+          `;
+      }else{
+        cartItem = `
+          <div id="cart${iid}" class="cart-items-single">
+            <div class="cart-item-img">
+              <a href="/item/${sl}">
+                <img src="/storage/${img}" alt="" />
+              </a>
+            </div>
 
-        $(".cart-items-wrap").prepend(cartItem);
+            <div class="cart-item-text">
+              <div class="cart-item-text-name">
+                ${inm}
+              </div>
+              <div class="cart-item-text-price">
+                &#8358;<span id="ctotal${iid}">${numberWithCommas(p)}</span>
+              </div>
+              <div class="quantity-control">
+                <button
+                  class="minus getval"
+                  onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                  iid="${iid}" p="${p}"
+                >
+                  &#x2212;
+                </button>
+                <input class="catnumber${iid}" min="1" max="2000" value="1" type="number" />
+                <button
+                  class="plus getval"
+                  onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                  iid="${iid}" p="${p}"
+                >
+                  &#x2b;
+                </button>
+              </div>
+            </div>
+            <span class="cart-item-remove" iid="${iid}">&#215;</span>
+          </div>
+          `;
+      }
+
+        if($('.crt-wrp').hasClass("hide-div")){
+          $('.crt-wrp').removeClass("hide-div");
+          $('.empty-state').addClass("hide-div");
+        }
+
+        $(".ctwrapper").prepend(cartItem);
         const cartCount = parseInt($("#cart-count").html()) + 1;
         $("#cart-count").html(cartCount);
 
@@ -373,6 +422,10 @@ const containerForCart = (value, ex) => {
     $(".ctwrapper").children(`#cart${iid}`).remove();
     $("#cart-count").html(cartCount);
     calAmount();
+    if ($('#gcart').children().length == 0 ) {
+     $('.empty-state').removeClass("hide-div");
+     $('.crt-wrp').addClass("hide-div");
+   }
     const cartArray = JSON.parse(localStorage.getItem("mart-cart"));
     if(typeof cartArray !== typeof undefined && cartArray instanceof Array){
       if (cartArray.length !== 0) {
