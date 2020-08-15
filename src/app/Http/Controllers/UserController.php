@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Cart;
+use App\Models\Item;
 
 class UserController extends Controller
 {
@@ -19,13 +20,14 @@ class UserController extends Controller
     $user = Auth::user();
     $delivery = 1000;
     $total = 0;
+    $allItems = Item::orderBy('id', 'DESC')->get();
     $cartList = Cart::where('user_id', $user->id)->orderBy('id', 'DESC')->get();
     if (!empty($cartList)){
       foreach ($cartList as $key => $value) {
           $total += ($value->item->new_price) * ($value->unit);
       }
     }
-    return view('users.cart', compact('cartList', 'total', 'delivery'));
+    return view('users.cart', compact('cartList', 'total', 'delivery', 'allItems'));
   }
 
   public function addCart(Request $request)
