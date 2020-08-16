@@ -47,6 +47,23 @@ class UserController extends Controller
     return 'true';
   }
 
+  public function updateCart(Request $request)
+  {
+    $user = Auth::user();
+    $iidAndValueArr = $request->input('iidAndValueArr');
+
+    foreach ($iidAndValueArr as $iidval) {
+        $explodeArr = explode(",", $iidval);
+        $iid = (int)$explodeArr[0];
+        $unit = (int)$explodeArr[1];
+        if ($iid == 0 || $unit == 0) {
+          return false;
+        }
+        $updateUserCart = Cart::where('user_id', $user->id)->where('item_id', $iid)->update(['unit' => $unit]);
+      }
+    return 'true';
+  }
+
   public function removeCart(Request $request)
   {
     $user = Auth::user();

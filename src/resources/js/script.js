@@ -75,7 +75,7 @@ const containerForCart = (value, ex) => {
       >
         &#x2212;
       </button>
-      <input class="catnumber${value.iid}" min="1" max="2000" value="${value.unit}" type="number" />
+      <input class="catnumber${value.iid}" min="1" max="2000" value="${value.unit}" iid="${value.iid}" type="number" />
       <button
         class="plus getval"
         onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
@@ -103,7 +103,7 @@ const containerForCart = (value, ex) => {
         >
           &#x2212;
         </button>
-        <input class="catnumber${value.iid}" min="1" max="2000" value="${value.unit}" type="number" />
+        <input class="catnumber${value.iid}" min="1" max="2000" value="${value.unit}" iid="${value.iid}" type="number" />
         <button
           class="plus getval"
           onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
@@ -256,7 +256,7 @@ const containerForCart = (value, ex) => {
                 >
                   &#x2212;
                 </button>
-                <input class="catnumber${iid}" min="1" max="2000" value="1" type="number" />
+                <input class="catnumber${iid}" min="1" max="2000" value="1" iid="${iid}" type="number" />
                 <button
                   class="plus getval"
                   onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
@@ -293,7 +293,7 @@ const containerForCart = (value, ex) => {
                 >
                   &#x2212;
                 </button>
-                <input class="catnumber${iid}" min="1" max="2000" value="1" type="number" />
+                <input class="catnumber${iid}" min="1" max="2000" value="1" iid="${iid}" type="number" />
                 <button
                   class="plus getval"
                   onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
@@ -449,7 +449,30 @@ const containerForCart = (value, ex) => {
   });
 
   $("#myBtn").click(function () {
-    $("#myModal").css("display", "block");
+    const iidAndValueArr = [];
+
+    let catnumber = $('*[class^="catnumber"]');
+
+    for(let i = 0 ; i < catnumber.length; i++){
+      if($(catnumber[i]).val() == 0 || $(catnumber[i]).val() == '' || $(catnumber[i]).val() == null || $(catnumber[i]).val() == undefined ){
+        return false;
+      }else{
+        $iidAndValue = $(catnumber[i]).attr("iid") + ','+ $(catnumber[i]).val();
+        iidAndValueArr.push($iidAndValue);
+      }
+    }
+    $("#loader-ring").addClass("lds-ring");
+    axios.post('/updatecart', {
+      iidAndValueArr: iidAndValueArr
+    })
+    .then(function (data) {
+      $("#myModal").css("display", "block");
+      $('#loader-ring').removeClass("lds-ring");
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
   });
 
   $("#closeModal").click(function () {

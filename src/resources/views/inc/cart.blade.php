@@ -51,7 +51,7 @@ gt=""
           >
             &#x2212;
           </button>
-          <input class="catnumber{{ $cart->item_id }}" min="1" max="2000" value="1" type="number" />
+          <input class="catnumber{{ $cart->item_id }}" min="1" max="2000" value="{{ $cart->unit }}" type="number" iid="{{ $cart->item_id }}" />
           <button
             class="plus getval"
             onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
