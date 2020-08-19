@@ -2209,6 +2209,13 @@ $(document).ready(function () {
 
   var storedValue = JSON.parse(localStorage.getItem("mart-cart"));
 
+  if (_typeof(storedValue) !== ( true ? "undefined" : undefined) && storedValue instanceof Array) {
+    if (_typeof($("#cart-count").attr('gt')) !== ( true ? "undefined" : undefined) && $("#cart-count").attr('gt') !== false) {
+      var cartCount = parseInt(storedValue.length);
+      $("#cart-count").html(cartCount);
+    }
+  }
+
   if ($("#slide-cart").length) {
     if (_typeof(storedValue) !== ( true ? "undefined" : undefined) && storedValue instanceof Array) {
       if (storedValue.length !== 0) {
@@ -2220,7 +2227,11 @@ $(document).ready(function () {
             storedValue: storedValue
           }).then(function (cart) {
             // TODO: return a message to the user
-            //console.log(cart);
+            if ($('.crt-wrp').hasClass("hide-div")) {
+              $('.crt-wrp').removeClass("hide-div");
+              $('.empty-state').addClass("hide-div");
+            }
+
             popCart(cart.data, 0);
             var cartCount = parseInt(cart.data.length);
             $("#cart-count").html(cartCount);
@@ -2248,6 +2259,11 @@ $(document).ready(function () {
           }).then(function (cart) {
             // TODO: return a message to the user
             //console.log(cart);
+            if ($('.crt-wrp').hasClass("hide-div")) {
+              $('.crt-wrp').removeClass("hide-div");
+              $('.empty-state').addClass("hide-div");
+            }
+
             popCart(cart.data, 1);
             var cartCount = parseInt(cart.data.length);
             $("#cart-count").html(cartCount);
@@ -2258,13 +2274,6 @@ $(document).ready(function () {
           });
         }
       }
-    }
-  }
-
-  if (_typeof(storedValue) !== ( true ? "undefined" : undefined) && storedValue instanceof Array) {
-    if (_typeof($("#cart-count").attr('gt')) !== ( true ? "undefined" : undefined) && $("#cart-count").attr('gt') !== false) {
-      var cartCount = parseInt(storedValue.length);
-      $("#cart-count").html(cartCount);
     }
   }
 
@@ -2443,6 +2452,7 @@ $(document).ready(function () {
     axios.post('/updatecart', {
       iidAndValueArr: iidAndValueArr
     }).then(function (data) {
+      console.log(data);
       $("#myModal").css("display", "block");
       $('#loader-ring').removeClass("lds-ring");
     })["catch"](function (error) {

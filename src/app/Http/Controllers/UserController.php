@@ -61,7 +61,7 @@ class UserController extends Controller
         }
         $updateUserCart = Cart::where('user_id', $user->id)->where('item_id', $iid)->update(['unit' => $unit]);
       }
-    return 'true';
+    return true;
   }
 
   public function removeCart(Request $request)

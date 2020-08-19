@@ -148,6 +148,13 @@ const containerForCart = (value, ex) => {
   }
 
   const storedValue = JSON.parse(localStorage.getItem("mart-cart"));
+  if(typeof storedValue !== typeof undefined && storedValue instanceof Array){
+    if (typeof $("#cart-count").attr('gt') !== typeof undefined && $("#cart-count").attr('gt') !== false){
+      const cartCount = parseInt(storedValue.length);
+      $("#cart-count").html(cartCount);
+    }
+  }
+
   if($("#slide-cart").length){
     if(typeof storedValue !== typeof undefined && storedValue instanceof Array){
       if (storedValue.length !== 0) {
@@ -162,7 +169,10 @@ const containerForCart = (value, ex) => {
           })
           .then(function (cart) {
             // TODO: return a message to the user
-            //console.log(cart);
+            if($('.crt-wrp').hasClass("hide-div")){
+              $('.crt-wrp').removeClass("hide-div");
+              $('.empty-state').addClass("hide-div");
+            }
             popCart(cart.data, 0);
             const cartCount = parseInt(cart.data.length);
             $("#cart-count").html(cartCount);
@@ -193,6 +203,10 @@ const containerForCart = (value, ex) => {
           .then(function (cart) {
             // TODO: return a message to the user
             //console.log(cart);
+            if($('.crt-wrp').hasClass("hide-div")){
+              $('.crt-wrp').removeClass("hide-div");
+              $('.empty-state').addClass("hide-div");
+            }
             popCart(cart.data, 1);
             const cartCount = parseInt(cart.data.length);
             $("#cart-count").html(cartCount);
@@ -204,13 +218,6 @@ const containerForCart = (value, ex) => {
           });
         }
       }
-    }
-  }
-
-  if(typeof storedValue !== typeof undefined && storedValue instanceof Array){
-    if (typeof $("#cart-count").attr('gt') !== typeof undefined && $("#cart-count").attr('gt') !== false){
-      const cartCount = parseInt(storedValue.length);
-      $("#cart-count").html(cartCount);
     }
   }
 
@@ -466,6 +473,7 @@ const containerForCart = (value, ex) => {
       iidAndValueArr: iidAndValueArr
     })
     .then(function (data) {
+      console.log(data);
       $("#myModal").css("display", "block");
       $('#loader-ring').removeClass("lds-ring");
     })
