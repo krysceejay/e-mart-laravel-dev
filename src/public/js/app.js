@@ -2435,7 +2435,8 @@ $(document).ready(function () {
   $("#show-cat").click(function () {
     $(".nav-sub-menu").toggleClass("show-cat");
   });
-  $("#myBtn").click(function () {
+
+  var getIdAndVar = function getIdAndVar() {
     var iidAndValueArr = [];
     var catnumber = $('*[class^="catnumber"]');
 
@@ -2448,6 +2449,26 @@ $(document).ready(function () {
       }
     }
 
+    return iidAndValueArr;
+  };
+
+  var updateCartValues = function updateCartValues(value, index, array) {
+    var cartArray = JSON.parse(localStorage.getItem("mart-cart"));
+    var nameArr = value.split(',');
+    var item = $.grep(cartArray, function (obj) {
+      return obj.iid === nameArr[0];
+    })[0];
+    item.unit = nameArr[1];
+    localStorage.setItem("mart-cart", JSON.stringify(cartArray));
+    return true;
+  };
+
+  $(".log-gst-btn").click(function () {
+    var iidAndValueArr = getIdAndVar();
+    iidAndValueArr.map(updateCartValues);
+  });
+  $("#myBtn").click(function () {
+    var iidAndValueArr = getIdAndVar();
     $("#loader-ring").addClass("lds-ring");
     axios.post('/updatecart', {
       iidAndValueArr: iidAndValueArr

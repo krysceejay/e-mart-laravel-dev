@@ -95,10 +95,10 @@ gt=""
         </span>
       </div>
       <div class="cart-total-checkout">
-        <a href="{{ route('cart') }}" class="btn btn-shop-now" id="loginBtn">
+        <a href="{{ route('cart') }}" class="btn btn-shop-now log-gst-btn" id="loginBtn">
           Login To Check Out
         </a>
-        <a href="#" class="btn btn-shop-now" id="guestBtn">
+        <a href="#" class="btn btn-shop-now log-gst-btn" id="guestBtn">
           Check Out As Guest
         </a>
         </div>

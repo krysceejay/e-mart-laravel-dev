@@ -455,7 +455,7 @@ const containerForCart = (value, ex) => {
     $(".nav-sub-menu").toggleClass("show-cat");
   });
 
-  $("#myBtn").click(function () {
+  const getIdAndVar = () => {
     const iidAndValueArr = [];
 
     let catnumber = $('*[class^="catnumber"]');
@@ -468,6 +468,28 @@ const containerForCart = (value, ex) => {
         iidAndValueArr.push($iidAndValue);
       }
     }
+
+    return iidAndValueArr;
+  }
+
+  const updateCartValues = (value, index, array) => {
+    const cartArray = JSON.parse(localStorage.getItem("mart-cart"));
+    const nameArr = value.split(',');
+    const item = $.grep(cartArray, function(obj){return obj.iid === nameArr[0];})[0];
+    item.unit = nameArr[1];
+    localStorage.setItem("mart-cart", JSON.stringify(cartArray));
+    return true;
+  }
+
+  $(".log-gst-btn").click(function () {
+    const iidAndValueArr = getIdAndVar();
+    iidAndValueArr.map(updateCartValues);
+
+  });
+
+  $("#myBtn").click(function () {
+    const iidAndValueArr = getIdAndVar();
+
     $("#loader-ring").addClass("lds-ring");
     axios.post('/updatecart', {
       iidAndValueArr: iidAndValueArr
