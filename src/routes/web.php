@@ -23,6 +23,8 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/items', 'HomeController@allItems')->name('items');
 Route::get('/item/{slug}', 'HomeController@item')->name('item');
 Route::get('/user-cart', 'HomeController@cart')->name('user-cart');
+Route::get('/user-checkout', 'HomeController@checkoutGet')->name('user-checkout');
+Route::post('/gcheckout','HomeController@checkout');
 
 Route::get('/cart', 'UserController@cart')->name('cart');
 Route::post('/cart', 'UserController@addCart');

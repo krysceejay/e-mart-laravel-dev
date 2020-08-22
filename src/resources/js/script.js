@@ -65,7 +65,7 @@ const containerForCart = (value, ex) => {
       ${value.inm}
     </div>
     <div class="cart-item-text-price">
-      &#8358; <span id="ctotal${value.iid}">${numberWithCommas(value.p)}</span>
+      &#8358; <span id="ctotal${value.iid}">${numberWithCommas(value.p * value.unit)}</span>
     </div>
     <div class="quantity-control">
       <button
@@ -93,7 +93,7 @@ const containerForCart = (value, ex) => {
         ${value.inm}
       </div>
       <div class="cart-item-text-price">
-        &#8358; <span id="ctotal${value.iid}">${numberWithCommas(value.p)}</span>
+        &#8358; <span id="ctotal${value.iid}">${numberWithCommas(value.p * value.unit)}</span>
       </div>
       <div class="quantity-control">
         <button
@@ -133,7 +133,7 @@ const containerForCart = (value, ex) => {
           <span class="cart-item-remove" iid="${value.iid}">&#215;</span>
         </div>
         `;
-        subTotal += Number(value.p);
+        subTotal += Number(value.p * value.unit);
       });
 
       const delivery = parseInt($("#dlvry").html().replace(/\,/g, ""));
@@ -473,17 +473,144 @@ const containerForCart = (value, ex) => {
   }
 
   const updateCartValues = (value, index, array) => {
-    const cartArray = JSON.parse(localStorage.getItem("mart-cart"));
     const nameArr = value.split(',');
-    const item = $.grep(cartArray, function(obj){return obj.iid === nameArr[0];})[0];
-    item.unit = nameArr[1];
-    localStorage.setItem("mart-cart", JSON.stringify(cartArray));
-    return true;
+    const cartArray = JSON.parse(localStorage.getItem("mart-cart"));
+    if(typeof cartArray !== typeof undefined && cartArray instanceof Array){
+      if (cartArray.length !== 0) {
+        const item = $.grep(cartArray, function(obj){return obj.iid === nameArr[0];})[0];
+        item.unit = nameArr[1];
+        localStorage.setItem("mart-cart", JSON.stringify(cartArray));
+        return true;
+      }
+    }
+    return false;
   }
 
   $(".log-gst-btn").click(function () {
     const iidAndValueArr = getIdAndVar();
     iidAndValueArr.map(updateCartValues);
+    const id = $(this).attr("id");
+    if (id === 'guestBtn') {
+      location.replace('/user-checkout');
+    }
+
+  });
+
+  const validateEmail = (inputText) => {
+    const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if(inputText.match(mailformat)){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+    const validatePhone = (phone) => {
+      if(phone.length >= 10){
+        return true;
+      }else{
+        return false;
+      }
+    }
+
+    const isEmpty = (obj) => {
+    for(let key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+          }
+        return true;
+      }
+
+  const validateForm = (fullname, email, mobile, address) => {
+    const errors = {};
+
+    if(fullname == ""){
+      errors.fullname = "Your name is required";
+      $(".usfullname").html(errors.fullname);
+    }
+    if(email == ""){
+      errors.email = "Your email is required";
+      $(".usemail").html(errors.email);
+    }
+    if(email != "" && validateEmail(email) == false){
+      errors.email = "You have entered an invalid email address";
+      $(".usemail").html(errors.email);
+    }
+    if(mobile == ""){
+      errors.mobile = "Your phone number is required";
+      $(".usphone").html(errors.mobile);
+    }
+    if(mobile != "" && validatePhone(mobile) == false){
+      errors.mobile = "You have entered an invalid phone number";
+      $(".usphone").html(errors.mobile);
+    }
+    if(address == ""){
+      errors.address = "Your delivery address is required";
+      $(".usaddress").html(errors.address);
+    }
+
+    if(!errors.fullname){
+      $(".usfullname").html("");
+    }
+    if(!errors.email){
+      $(".usemail").html("");
+    }
+    if(!errors.mobile){
+      $(".usphone").html("");
+    }
+    if(!errors.address){
+      $(".usaddress").html("");
+    }
+
+    return errors;
+  }
+
+  $("#g-check-sub").click(function () {
+    const fullname = $("#usfullname").val();
+    const email = $("#usemail").val();
+    const mobile = $("#usphone").val();
+    const address = $("#usaddress").val();
+    const errors = validateForm(fullname, email, mobile, address);
+    let msg = `
+        <div class="pop pop-error">
+        cart is empty
+      </div>
+    `;
+
+    if(isEmpty(errors)){
+      const cartArray = JSON.parse(localStorage.getItem("mart-cart"));
+      if(typeof cartArray !== typeof undefined && cartArray instanceof Array){
+        if (cartArray.length !== 0) {
+          axios.post('/gcheckout', {
+            fullname,
+            email,
+            mobile,
+            address,
+            paymentMethod: 'Direct transfer',
+            cartArray
+          })
+          .then(function (cart) {
+            // TODO: return a message to the user
+
+            console.log(cart);
+            //$('#loader-ring').removeClass("lds-ring");
+          })
+          .catch(function (error) {
+            // TODO: return a message to the user
+            console.log(error);
+            //$('#loader-ring').removeClass("lds-ring");
+          });
+        }else{
+          $(".flash-msg").html(msg);
+          $('.flash-msg').fadeIn().delay(3000).fadeOut();
+        }
+      }else{
+        $(".flash-msg").html(msg);
+        $('.flash-msg').fadeIn().delay(3000).fadeOut();
+      }
+    }else{
+      return false;
+    }
 
   });
 

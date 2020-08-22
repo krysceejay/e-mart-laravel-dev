@@ -2182,11 +2182,11 @@ $(document).ready(function () {
 
     switch (ex) {
       case 1:
-        contain = "\n    <div class=\"cart-item-text-name\">\n      ".concat(value.inm, "\n    </div>\n    <div class=\"cart-item-text-price\">\n      &#8358; <span id=\"ctotal").concat(value.iid, "\">").concat(numberWithCommas(value.p), "</span>\n    </div>\n    <div class=\"quantity-control\">\n      <button\n        class=\"minus getval\"\n        onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n        iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n      >\n        &#x2212;\n      </button>\n      <input class=\"catnumber").concat(value.iid, "\" min=\"1\" max=\"2000\" value=\"").concat(value.unit, "\" iid=\"").concat(value.iid, "\" type=\"number\" />\n      <button\n        class=\"plus getval\"\n        onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n        iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n      >\n        &#x2b;\n      </button>\n    </div>\n    ");
+        contain = "\n    <div class=\"cart-item-text-name\">\n      ".concat(value.inm, "\n    </div>\n    <div class=\"cart-item-text-price\">\n      &#8358; <span id=\"ctotal").concat(value.iid, "\">").concat(numberWithCommas(value.p * value.unit), "</span>\n    </div>\n    <div class=\"quantity-control\">\n      <button\n        class=\"minus getval\"\n        onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n        iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n      >\n        &#x2212;\n      </button>\n      <input class=\"catnumber").concat(value.iid, "\" min=\"1\" max=\"2000\" value=\"").concat(value.unit, "\" iid=\"").concat(value.iid, "\" type=\"number\" />\n      <button\n        class=\"plus getval\"\n        onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n        iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n      >\n        &#x2b;\n      </button>\n    </div>\n    ");
         break;
 
       default:
-        contain = "\n    <div class=\"cart-item-text\">\n      <div class=\"cart-item-text-name\">\n        ".concat(value.inm, "\n      </div>\n      <div class=\"cart-item-text-price\">\n        &#8358; <span id=\"ctotal").concat(value.iid, "\">").concat(numberWithCommas(value.p), "</span>\n      </div>\n      <div class=\"quantity-control\">\n        <button\n          class=\"minus getval\"\n          onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n          iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n        >\n          &#x2212;\n        </button>\n        <input class=\"catnumber").concat(value.iid, "\" min=\"1\" max=\"2000\" value=\"").concat(value.unit, "\" iid=\"").concat(value.iid, "\" type=\"number\" />\n        <button\n          class=\"plus getval\"\n          onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n          iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n        >\n          &#x2b;\n        </button>\n      </div>\n    </div>\n    ");
+        contain = "\n    <div class=\"cart-item-text\">\n      <div class=\"cart-item-text-name\">\n        ".concat(value.inm, "\n      </div>\n      <div class=\"cart-item-text-price\">\n        &#8358; <span id=\"ctotal").concat(value.iid, "\">").concat(numberWithCommas(value.p * value.unit), "</span>\n      </div>\n      <div class=\"quantity-control\">\n        <button\n          class=\"minus getval\"\n          onclick=\"this.parentNode.querySelector('input[type=number]').stepDown()\"\n          iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n        >\n          &#x2212;\n        </button>\n        <input class=\"catnumber").concat(value.iid, "\" min=\"1\" max=\"2000\" value=\"").concat(value.unit, "\" iid=\"").concat(value.iid, "\" type=\"number\" />\n        <button\n          class=\"plus getval\"\n          onclick=\"this.parentNode.querySelector('input[type=number]').stepUp()\"\n          iid=\"").concat(value.iid, "\" p=\"").concat(value.p, "\"\n        >\n          &#x2b;\n        </button>\n      </div>\n    </div>\n    ");
     }
 
     return contain;
@@ -2197,7 +2197,7 @@ $(document).ready(function () {
     var subTotal = 0;
     $.each(cartValue, function (key, value) {
       cartItem += "\n        <div id=\"cart".concat(value.iid, "\" class=\"cart-items-single\">\n          <div class=\"cart-item-img\">\n            <a href=\"/item/").concat(value.sl, "\">\n              <img src=\"/storage/").concat(value.img, "\" alt=\"\" />\n            </a>\n          </div>\n          ").concat(containerForCart(value, exp), "\n          <span class=\"cart-item-remove\" iid=\"").concat(value.iid, "\">&#215;</span>\n        </div>\n        ");
-      subTotal += Number(value.p);
+      subTotal += Number(value.p * value.unit);
     });
     var delivery = parseInt($("#dlvry").html().replace(/\,/g, ""));
     var sumtotal = delivery + subTotal;
@@ -2453,19 +2453,149 @@ $(document).ready(function () {
   };
 
   var updateCartValues = function updateCartValues(value, index, array) {
-    var cartArray = JSON.parse(localStorage.getItem("mart-cart"));
     var nameArr = value.split(',');
-    var item = $.grep(cartArray, function (obj) {
-      return obj.iid === nameArr[0];
-    })[0];
-    item.unit = nameArr[1];
-    localStorage.setItem("mart-cart", JSON.stringify(cartArray));
-    return true;
+    var cartArray = JSON.parse(localStorage.getItem("mart-cart"));
+
+    if (_typeof(cartArray) !== ( true ? "undefined" : undefined) && cartArray instanceof Array) {
+      if (cartArray.length !== 0) {
+        var item = $.grep(cartArray, function (obj) {
+          return obj.iid === nameArr[0];
+        })[0];
+        item.unit = nameArr[1];
+        localStorage.setItem("mart-cart", JSON.stringify(cartArray));
+        return true;
+      }
+    }
+
+    return false;
   };
 
   $(".log-gst-btn").click(function () {
     var iidAndValueArr = getIdAndVar();
     iidAndValueArr.map(updateCartValues);
+    var id = $(this).attr("id");
+
+    if (id === 'guestBtn') {
+      location.replace('/user-checkout');
+    }
+  });
+
+  var validateEmail = function validateEmail(inputText) {
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (inputText.match(mailformat)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  var validatePhone = function validatePhone(phone) {
+    if (phone.length >= 10) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  var isEmpty = function isEmpty(obj) {
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) return false;
+    }
+
+    return true;
+  };
+
+  var validateForm = function validateForm(fullname, email, mobile, address) {
+    var errors = {};
+
+    if (fullname == "") {
+      errors.fullname = "Your name is required";
+      $(".usfullname").html(errors.fullname);
+    }
+
+    if (email == "") {
+      errors.email = "Your email is required";
+      $(".usemail").html(errors.email);
+    }
+
+    if (email != "" && validateEmail(email) == false) {
+      errors.email = "You have entered an invalid email address";
+      $(".usemail").html(errors.email);
+    }
+
+    if (mobile == "") {
+      errors.mobile = "Your phone number is required";
+      $(".usphone").html(errors.mobile);
+    }
+
+    if (mobile != "" && validatePhone(mobile) == false) {
+      errors.mobile = "You have entered an invalid phone number";
+      $(".usphone").html(errors.mobile);
+    }
+
+    if (address == "") {
+      errors.address = "Your delivery address is required";
+      $(".usaddress").html(errors.address);
+    }
+
+    if (!errors.fullname) {
+      $(".usfullname").html("");
+    }
+
+    if (!errors.email) {
+      $(".usemail").html("");
+    }
+
+    if (!errors.mobile) {
+      $(".usphone").html("");
+    }
+
+    if (!errors.address) {
+      $(".usaddress").html("");
+    }
+
+    return errors;
+  };
+
+  $("#g-check-sub").click(function () {
+    var fullname = $("#usfullname").val();
+    var email = $("#usemail").val();
+    var mobile = $("#usphone").val();
+    var address = $("#usaddress").val();
+    var errors = validateForm(fullname, email, mobile, address);
+    var msg = "\n        <div class=\"pop pop-error\">\n        cart is empty\n      </div>\n    ";
+
+    if (isEmpty(errors)) {
+      var cartArray = JSON.parse(localStorage.getItem("mart-cart"));
+
+      if (_typeof(cartArray) !== ( true ? "undefined" : undefined) && cartArray instanceof Array) {
+        if (cartArray.length !== 0) {
+          axios.post('/gcheckout', {
+            fullname: fullname,
+            email: email,
+            mobile: mobile,
+            address: address,
+            paymentMethod: 'Direct transfer',
+            cartArray: cartArray
+          }).then(function (cart) {
+            // TODO: return a message to the user
+            console.log(cart); //$('#loader-ring').removeClass("lds-ring");
+          })["catch"](function (error) {
+            // TODO: return a message to the user
+            console.log(error); //$('#loader-ring').removeClass("lds-ring");
+          });
+        } else {
+          $(".flash-msg").html(msg);
+          $('.flash-msg').fadeIn().delay(3000).fadeOut();
+        }
+      } else {
+        $(".flash-msg").html(msg);
+        $('.flash-msg').fadeIn().delay(3000).fadeOut();
+      }
+    } else {
+      return false;
+    }
   });
   $("#myBtn").click(function () {
     var iidAndValueArr = getIdAndVar();

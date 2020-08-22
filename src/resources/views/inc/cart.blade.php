@@ -103,7 +103,7 @@ gt=""
         </a>
         </div>
       <div class="view-cart">
-        <a href="{{ route('cart') }}" class="btn btn-view-cart">View Cart</a>
+        <a href="{{ route('user-cart') }}" class="btn btn-view-cart">View Cart</a>
       </div>
     </div>
   @else
