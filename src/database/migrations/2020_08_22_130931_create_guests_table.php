@@ -23,7 +23,6 @@ class CreateGuestsTable extends Migration
             $table->string('totalpayment');
             $table->string('payment_method');
             $table->string('payment_status');
-            $table->json('orders');
             $table->timestamps();
         });
     }

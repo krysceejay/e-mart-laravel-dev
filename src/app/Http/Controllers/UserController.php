@@ -111,8 +111,5 @@ class UserController extends Controller
     return json_encode($newValue);
   }
 
-  public function orderReceived()
-  {
-    return view('users.orderreceived');
-  }
+  
 }

@@ -10,6 +10,7 @@ use App\Models\Item;
 use App\Models\Slide;
 use App\Models\ItemImage;
 use App\Models\Guest;
+use App\Models\GuestOrder;
 
 class HomeController extends Controller
 {
@@ -82,24 +83,16 @@ class HomeController extends Controller
         $cartArray = $request->input('cartArray');
 
         $total = 0;
-        $newCartArr = array();
         foreach ($cartArray as $cart) {
           $iid = (int)$cart['iid'];
           $unit = (int)$cart['unit'];
           if ($iid == 0 || $unit == 0) {
-            return false;
+            return 'failed';
           }
           $item = Item::findorFail($iid);
           $total += ($item->new_price) * ($unit);
 
-          //$newSaveCart = ["itemId" => $iid, "unit" => $unit, "name" => $cart['inm']];
-          $newSaveCart = json_encode([$iid => $unit]);
-          array_push($newCartArr, $newSaveCart);
         }
-        // {
-        //     "2": "1",
-        //     "4": "2"
-        // }
 
         $totalPayment = $total + 1000;
 
@@ -112,26 +105,37 @@ class HomeController extends Controller
             'totalpayment' => $totalPayment,
             'payment_method' => $paymentMethod,
             'payment_status' => $paymentStatus,
-            'orders' => $newCartArr,
         ]);
 
         if ($guest_order) {
+          foreach ($cartArray as $cart) {
+              $guest_order->guest_order()->create([
+                  'item_id' => $cart['iid'],
+                  'unit' => $cart['unit']
+              ]);
+            }
+
           $payid = $guest_order->id;
           session(['pid' => $payid]);
         }else {
-          return 'something went wrong';
+          return 'failed';
         }
 
         return 'successful';
 
     }
 
-    public function orderProcessed() {
+    public function orderReceived()
+    {
       $pid = session('pid');
       if(!is_null($pid)) {
-        $paymentOrder = Guest::where('id', $pid)->get();
+        $guest = Guest::findorFail($pid);
+        $guestOrder = GuestOrder::where('guest_id', $guest->id)->get();
+        $subTotal = $guest->totalpayment - 1000;
+        return view('home.orderreceived', compact('guest', 'guestOrder', 'subTotal'));
       }else{
-        return redirect('/user-cart');
+        return redirect('/items');
       }
+
     }
 }

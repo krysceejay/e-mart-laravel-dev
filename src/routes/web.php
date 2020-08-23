@@ -25,10 +25,11 @@ Route::get('/item/{slug}', 'HomeController@item')->name('item');
 Route::get('/user-cart', 'HomeController@cart')->name('user-cart');
 Route::get('/user-checkout', 'HomeController@checkoutGet')->name('user-checkout');
 Route::post('/gcheckout','HomeController@checkout');
+Route::get('/order-received', 'HomeController@orderReceived')->name('order-received');
+
 
 Route::get('/cart', 'UserController@cart')->name('cart');
 Route::post('/cart', 'UserController@addCart');
 Route::post('/removecart','UserController@removeCart');
 Route::post('/updatecart', 'UserController@updateCart');
 Route::post('/loadcart','UserController@loadCart');
-Route::get('/order-received', 'UserController@orderReceived')->name('order-received');

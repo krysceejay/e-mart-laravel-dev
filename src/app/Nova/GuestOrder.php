@@ -3,7 +3,8 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class GuestOrder extends Resource
@@ -13,14 +14,14 @@ class GuestOrder extends Resource
      *
      * @var string
      */
-    public static $model = \App\GuestOrder::class;
+    public static $model = \App\Models\GuestOrder::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'item_id';
 
     /**
      * The columns that should be searched.
@@ -40,7 +41,9 @@ class GuestOrder extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
+            BelongsTo::make('Guest')->sortable()->exceptOnForms(),
+            BelongsTo::make('Item')->sortable()->exceptOnForms(),
+            Number::make('Unit')->sortable(),
         ];
     }
 

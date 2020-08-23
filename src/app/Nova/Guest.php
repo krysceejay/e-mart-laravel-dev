@@ -7,7 +7,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Place;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\KeyValue;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Guest extends Resource
@@ -24,7 +24,7 @@ class Guest extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'email';
 
     /**
      * The columns that should be searched.
@@ -53,11 +53,7 @@ class Guest extends Resource
             Number::make('Totalpayment')->sortable(),
             Text::make('Payment Method')->sortable(),
             Text::make('Payment Status')->sortable(),
-            KeyValue::make('Orders')
-              ->keyLabel('ItemId') // Customize the key heading
-              ->valueLabel('Unit') // Customize the value heading
-              ->actionText('Add More')
-              ->rules('json')
+            HasMany::make('Guest Order')
         ];
     }
 

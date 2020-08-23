@@ -581,6 +581,7 @@ const containerForCart = (value, ex) => {
       const cartArray = JSON.parse(localStorage.getItem("mart-cart"));
       if(typeof cartArray !== typeof undefined && cartArray instanceof Array){
         if (cartArray.length !== 0) {
+          $("#loader-ring").addClass("lds-ring");
           axios.post('/gcheckout', {
             fullname,
             email,
@@ -589,16 +590,21 @@ const containerForCart = (value, ex) => {
             paymentMethod: 'Direct transfer',
             cartArray
           })
-          .then(function (cart) {
-            // TODO: return a message to the user
-
-            console.log(cart);
-            //$('#loader-ring').removeClass("lds-ring");
+          .then(function (res) {
+            if (res.data == 'successful') {
+              localStorage.removeItem("mart-cart");
+              location.replace('/order-received');
+              //return false;
+            }else{
+              // TODO: return a message to the user
+              //return false;
+            }
+            $('#loader-ring').removeClass("lds-ring");
           })
           .catch(function (error) {
             // TODO: return a message to the user
             console.log(error);
-            //$('#loader-ring').removeClass("lds-ring");
+            $('#loader-ring').removeClass("lds-ring");
           });
         }else{
           $(".flash-msg").html(msg);

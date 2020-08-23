@@ -2,15 +2,21 @@
 @section('content')
   @include('inc.msg')
     <main id="auth-sec" class="py-4">
+      <div id="loader-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
       <div class="container">
         <div class="auth-sec">
           <div class="auth-sec-login">
             <div class="sign-up-link">
               <span>Already have an account?</span>
-              <a href="login.html">Login</a>
+              <a href="{{ route('login') }}">Login</a>
               <br />
               or
-              <a href="register.html">Register</a>
+              <a href="{{ route('register') }}">Register</a>
             </div>
 
             <div class="auth-or">Continue as guest</div>
@@ -88,8 +94,8 @@
               </button>
               <div class="panel">
                 <small
-                  >Orders will be processed when payment is confirmed.<br />pay
-                  to the account below and click Submit.
+                  >Orders will be processed when payment is confirmed.<br />Pay
+                  to the account below and click <span>Submit</span>.
                 </small>
                 <p>Guarranty Trust Bank</p>
                 <p>ACCOUNT NAME: E-MART Online Store</p>

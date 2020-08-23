@@ -2571,6 +2571,7 @@ $(document).ready(function () {
 
       if (_typeof(cartArray) !== ( true ? "undefined" : undefined) && cartArray instanceof Array) {
         if (cartArray.length !== 0) {
+          $("#loader-ring").addClass("lds-ring");
           axios.post('/gcheckout', {
             fullname: fullname,
             email: email,
@@ -2578,12 +2579,19 @@ $(document).ready(function () {
             address: address,
             paymentMethod: 'Direct transfer',
             cartArray: cartArray
-          }).then(function (cart) {
-            // TODO: return a message to the user
-            console.log(cart); //$('#loader-ring').removeClass("lds-ring");
+          }).then(function (res) {
+            if (res.data == 'successful') {
+              localStorage.removeItem("mart-cart");
+              location.replace('/order-received'); //return false;
+            } else {// TODO: return a message to the user
+                //return false;
+              }
+
+            $('#loader-ring').removeClass("lds-ring");
           })["catch"](function (error) {
             // TODO: return a message to the user
-            console.log(error); //$('#loader-ring').removeClass("lds-ring");
+            console.log(error);
+            $('#loader-ring').removeClass("lds-ring");
           });
         } else {
           $(".flash-msg").html(msg);

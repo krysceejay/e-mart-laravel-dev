@@ -20,4 +20,9 @@ class Item extends Model
   {
     return $this->hasMany(ItemImage::class);
   }
+
+  public function guest_order()
+  {
+    return $this->hasMany(GuestOrder::class);
+  }
 }

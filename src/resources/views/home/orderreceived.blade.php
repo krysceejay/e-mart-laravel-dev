@@ -867,7 +867,7 @@
             </g>
           </svg>
         </div>
-        <p>Your order has been received</p>
+        <p>Your order has been received.</p>
       </div>
       <div class="received-section">
         <section id="received-sec-wrap">
@@ -876,20 +876,21 @@
             <h4>Item</h4>
             <h4>Amount</h4>
           </div>
-          <div class="received-items">
-            <div class="received-items-name">Shoe &times; 1</div>
-            <div class="received-items-amount">&#8358; 2,100</div>
-          </div>
-
+          @foreach ($guestOrder as $gtOrd)
+            <div class="received-items">
+              <div class="received-items-name">{{ $gtOrd->item->name }} &times; {{ $gtOrd->unit }}</div>
+              <div class="received-items-amount">&#8358; {{ number_format($gtOrd->item->new_price * $gtOrd->unit) }}</div>
+            </div>
+          @endforeach
 
           <div class="received-payment">
             <div class="subtotal">
               <span class="pay-head">Subtotal</span>
-              <span class="pay-price">&#8358;4,000</span>
+              <span class="pay-price">&#8358; {{ number_format($subTotal) }}</span>
             </div>
             <div class="delivery">
               <span class="pay-head">Delivery Fee</span>
-              <span class="pay-price">&#8358;1,000</span>
+              <span class="pay-price">&#8358; 1,000</span>
             </div>
           </div>
         </section>
@@ -898,19 +899,19 @@
           <div class="order-received">
             <div class="order-received-grp">
               <p class="receive-head">Order Number</p>
-              <p class="receive-value">4ry7</p>
+              <p class="receive-value">{{ $guest->order_number }}</p>
             </div>
             <div class="order-received-grp">
               <p class="receive-head">Date</p>
-              <p class="receive-value">June 20, 2020</p>
+              <p class="receive-value">{{ date("M d \, Y",strtotime($guest->created_at)) }} </p>
             </div>
             <div class="order-received-grp">
               <p class="receive-head">Total</p>
-              <p class="receive-value">&#8358;5,000</p>
+              <p class="receive-value">&#8358; {{ number_format($guest->totalpayment) }}</p>
             </div>
             <div class="order-received-grp">
               <p class="receive-head">Payment Method</p>
-              <p class="receive-value">Debit Card</p>
+              <p class="receive-value">{{ $guest->payment_method }}</p>
             </div>
           </div>
         </aside>
