@@ -50,7 +50,7 @@
               <div class="form-group">
                 <label for="phone">Phone Number</label>
                 <input
-                  type="number"
+                  type="tel"
                   name=""
                   placeholder="Enter Phone number"
                   id="usphone"
@@ -85,9 +85,7 @@
 
             <div class="payment-options">
               <!-- <h4>Payment option</h4> -->
-              <a href="ordereceived.html" class="btn btn-pay"
-                >Pay With Debit Card</a
-              >
+              <button id="pay-stk" class="btn btn-pay">Pay With Debit Card</button>
 
               <button class="btn btn-pay accordion">
                 Direct Bank Transfer
@@ -108,5 +106,5 @@
         </div>
       </div>
     </main>
-
+    <script defer type="text/javascript" src="https://js.paystack.co/v1/inline.js"></script>
   @endsection

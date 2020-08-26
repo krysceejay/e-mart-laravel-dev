@@ -74,12 +74,16 @@ class HomeController extends Controller
 
     public function checkout(Request $request)
     {
+        $res = $request->input('response');
         $fullname = $request->input('fullname');
         $email = $request->input('email');
         $mobile = $request->input('mobile');
         $address = $request->input('address');
         $paymentMethod = $request->input('paymentMethod');
         $paymentStatus = 'pending';
+        $gatewayReference = $res['reference'];
+        $gatewayStatus = $res['status'];
+        $gatewayTransaction = $res['transaction'];
         $cartArray = $request->input('cartArray');
 
         $total = 0;

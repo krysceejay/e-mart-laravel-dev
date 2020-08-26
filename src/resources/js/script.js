@@ -620,6 +620,78 @@ const containerForCart = (value, ex) => {
 
   });
 
+  $("#pay-stk").click(function (e) {
+    const fullname = $("#usfullname").val();
+    const email = $("#usemail").val();
+    const mobile = $("#usphone").val();
+    const address = $("#usaddress").val();
+    const errors = validateForm(fullname, email, mobile, address);
+    let msg = `
+        <div class="pop pop-error">
+        cart is empty
+      </div>
+    `;
+    if(isEmpty(errors)){
+      const cartArray = JSON.parse(localStorage.getItem("mart-cart"));
+      if(typeof cartArray !== typeof undefined && cartArray instanceof Array){
+        if (cartArray.length !== 0) {
+          const amount = 50 * 100;
+          payWithPaystack(email, amount, fullname, mobile, address, cartArray);
+
+        }
+      }
+
+    }
+
+  });
+
+  const payWithPaystack = (email, amount, fullname, mobile, address, cartArray ) => {
+    //e.preventDefault();
+    let handler = PaystackPop.setup({
+      key: 'pk_test_15b8894b86396d4f525bd2a12c1eb56c2dcd2833', // Replace with your public key
+      email,
+      amount,
+      fullname,
+      ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+      // label: "Optional string that replaces customer email"
+      onClose: function(){
+        alert('Window closed.');
+      },
+      callback: function(response){
+        // let message = 'Payment complete! Reference: ' + response.reference;
+        // alert(message);
+        //console.log(response);
+        $("#loader-ring").addClass("lds-ring");
+        axios.post('/gcheckout', {
+          fullname,
+          email,
+          mobile,
+          address,
+          paymentMethod: 'Debit Card',
+          cartArray,
+          response
+        })
+        .then(function (res) {
+          if (res.data == 'successful') {
+            localStorage.removeItem("mart-cart");
+            location.replace('/order-received');
+            //return false;
+          }else{
+            // TODO: return a message to the user
+            console.log(res);
+          }
+          $('#loader-ring').removeClass("lds-ring");
+        })
+        .catch(function (error) {
+          // TODO: return a message to the user
+          console.log(error);
+          $('#loader-ring').removeClass("lds-ring");
+        });
+      }
+    });
+  handler.openIframe();
+}
+
   $("#myBtn").click(function () {
     const iidAndValueArr = getIdAndVar();
 
