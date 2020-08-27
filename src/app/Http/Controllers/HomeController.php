@@ -72,18 +72,24 @@ class HomeController extends Controller
 
     }
 
-    public function checkout(Request $request)
+    public function checkoutG(Request $request)
     {
-        $res = $request->input('response');
+        // $res = $request->input('response');
+        // if ($res == "dtransfer"){
+        //   $gatewayReference = 'direct transfer';
+        //   $gatewayStatus = 'pending';
+        //   $gatewayTransaction = 'direct transfer';
+        // }else{
+        //   $gatewayReference = $res['reference'];
+        //   $gatewayStatus = $res['status'];
+        //   $gatewayTransaction = $res['transaction'];
+        // }
         $fullname = $request->input('fullname');
         $email = $request->input('email');
         $mobile = $request->input('mobile');
         $address = $request->input('address');
         $paymentMethod = $request->input('paymentMethod');
         $paymentStatus = 'pending';
-        $gatewayReference = $res['reference'];
-        $gatewayStatus = $res['status'];
-        $gatewayTransaction = $res['transaction'];
         $cartArray = $request->input('cartArray');
 
         $total = 0;
@@ -121,11 +127,14 @@ class HomeController extends Controller
 
           $payid = $guest_order->id;
           session(['pid' => $payid]);
+
+          $ret_array = ['payid' => $payid, 'amount' => $totalPayment];
+          return $ret_array;
         }else {
           return 'failed';
         }
 
-        return 'successful';
+        //return 'successful';
 
     }
 
@@ -142,4 +151,36 @@ class HomeController extends Controller
       }
 
     }
+
+    public function paystackWebHook(Request $request){
+      $input = $request->all();
+      dd($input);
+      //This receives the webhook
+      $email = $request->input('data.customer.email');
+      $bankname = $request->input('data.gateway_response');
+
+      $gateway_status = $request->input('data.status');
+      $paidamount = $request->input('data.amount') / 100;
+      $gateway_reference = $request->input('data.reference');
+      $gateway_auth = $request->input('data.authorization.authorization_code');
+
+      // $user = User::where('email', $email);
+      //
+      // $user->bankname = $bankname;
+      // $user->save();
+
+      return response()->json('processed', 200);
+    }
+
+    public function removeFromGuest()
+    {
+        // $user = Auth::user();
+        //
+        // $user->holding()->delete();
+
+        return 'Success';
+
+    }
+
+
 }

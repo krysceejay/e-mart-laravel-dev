@@ -587,19 +587,18 @@ const containerForCart = (value, ex) => {
             email,
             mobile,
             address,
-            paymentMethod: 'Direct transfer',
+            paymentMethod: 'Direct Transfer',
             cartArray
           })
           .then(function (res) {
-            if (res.data == 'successful') {
+            if(res.data == 'failed'){
+              // TODO: return a message to the user
+              $('#loader-ring').removeClass("lds-ring");
+              return false;
+            }else{
               localStorage.removeItem("mart-cart");
               location.replace('/order-received');
-              //return false;
-            }else{
-              // TODO: return a message to the user
-              //return false;
             }
-            $('#loader-ring').removeClass("lds-ring");
           })
           .catch(function (error) {
             // TODO: return a message to the user
@@ -635,58 +634,64 @@ const containerForCart = (value, ex) => {
       const cartArray = JSON.parse(localStorage.getItem("mart-cart"));
       if(typeof cartArray !== typeof undefined && cartArray instanceof Array){
         if (cartArray.length !== 0) {
-          const amount = 50 * 100;
-          payWithPaystack(email, amount, fullname, mobile, address, cartArray);
 
+          $("#loader-ring").addClass("lds-ring");
+          axios.post('/gcheckout', {
+            fullname,
+            email,
+            mobile,
+            address,
+            paymentMethod: 'Debit Card',
+            cartArray
+          })
+          .then(function (res) {
+            if(res.data == 'failed'){
+              // TODO: return a message to the user
+              $('#loader-ring').removeClass("lds-ring");
+              return false;
+            }
+            const amount = res.data.amount * 100;
+            const amountclean = amount.toFixed(2);
+            payWithPaystack(email, amountclean, fullname, res.data.payid);
+          })
+          .catch(function (error) {
+            // TODO: return a message to the user
+            console.log(error);
+            $('#loader-ring').removeClass("lds-ring");
+          });
+        }else{
+          $(".flash-msg").html(msg);
+          $('.flash-msg').fadeIn().delay(3000).fadeOut();
         }
+      }else{
+        $(".flash-msg").html(msg);
+        $('.flash-msg').fadeIn().delay(3000).fadeOut();
       }
-
+    }else{
+      return false;
     }
 
   });
 
-  const payWithPaystack = (email, amount, fullname, mobile, address, cartArray ) => {
+  const payWithPaystack = (email, amount, fullname, res) => {
     //e.preventDefault();
     let handler = PaystackPop.setup({
       key: 'pk_test_15b8894b86396d4f525bd2a12c1eb56c2dcd2833', // Replace with your public key
       email,
       amount,
       fullname,
-      ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+      ref: 'emart-'+res, // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
       // label: "Optional string that replaces customer email"
       onClose: function(){
-        alert('Window closed.');
+        $('#loader-ring').removeClass("lds-ring");
+        //alert('Window closed.');
       },
       callback: function(response){
         // let message = 'Payment complete! Reference: ' + response.reference;
         // alert(message);
-        //console.log(response);
-        $("#loader-ring").addClass("lds-ring");
-        axios.post('/gcheckout', {
-          fullname,
-          email,
-          mobile,
-          address,
-          paymentMethod: 'Debit Card',
-          cartArray,
-          response
-        })
-        .then(function (res) {
-          if (res.data == 'successful') {
-            localStorage.removeItem("mart-cart");
-            location.replace('/order-received');
-            //return false;
-          }else{
-            // TODO: return a message to the user
-            console.log(res);
-          }
-          $('#loader-ring').removeClass("lds-ring");
-        })
-        .catch(function (error) {
-          // TODO: return a message to the user
-          console.log(error);
-          $('#loader-ring').removeClass("lds-ring");
-        });
+        //localStorage.removeItem("mart-cart");
+        location.replace('/order-received');
+        localStorage.removeItem("mart-cart");
       }
     });
   handler.openIframe();
