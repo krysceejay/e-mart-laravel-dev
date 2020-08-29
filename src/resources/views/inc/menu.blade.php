@@ -50,12 +50,15 @@
       </li>
     </ul>
 
-    <form name="email-form" method="POST">
+    <form name="email-form" method="GET" action="{{ route('filteritems') }}">
       <div class="email-form">
         <span class="form-control-wrap">
           <input
-            type="email"
-            name="email"
+            type="text"
+            name="itemname"
+            @isset($item_name)
+            value= "{{ $item_name }}"
+            @endisset
             size="40"
             class="form-sub"
             placeholder="What item are you looking for today?"

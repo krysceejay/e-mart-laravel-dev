@@ -21,6 +21,7 @@
                 <input
                   type="text"
                   name="firstname"
+                  value="{{ old('firstname') }}"
                   placeholder="Enter your first name"
                   required
                 />
@@ -35,6 +36,7 @@
                 <input
                   type="text"
                   name="lastname"
+                  value="{{ old('lastname') }}"
                   placeholder="Enter your first name"
                   required
                 />
@@ -49,8 +51,10 @@
                 <input
                   type="email"
                   name="email"
+                  value="{{ old('email') }}"
                   placeholder="Enter your email"
                   required
+                  autocomplete="email"
                 />
                 @error('email')
                     <span class="invalid-feedback" role="alert">

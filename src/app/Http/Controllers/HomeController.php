@@ -39,7 +39,7 @@ class HomeController extends Controller
 
     public function allItems()
     {
-      $allItems = Item::orderBy('id', 'DESC')->paginate(20);
+      $allItems = Item::orderBy('id', 'DESC')->paginate(50);
       return view('home.allitems', compact('allItems'));
     }
 
@@ -138,10 +138,10 @@ class HomeController extends Controller
 
     }
 
-    public function orderReceived()
+    public function orderReceived(Request $request)
     {
       $pid = session('pid');
-      if(!is_null($pid)) {
+      if($request->session()->has('pid')) {
         $guest = Guest::findorFail($pid);
         $guestOrder = GuestOrder::where('guest_id', $guest->id)->get();
         $subTotal = $guest->totalpayment - 1000;
@@ -172,14 +172,46 @@ class HomeController extends Controller
       return response()->json('processed', 200);
     }
 
-    public function removeFromGuest()
+    public function removeFromGuest(Request $request)
     {
-        // $user = Auth::user();
-        //
-        // $user->holding()->delete();
+      $pid = session('pid');
+      $guest = Guest::findorFail($pid);
+      $guest->guest_order()->delete();
+      $guest->delete();
 
-        return 'Success';
+      $request->session()->forget('pid');
 
+      return 'Success';
+    }
+
+    public function filterItems(Request $request)
+    {
+      if(
+        $request->input('itemname') !== NULL
+        || $request->input('pricefrom') !== NULL
+        || $request->input('priceto') !== NULL
+      ){
+        session(['itemname' => $request->input('itemname')]);
+        session(['pricefrom' => $request->input('pricefrom')]);
+        session(['priceto' => $request->input('priceto')]);
+      }
+
+      $item_name = session('itemname');
+      $price_from = session('pricefrom');
+      $price_to = session('priceto');
+      //$review = $request->input('review');
+
+      $allItems = Item::when($item_name, function ($query, $item_name) {
+        return $query->where('name', 'like', '%'.$item_name.'%');
+        })
+        ->when($price_from, function ($query, $price_from) {
+          return $query->where('new_price', '>=', $price_from);
+        })
+        ->when($price_to, function ($query, $price_to) {
+          return $query->where('new_price', '<=', $price_to);
+        })->orderBy('id', 'DESC')->paginate(50);
+
+        return view('home.allitems', compact('allItems', 'item_name', 'price_from', 'price_to'));
     }
 
 

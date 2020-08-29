@@ -2666,7 +2666,8 @@ $(document).ready(function () {
       // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
       // label: "Optional string that replaces customer email"
       onClose: function onClose() {
-        $('#loader-ring').removeClass("lds-ring"); //alert('Window closed.');
+        $('#loader-ring').removeClass("lds-ring"); //console.log('Window closed.');
+        //alert('Window closed.');
       },
       callback: function callback(response) {
         // let message = 'Payment complete! Reference: ' + response.reference;

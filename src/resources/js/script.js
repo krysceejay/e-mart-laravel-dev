@@ -653,6 +653,7 @@ const containerForCart = (value, ex) => {
             const amount = res.data.amount * 100;
             const amountclean = amount.toFixed(2);
             payWithPaystack(email, amountclean, fullname, res.data.payid);
+
           })
           .catch(function (error) {
             // TODO: return a message to the user
@@ -684,6 +685,7 @@ const containerForCart = (value, ex) => {
       // label: "Optional string that replaces customer email"
       onClose: function(){
         $('#loader-ring').removeClass("lds-ring");
+        //console.log('Window closed.');
         //alert('Window closed.');
       },
       callback: function(response){

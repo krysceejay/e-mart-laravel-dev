@@ -25,13 +25,13 @@
           <span class="stars" style="--rating: 3.5;"></span>
           <a href="review.html" class="rate-text">3.5 of 12 reviews</a>
           <div class="item-price">
-            &#8358;{{ number_format($item->new_price) }}
+            &#8358; {{ number_format($item->new_price) }}
           </div>
           <div class="item-description">
             {{ $item->description }}
           </div>
           <div class="item-control">
-            <div class="quantity-control">
+            {{-- <div class="quantity-control">
               <button
                 class="minus"
                 onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
@@ -45,9 +45,20 @@
               >
                 &#x2b;
               </button>
-            </div>
+            </div> --}}
             <div class="add-to-cart">
-              <button class="btn-add-to-cart">Add To Cart</button>
+              <button class="btn-add-to-cart"
+                img="{{ $item->display_image }}"
+                inm="{{ $item->name }}"
+                p="{{ $item->new_price }}"
+                iid="{{ $item->id }}"
+                sl="{{ $item->slug }}"
+                @guest
+                gt=""
+                @endguest
+              >
+                <i class="fa fa-cart-plus"></i> Add To Cart
+              </button>
             </div>
           </div>
         </div>

@@ -26,6 +26,8 @@ Route::get('/user-cart', 'HomeController@cart')->name('user-cart');
 Route::get('/user-checkout', 'HomeController@checkoutGet')->name('user-checkout');
 Route::post('/gcheckout','HomeController@checkoutG');
 Route::get('/order-received', 'HomeController@orderReceived')->name('order-received');
+Route::get('/gcarts', 'HomeController@removeFromGuest');
+Route::get('/filteritem', 'HomeController@filterItems')->name('filteritems');
 
 Route::post('/paystack','HomeController@paystackWebHook');
 
