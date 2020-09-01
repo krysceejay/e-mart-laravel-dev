@@ -56,9 +56,6 @@
           <input
             type="text"
             name="itemname"
-            @isset($item_name)
-            value= "{{ $item_name }}"
-            @endisset
             size="40"
             class="form-sub"
             placeholder="What item are you looking for today?"
