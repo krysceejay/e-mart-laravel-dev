@@ -30,4 +30,9 @@ class Item extends Model
   {
     return $this->hasMany(Review::class);
   }
+
+  public function category()
+  {
+    return $this->belongsToMany(Category::class);
+  }
 }

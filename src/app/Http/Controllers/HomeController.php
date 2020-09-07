@@ -48,7 +48,18 @@ class HomeController extends Controller
     {
       $item = Item::where('slug', $slug)->first();
       $itemImages = ItemImage::where('item_id', $item->id)->get();
-      return view('home.item', compact('item', 'itemImages'));
+      $item_reviews = $item->review()->get();
+      $sum_ratings = $item_reviews->sum('rating');
+      $count_rev = $item_reviews->count();
+
+      if ($count_rev == 0) {
+        $rating = 0;
+      }else{
+        $rating = $sum_ratings / $count_rev;
+      }
+
+      $round_rate = round($rating,1);
+      return view('home.item', compact('item', 'itemImages', 'round_rate', 'count_rev'));
     }
 
     public function cart()

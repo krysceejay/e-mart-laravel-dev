@@ -22,8 +22,15 @@
         </div>
         <div class="text-sec">
           <div class="item-name">{{ $item->name }}</div>
-          <span class="stars" style="--rating: 3.5;"></span>
-          <a href="{{ route('reviews', $item->slug ) }}" class="rate-text">3.5 of 12 reviews</a>
+          <span class="stars" style="--rating: {{ $round_rate }};"></span>
+          <a href="{{ route('reviews', $item->slug ) }}" class="rate-text">
+            @if ($count_rev == 0)
+              No rating for this item yet.
+            @else
+              {{ $round_rate }} of {{ $count_rev }} review(s)
+            @endif
+
+          </a>
           <div class="item-price">
             &#8358; {{ number_format($item->new_price) }}
           </div>
