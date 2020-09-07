@@ -28,6 +28,8 @@ Route::post('/gcheckout','HomeController@checkoutG');
 Route::get('/order-received', 'HomeController@orderReceived')->name('order-received');
 Route::get('/gcarts', 'HomeController@removeFromGuest');
 Route::get('/filteritem', 'HomeController@filterItems')->name('filteritems');
+Route::get('/reviews/{slug}', 'HomeController@allReviews')->name('reviews');
+
 
 Route::post('/paystack','HomeController@paystackWebHook');
 

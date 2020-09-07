@@ -11,6 +11,7 @@ use App\Models\Slide;
 use App\Models\ItemImage;
 use App\Models\Guest;
 use App\Models\GuestOrder;
+use App\Models\Review;
 
 class HomeController extends Controller
 {
@@ -213,6 +214,43 @@ class HomeController extends Controller
 
         return view('home.allitems', compact('allItems', 'item_name', 'price_from', 'price_to'));
     }
+
+    public function getRatingCountByNum($itemId,$num)
+    {
+      $rateCount = Review::where(['item_id' => $itemId, 'rating' => $num])->count();
+      return $rateCount;
+    }
+
+    public function allReviews($slug)
+    {
+      $percent_values = [];
+      $item = Item::where('slug', $slug)->first();
+      $reviews = Review::where('item_id', $item->id)->orderBy('id', 'DESC')->paginate(50);
+      $item_reviews = $item->review()->get();
+      $sum_ratings = $item_reviews->sum('rating');
+      $count_rev = $item_reviews->count();
+
+      if ($count_rev == 0) {
+        $rating = 0;
+      }else{
+        $rating = $sum_ratings / $count_rev;
+      }
+
+      $round_rate = round($rating,1);
+
+      for ($i=5; $i > 0 ; $i--) {
+        $rate_num_count = $this->getRatingCountByNum($item->id, $i);
+        if ($count_rev == 0) {
+          $percent_values[$i] = 0;
+        }else{
+          $percent_values[$i] = ($rate_num_count / $count_rev) * 100;
+        }
+        //array_push($percent_values, ceil($rate_percent));
+      }
+
+      return view('home.review', compact('reviews', 'count_rev', 'round_rate', 'percent_values'));
+    }
+
 
 
 }

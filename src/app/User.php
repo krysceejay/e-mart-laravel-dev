@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 
 use App\Models\Cart;
 use App\Models\Item;
+use App\Models\Review;
 
 class User extends Authenticatable
 {
@@ -48,5 +49,10 @@ class User extends Authenticatable
     public function item()
     {
       return $this->hasMany(Item::class);
+    }
+
+    public function review()
+    {
+      return $this->hasMany(Review::class);
     }
 }

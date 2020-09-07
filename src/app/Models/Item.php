@@ -25,4 +25,9 @@ class Item extends Model
   {
     return $this->hasMany(GuestOrder::class);
   }
+
+  public function review()
+  {
+    return $this->hasMany(Review::class);
+  }
 }

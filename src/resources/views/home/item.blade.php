@@ -23,7 +23,7 @@
         <div class="text-sec">
           <div class="item-name">{{ $item->name }}</div>
           <span class="stars" style="--rating: 3.5;"></span>
-          <a href="review.html" class="rate-text">3.5 of 12 reviews</a>
+          <a href="{{ route('reviews', $item->slug ) }}" class="rate-text">3.5 of 12 reviews</a>
           <div class="item-price">
             &#8358; {{ number_format($item->new_price) }}
           </div>
