@@ -72,65 +72,19 @@
   <div class="parent-sub-menu">
     <span>Category</span> <i class="fa fa-angle-down" id="show-cat"></i>
     <ul class="nav-sub-menu">
-      <li>
-        <a href="">Kitchen</a>
-      </li>
-      <li>
-        <a href="">Household</a>
-      </li>
-      <li>
-        <a href="">Cloths</a>
-      </li>
-      <li>
-        <a href="">Gaget</a>
-      </li>
-      <li>
-        <a href="">Groceries</a>
-      </li>
-      <li>
-        <a href="">Kitchen</a>
-      </li>
-      <li>
-        <a href="">Household</a>
-      </li>
-      <li>
-        <a href="">Cloths</a>
-      </li>
-      <li>
-        <a href="">Gaget</a>
-      </li>
-      <li>
-        <a href="">Groceries</a>
-      </li>
-      <li>
-        <a href="">Kitchen</a>
-      </li>
-      <li>
-        <a href="">Household</a>
-      </li>
-      <li>
-        <a href="">Cloths</a>
-      </li>
-      <li>
-        <a href="">Gaget</a>
-      </li>
-      <li>
-        <a href="">Groceries</a>
-      </li>
-      <li>
-        <a href="">Cloths</a>
-      </li>
-      <li>
-        <a href="">Gaget</a>
-      </li>
+      @foreach ($categories as $key => $cat)
+        <li>
+          <a href="{{ route('items-cat', $cat) }}">{{ $cat }}</a>
+        </li>
+      @endforeach
     </ul>
   </div>
 
   <ul class="minor-nav-list">
     <li><a href="{{ route('home') }}" class="{{ Route::current()->getName() == 'home' ? 'current' : '' }}">Home</a></li>
     <li><a href="{{ route('items') }}" class="{{ Route::current()->getName() == 'items' || Route::current()->getName() == 'item' ? 'current' : '' }}">All Items</a></li>
-    <li><a href="#">Kitchen</a></li>
-    <li><a href="#">Household</a></li>
+    {{-- <li><a href="#">Kitchen</a></li>
+    <li><a href="#">Household</a></li> --}}
     <li><a href="#">Faqs</a></li>
     <li><a href="#">Contact</a></li>
   </ul>
@@ -144,8 +98,8 @@
           <ul>
             <li><a href="{{ route('home') }}" class="{{ Route::current()->getName() == 'home' ? 'current' : '' }}">Home</a></li>
             <li><a href="{{ route('items') }}" class="{{ Route::current()->getName() == 'items' || Route::current()->getName() == 'item' ? 'current' : '' }}">All Items</a></li>
-            <li><a href="#">Kitchen</a></li>
-            <li><a href="#">Household</a></li>
+            {{-- <li><a href="#">Kitchen</a></li>
+            <li><a href="#">Household</a></li> --}}
             <li><a href="#">Faqs</a></li>
             <li><a href="#">Contact</a></li>
           </ul>

@@ -12,6 +12,7 @@ use App\Models\ItemImage;
 use App\Models\Guest;
 use App\Models\GuestOrder;
 use App\Models\Review;
+use App\Models\Category;
 
 class HomeController extends Controller
 {
@@ -41,6 +42,12 @@ class HomeController extends Controller
     public function allItems()
     {
       $allItems = Item::orderBy('id', 'DESC')->paginate(50);
+      return view('home.allitems', compact('allItems'));
+    }
+
+    public function itemsByCat($cat)
+    {
+      $allItems = Category::where('name', $cat)->first()->item()->orderBy('id', 'DESC')->paginate(50);
       return view('home.allitems', compact('allItems'));
     }
 

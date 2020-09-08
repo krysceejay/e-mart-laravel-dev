@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Cart;
 use App\Models\Item;
+use App\Models\Category;
 
 
 class ViewServiceProvider extends ServiceProvider
@@ -54,6 +55,7 @@ class ViewServiceProvider extends ServiceProvider
       });
 
       view()->composer('inc.menu', function ($view) {
+        $categories = Category::pluck('name','id')->all();
         $user = Auth::user();
         if($user){
           $cartCount = Cart::where('user_id', $user->id)->count();
@@ -62,7 +64,12 @@ class ViewServiceProvider extends ServiceProvider
           $cartCount = 0;
         }
 
-        $view->with('cartCount', $cartCount);
+        $data = [
+          'cartCount'  => $cartCount,
+          'categories'   => $categories
+        ];
+
+        $view->with($data);
 
       });
 
