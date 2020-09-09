@@ -128,7 +128,23 @@
                   </div>
                 </div>
 
-                <span class="badge-new">New</span>
+                @switch($item->item_status->name)
+                  @case("new")
+                      <span class="badge-new">{{ $item->item_status->name }}</span>
+                      @break
+
+                  @case("feat")
+                      <span class="badge-feat">{{ $item->item_status->name }}</span>
+                      @break
+
+                  @case("best seller")
+                      <span class="badge-best">{{ $item->item_status->name }}</span>
+                      @break
+
+                  @default
+
+              @endswitch
+
             <div class="add-to-cart-btn">
               <button class="btn-add-to-cart"
                 img="{{ $item->display_image }}"

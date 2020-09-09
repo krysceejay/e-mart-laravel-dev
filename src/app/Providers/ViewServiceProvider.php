@@ -74,7 +74,7 @@ class ViewServiceProvider extends ServiceProvider
       });
 
       view()->composer('inc.addmore', function ($view) {
-        $allItems = Item::orderBy('id', 'DESC')->get();
+        $allItems = Item::where('active', 1)->orderBy('id', 'DESC')->limit(20)->get();
 
         $view->with('allItems', $allItems);
 

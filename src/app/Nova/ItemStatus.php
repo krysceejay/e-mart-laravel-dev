@@ -5,22 +5,16 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Image;
-use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
-use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Item extends Resource
+class ItemStatus extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Item::class;
+    public static $model = \App\Models\ItemStatus::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -35,7 +29,7 @@ class Item extends Resource
      * @var array
      */
     public static $search = [
-        'user_id','name', 'old_price','new_price',
+        'id',
     ];
 
     /**
@@ -47,16 +41,8 @@ class Item extends Resource
     public function fields(Request $request)
     {
         return [
-            BelongsTo::make('User')->sortable()->exceptOnForms(),
-            BelongsToMany::make('Category'),
-            BelongsTo::make('Item Status'),
+            ID::make()->sortable(),
             Text::make('Name')->sortable(),
-            Number::make('Old Price'),
-            Number::make('New Price'),
-            Text::make('Slug')->onlyOnDetail(),
-            Boolean::make('Active'),
-            Textarea::make('Description'),
-            Image::make('Display Image')->path('item-images'),
         ];
     }
 

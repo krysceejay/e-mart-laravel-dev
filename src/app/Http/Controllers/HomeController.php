@@ -13,6 +13,7 @@ use App\Models\Guest;
 use App\Models\GuestOrder;
 use App\Models\Review;
 use App\Models\Category;
+use App\Models\ItemStatus;
 
 class HomeController extends Controller
 {
@@ -33,27 +34,28 @@ class HomeController extends Controller
      */
     public function index()
     {
-      $allItems = Item::orderBy('id', 'DESC')->get();
+      $justArrived = ItemStatus::where('name', 'new')->first()->item()->where('active', 1)->orderBy('id', 'DESC')->limit(20)->get();
+      $bestSeller = ItemStatus::where('name', 'best seller')->first()->item()->where('active', 1)->orderBy('id', 'DESC')->limit(20)->get();
       $slides = Slide::where('active', 1)->get();
 
-      return view('home.index', compact('allItems', 'slides'));
+      return view('home.index', compact('justArrived','bestSeller','slides'));
     }
 
     public function allItems()
     {
-      $allItems = Item::orderBy('id', 'DESC')->paginate(50);
+      $allItems = Item::where('active', 1)->orderBy('id', 'DESC')->paginate(50);
       return view('home.allitems', compact('allItems'));
     }
 
     public function itemsByCat($cat)
     {
-      $allItems = Category::where('name', $cat)->first()->item()->orderBy('id', 'DESC')->paginate(50);
+      $allItems = Category::where('name', $cat)->first()->item()->where('active', 1)->orderBy('id', 'DESC')->paginate(50);
       return view('home.allitems', compact('allItems'));
     }
 
     public function item($slug)
     {
-      $item = Item::where('slug', $slug)->first();
+      $item = Item::where('slug', $slug)->where('active', 1)->first();
       $itemImages = ItemImage::where('item_id', $item->id)->get();
       $item_reviews = $item->review()->get();
       $sum_ratings = $item_reviews->sum('rating');
@@ -221,13 +223,13 @@ class HomeController extends Controller
       //$review = $request->input('review');
 
       $allItems = Item::when($item_name, function ($query, $item_name) {
-        return $query->where('name', 'like', '%'.$item_name.'%');
+        return $query->where('name', 'like', '%'.$item_name.'%')->where('active', 1);
         })
         ->when($price_from, function ($query, $price_from) {
-          return $query->where('new_price', '>=', $price_from);
+          return $query->where('new_price', '>=', $price_from)->where('active', 1);
         })
         ->when($price_to, function ($query, $price_to) {
-          return $query->where('new_price', '<=', $price_to);
+          return $query->where('new_price', '<=', $price_to)->where('active', 1);
         })->orderBy('id', 'DESC')->paginate(50);
 
         return view('home.allitems', compact('allItems', 'item_name', 'price_from', 'price_to'));
@@ -242,7 +244,7 @@ class HomeController extends Controller
     public function allReviews($slug)
     {
       $percent_values = [];
-      $item = Item::where('slug', $slug)->first();
+      $item = Item::where('slug', $slug)->where('active', 1)->first();
       $reviews = Review::where('item_id', $item->id)->orderBy('id', 'DESC')->paginate(50);
       $item_reviews = $item->review()->get();
       $sum_ratings = $item_reviews->sum('rating');
