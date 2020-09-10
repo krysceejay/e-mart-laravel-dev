@@ -8,7 +8,8 @@ class Guest extends Model
 {
     protected $fillable = [
         'full_name', 'email', 'mobile', 'address', 'order_number',
-        'totalpayment','payment_method', 'payment_status', 'orders'
+        'totalpayment','payment_method', 'payment_status', 'orders',
+        'payment_screenshot'
     ];
 
     public function guest_order()

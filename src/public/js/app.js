@@ -2284,6 +2284,19 @@ $(document).ready(function () {
     }
   }
 
+  if ($("#fcitms").length) {
+    if (_typeof(storedValue) !== ( true ? "undefined" : undefined) && storedValue instanceof Array) {
+      if (storedValue.length !== 0) {
+        $("#fcitms").val(JSON.stringify(storedValue));
+      }
+    }
+  }
+
+  if ($("#received-sec").length) {
+    $("#cart-count").html(0);
+    localStorage.removeItem("mart-cart");
+  }
+
   $(".btn-add-to-cart").click(function () {
     var iid = $(this).attr("iid");
     var sl = $(this).attr("sl");
@@ -2556,55 +2569,66 @@ $(document).ready(function () {
     }
 
     return errors;
-  };
+  }; // $("#g-check-sub").click(function () {
+  //   const fullname = $("#usfullname").val();
+  //   const email = $("#usemail").val();
+  //   const mobile = $("#usphone").val();
+  //   const address = $("#usaddress").val();
+  //
+  //   // const fd = new FormData();
+  //   // const payScrnsht = $('#usfile')[0].files[0];
+  //   // fd.append('usfile',payScrnsht);
+  //
+  //   const errors = validateForm(fullname, email, mobile, address);
+  //   let msg = `
+  //       <div class="pop pop-error">
+  //       cart is empty
+  //     </div>
+  //   `;
+  //
+  //   if(isEmpty(errors)){
+  //     const cartArray = JSON.parse(localStorage.getItem("mart-cart"));
+  //     if(typeof cartArray !== typeof undefined && cartArray instanceof Array){
+  //       if (cartArray.length !== 0) {
+  //         $("#loader-ring").addClass("lds-ring");
+  //         axios.post('/gcheckout', {
+  //           fullname,
+  //           email,
+  //           mobile,
+  //           address,
+  //           paymentMethod: 'Direct Transfer',
+  //           cartArray
+  //         })
+  //         .then(function (res) {
+  //           if(res.data == 'failed'){
+  //             // TODO: return a message to the user
+  //             $('#loader-ring').removeClass("lds-ring");
+  //             return false;
+  //           }else{
+  //             localStorage.removeItem("mart-cart");
+  //             location.replace('/order-received');
+  //           }
+  //         })
+  //         .catch(function (error) {
+  //           // TODO: return a message to the user
+  //           console.log(error);
+  //           $('#loader-ring').removeClass("lds-ring");
+  //         });
+  //       }else{
+  //         $(".flash-msg").html(msg);
+  //         $('.flash-msg').fadeIn().delay(3000).fadeOut();
+  //       }
+  //     }else{
+  //       $(".flash-msg").html(msg);
+  //       $('.flash-msg').fadeIn().delay(3000).fadeOut();
+  //     }
+  //   }else{
+  //     return false;
+  //   }
+  //
+  // });
 
-  $("#g-check-sub").click(function () {
-    var fullname = $("#usfullname").val();
-    var email = $("#usemail").val();
-    var mobile = $("#usphone").val();
-    var address = $("#usaddress").val();
-    var errors = validateForm(fullname, email, mobile, address);
-    var msg = "\n        <div class=\"pop pop-error\">\n        cart is empty\n      </div>\n    ";
 
-    if (isEmpty(errors)) {
-      var cartArray = JSON.parse(localStorage.getItem("mart-cart"));
-
-      if (_typeof(cartArray) !== ( true ? "undefined" : undefined) && cartArray instanceof Array) {
-        if (cartArray.length !== 0) {
-          $("#loader-ring").addClass("lds-ring");
-          axios.post('/gcheckout', {
-            fullname: fullname,
-            email: email,
-            mobile: mobile,
-            address: address,
-            paymentMethod: 'Direct Transfer',
-            cartArray: cartArray
-          }).then(function (res) {
-            if (res.data == 'failed') {
-              // TODO: return a message to the user
-              $('#loader-ring').removeClass("lds-ring");
-              return false;
-            } else {
-              localStorage.removeItem("mart-cart");
-              location.replace('/order-received');
-            }
-          })["catch"](function (error) {
-            // TODO: return a message to the user
-            console.log(error);
-            $('#loader-ring').removeClass("lds-ring");
-          });
-        } else {
-          $(".flash-msg").html(msg);
-          $('.flash-msg').fadeIn().delay(3000).fadeOut();
-        }
-      } else {
-        $(".flash-msg").html(msg);
-        $('.flash-msg').fadeIn().delay(3000).fadeOut();
-      }
-    } else {
-      return false;
-    }
-  });
   $("#pay-stk").click(function (e) {
     var fullname = $("#usfullname").val();
     var email = $("#usemail").val();

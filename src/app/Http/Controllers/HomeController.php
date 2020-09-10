@@ -93,6 +93,74 @@ class HomeController extends Controller
 
     }
 
+    public function directTransfer(Request $request)
+    {
+      $this->validate($request, [
+          'fullname' => ['required', 'string', 'max:255'],
+          'email' => ['required', 'string', 'email', 'max:255'],
+          'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:10'],
+          'address' => ['required', 'string', 'max:255'],
+          'screenshot' => ['required','image','mimes:jpeg,png,jpg,gif,svg','max:1999'],
+      ]);
+
+      if ($request->file('screenshot')) {
+
+          $filenameoriginal = $request->file('screenshot')->getClientOriginalName();
+          $filename = pathinfo($filenameoriginal, PATHINFO_FILENAME);
+          $extension = $request->file('screenshot')->getClientOriginalExtension();
+
+          //create new $filename
+          $filenameToStore = $filename . '_' . time() . '.' . $extension;
+
+          //upload image
+          $pathToStore = $request->file('screenshot')->storeAs('public/payment-screenshots', $filenameToStore);
+
+          $cartArray = json_decode($request->input('fcitms'));
+          $total = 0;
+          foreach ($cartArray as $cart) {
+            $iid = (int)$cart->iid;
+            $unit = (int)$cart->unit;
+            if ($iid == 0 || $unit == 0) {
+              return 'failed';
+            }
+            $item = Item::findorFail($iid);
+            $total += ($item->new_price) * ($unit);
+
+          }
+
+          $totalPayment = $total + 1000;
+
+          $guest_order = Guest::create([
+              'full_name' => $request->input('fullname'),
+              'email' => $request->input('email'),
+              'mobile' => $request->input('phone'),
+              'address' => $request->input('address'),
+              'payment_screenshot' => 'payment-screenshots/'.$filenameToStore,
+              'order_number' => Str::random(6),
+              'totalpayment' => $totalPayment,
+              'payment_method' => 'Direct Transfer',
+              'payment_status' => 'pending',
+          ]);
+
+          if ($guest_order) {
+            foreach ($cartArray as $cart) {
+                $guest_order->guest_order()->create([
+                    'item_id' => $cart->iid,
+                    'unit' => $cart->unit
+                ]);
+              }
+
+            $payid = $guest_order->id;
+            session(['pid' => $payid]);
+
+            return redirect('/order-received');
+          }else {
+            return back()->with('warning', 'An error occurred. please check your connection');
+          }
+
+      }
+    }
+
     public function checkoutG(Request $request)
     {
         // $res = $request->input('response');
@@ -105,6 +173,7 @@ class HomeController extends Controller
         //   $gatewayStatus = $res['status'];
         //   $gatewayTransaction = $res['transaction'];
         // }
+
         $fullname = $request->input('fullname');
         $email = $request->input('email');
         $mobile = $request->input('mobile');

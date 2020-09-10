@@ -8,6 +8,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Place;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Guest extends Resource
@@ -53,6 +54,7 @@ class Guest extends Resource
             Number::make('Totalpayment')->sortable(),
             Text::make('Payment Method')->sortable(),
             Text::make('Payment Status')->sortable(),
+            Image::make('Payment Screenshot')->path('payment-screenshots'),
             HasMany::make('Guest Order')
         ];
     }

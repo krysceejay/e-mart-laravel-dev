@@ -228,6 +228,19 @@ const containerForCart = (value, ex) => {
     }
   }
 
+  if($("#fcitms").length){
+    if(typeof storedValue !== typeof undefined && storedValue instanceof Array){
+      if (storedValue.length !== 0) {
+        $("#fcitms").val(JSON.stringify(storedValue));
+      }
+    }
+  }
+
+  if($("#received-sec").length){
+    $("#cart-count").html(0);
+    localStorage.removeItem("mart-cart");
+  }
+
   $(".btn-add-to-cart").click(function () {
     const iid = $(this).attr("iid");
     const sl = $(this).attr("sl");
@@ -565,59 +578,64 @@ const containerForCart = (value, ex) => {
     return errors;
   }
 
-  $("#g-check-sub").click(function () {
-    const fullname = $("#usfullname").val();
-    const email = $("#usemail").val();
-    const mobile = $("#usphone").val();
-    const address = $("#usaddress").val();
-    const errors = validateForm(fullname, email, mobile, address);
-    let msg = `
-        <div class="pop pop-error">
-        cart is empty
-      </div>
-    `;
-
-    if(isEmpty(errors)){
-      const cartArray = JSON.parse(localStorage.getItem("mart-cart"));
-      if(typeof cartArray !== typeof undefined && cartArray instanceof Array){
-        if (cartArray.length !== 0) {
-          $("#loader-ring").addClass("lds-ring");
-          axios.post('/gcheckout', {
-            fullname,
-            email,
-            mobile,
-            address,
-            paymentMethod: 'Direct Transfer',
-            cartArray
-          })
-          .then(function (res) {
-            if(res.data == 'failed'){
-              // TODO: return a message to the user
-              $('#loader-ring').removeClass("lds-ring");
-              return false;
-            }else{
-              localStorage.removeItem("mart-cart");
-              location.replace('/order-received');
-            }
-          })
-          .catch(function (error) {
-            // TODO: return a message to the user
-            console.log(error);
-            $('#loader-ring').removeClass("lds-ring");
-          });
-        }else{
-          $(".flash-msg").html(msg);
-          $('.flash-msg').fadeIn().delay(3000).fadeOut();
-        }
-      }else{
-        $(".flash-msg").html(msg);
-        $('.flash-msg').fadeIn().delay(3000).fadeOut();
-      }
-    }else{
-      return false;
-    }
-
-  });
+  // $("#g-check-sub").click(function () {
+  //   const fullname = $("#usfullname").val();
+  //   const email = $("#usemail").val();
+  //   const mobile = $("#usphone").val();
+  //   const address = $("#usaddress").val();
+  //
+  //   // const fd = new FormData();
+  //   // const payScrnsht = $('#usfile')[0].files[0];
+  //   // fd.append('usfile',payScrnsht);
+  //
+  //   const errors = validateForm(fullname, email, mobile, address);
+  //   let msg = `
+  //       <div class="pop pop-error">
+  //       cart is empty
+  //     </div>
+  //   `;
+  //
+  //   if(isEmpty(errors)){
+  //     const cartArray = JSON.parse(localStorage.getItem("mart-cart"));
+  //     if(typeof cartArray !== typeof undefined && cartArray instanceof Array){
+  //       if (cartArray.length !== 0) {
+  //         $("#loader-ring").addClass("lds-ring");
+  //         axios.post('/gcheckout', {
+  //           fullname,
+  //           email,
+  //           mobile,
+  //           address,
+  //           paymentMethod: 'Direct Transfer',
+  //           cartArray
+  //         })
+  //         .then(function (res) {
+  //           if(res.data == 'failed'){
+  //             // TODO: return a message to the user
+  //             $('#loader-ring').removeClass("lds-ring");
+  //             return false;
+  //           }else{
+  //             localStorage.removeItem("mart-cart");
+  //             location.replace('/order-received');
+  //           }
+  //         })
+  //         .catch(function (error) {
+  //           // TODO: return a message to the user
+  //           console.log(error);
+  //           $('#loader-ring').removeClass("lds-ring");
+  //         });
+  //       }else{
+  //         $(".flash-msg").html(msg);
+  //         $('.flash-msg').fadeIn().delay(3000).fadeOut();
+  //       }
+  //     }else{
+  //       $(".flash-msg").html(msg);
+  //       $('.flash-msg').fadeIn().delay(3000).fadeOut();
+  //     }
+  //   }else{
+  //     return false;
+  //   }
+  //
+  // });
 
   $("#pay-stk").click(function (e) {
     const fullname = $("#usfullname").val();

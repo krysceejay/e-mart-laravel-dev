@@ -21,41 +21,65 @@
 
             <div class="auth-or">Continue as guest</div>
 
+            <form class="" action="{{ route('dtrans') }}" method="post" enctype="multipart/form-data">
+              @csrf
               <div class="form-group">
                 <label for="fullname">Full Name</label>
                 <input
                   type="text"
-                  name=""
+                  name="fullname"
                   placeholder="Enter your full name"
                   id="usfullname"
+                  value="{{ old('fullname') }}"
                   required
                 />
+                @error('fullname')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+
                 <span class="invalid-feedback" role="alert">
                     <strong class="usfullname"></strong>
                 </span>
+
               </div>
               <div class="form-group">
                 <label for="email">Email</label>
                 <input
                   type="email"
-                  name=""
+                  name="email"
                   placeholder="Enter your email"
                   id="usemail"
-                  required
+                  value="{{ old('email') }}"
+
                 />
+                @error('email')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+
                 <span class="invalid-feedback" role="alert">
                     <strong class="usemail"></strong>
                 </span>
+
               </div>
               <div class="form-group">
                 <label for="phone">Phone Number</label>
                 <input
                   type="tel"
-                  name=""
+                  name="phone"
                   placeholder="Enter Phone number"
                   id="usphone"
+                  value="{{ old('phone') }}"
                   required
                 />
+                @error('phone')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
                 <span class="invalid-feedback" role="alert">
                     <strong class="usphone"></strong>
                 </span>
@@ -64,11 +88,17 @@
                 <label for="address">Delivery Address</label>
                 <input
                   type="text"
-                  name=""
+                  name="address"
                   placeholder="Enter Delivery address"
                   id="usaddress"
+                  value="{{ old('address') }}"
                   required
                 />
+                @error('address')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
                 <span class="invalid-feedback" role="alert">
                     <strong class="usaddress"></strong>
                 </span>
@@ -85,22 +115,44 @@
 
             <div class="payment-options">
               <!-- <h4>Payment option</h4> -->
-              <button id="pay-stk" class="btn btn-pay">Pay With Debit Card</button>
+              <div id="pay-stk" class="btn btn-pay">Pay With Debit Card</div>
 
-              <button class="btn btn-pay accordion">
+              <div class="btn btn-pay accordion">
                 Direct Bank Transfer
-              </button>
+              </div>
               <div class="panel">
-                <small
-                  >Orders will be processed when payment is confirmed.<br />Pay
-                  to the account below and click <span>Submit</span>.
+                <small>
+                  {{-- Orders will be processed when payment is confirmed.<br /> --}}
+                  Pay to the account below, upload screenshot of successful payment and click
+                  <span>Submit</span>.
                 </small>
-                <p>Guarranty Trust Bank</p>
-                <p>ACCOUNT NAME: E-MART Online Store</p>
-                <p>ACCOUNT NUMBER: 0158672312</p>
+                <div class="acct-det">
+                  <p>Guaranty Trust Bank</p>
+                  <p>ACCOUNT NAME: E-MART Online Store</p>
+                  <p>ACCOUNT NUMBER: 0158672312</p>
+                </div>
+
+                <div class="form-group">
+                  <label for="address">Upload Screenshot Of Payment</label>
+                  <input
+                    type="file"
+                    name="screenshot"
+                    id="usfile"
+                    value="{{ old('screenshot') }}"
+                    required
+                  />
+                  @error('screenshot')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+                <input id="fcitms" type="hidden" name="fcitms">
+
                 <button type="submit" id="g-check-sub" class="btn-shop-now">Submit</button>
               </div>
             </div>
+          </form>
 
           </div>
         </div>
