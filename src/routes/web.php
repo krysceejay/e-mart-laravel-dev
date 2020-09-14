@@ -32,12 +32,13 @@ Route::get('/gcarts', 'HomeController@removeFromGuest');
 Route::get('/filteritem', 'HomeController@filterItems')->name('filteritems');
 Route::get('/reviews/{slug}', 'HomeController@allReviews')->name('reviews');
 
-
 Route::post('/paystack','HomeController@paystackWebHook');
-
 
 Route::get('/cart', 'UserController@cart')->name('cart');
 Route::post('/cart', 'UserController@addCart');
 Route::post('/removecart','UserController@removeCart');
 Route::post('/updatecart', 'UserController@updateCart');
 Route::post('/loadcart','UserController@loadCart');
+Route::post('/review/{slug}','UserController@review')->name('user-review');
+Route::post('/checkout-d','UserController@directTransfer')->name('checkout-d');
+Route::get('/user-order-received', 'UserController@orderReceivedU')->name('user-order-received');

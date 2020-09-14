@@ -330,12 +330,54 @@
               />
             </svg>
           </div>
-          <div class="payment-options">
+          {{-- <div class="payment-options">
             <h4>Payment option</h4>
             <a href="{{ route('order-received') }}" class="btn btn-pay"
               >Pay With Debit Card</a
             >
+          </div> --}}
+
+          <div class="payment-options">
+            <h4>Payment option</h4>
+            <div id="pay-stk" class="btn btn-pay">Pay With Debit Card</div>
+
+            <div class="btn btn-pay accordion">
+              Direct Bank Transfer
+            </div>
+            <div class="panel">
+              <small>
+                {{-- Orders will be processed when payment is confirmed.<br /> --}}
+                Pay to the account below, upload screenshot of successful payment and click
+                <span>Submit</span>.
+              </small>
+              <div class="acct-det">
+                <p>Guaranty Trust Bank</p>
+                <p>ACCOUNT NAME: E-MART Online Store</p>
+                <p>ACCOUNT NUMBER: 0158672312</p>
+              </div>
+
+              <form class="" action="{{ route('checkout-d') }}" method="post" enctype="multipart/form-data">
+                @csrf
+              <div class="form-group">
+                <label for="address">Upload Screenshot Of Payment</label>
+                <input
+                  type="file"
+                  name="screenshot"
+                  id="usfile"
+                  value="{{ old('screenshot') }}"
+                  required
+                />
+                @error('screenshot')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+              </div>
+              <button type="submit" id="g-check-sub" class="btn-shop-now">Submit</button>
+              </form>
+            </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -349,5 +391,25 @@
     {{-- <script src="./js/script.js"></script> --}}
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script>
+      var acc = document.getElementsByClassName("accordion");
+      var i;
+
+      for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function () {
+          /* Toggle between adding and removing the "active" class,
+    to highlight the button that controls the panel */
+          this.classList.toggle("activeA");
+
+          /* Toggle between hiding and showing the active panel */
+          var panel = this.nextElementSibling;
+          if (panel.style.display === "block") {
+            panel.style.display = "none";
+          } else {
+            panel.style.display = "block";
+          }
+        });
+      }
+    </script>
   </body>
 </html>

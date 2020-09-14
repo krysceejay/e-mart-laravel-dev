@@ -32,7 +32,7 @@
                 <div class="bratings-main-reviews-card">
                   <div class="bratings-main-reviews-card-top">
                     <div class="reviews-stars" style="--userrating: {{ $review->rating }};"></div>
-                    <div class="reviews-date">2020-01-24</div>
+                    <div class="reviews-date">{{ date("d \ M Y",strtotime($review->created_at)) }}</div>
                   </div>
                   <div class="bratings-main-reviews-card-body">
                     {{ $review->review }}

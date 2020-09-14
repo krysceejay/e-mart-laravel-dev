@@ -725,7 +725,7 @@ const containerForCart = (value, ex) => {
       iidAndValueArr: iidAndValueArr
     })
     .then(function (data) {
-      console.log(data);
+      //console.log(data);
       $("#myModal").css("display", "block");
       $('#loader-ring').removeClass("lds-ring");
     })

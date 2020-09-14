@@ -230,14 +230,19 @@ class HomeController extends Controller
 
     public function orderReceived(Request $request)
     {
-      $pid = session('pid');
-      if($request->session()->has('pid')) {
-        $guest = Guest::findorFail($pid);
-        $guestOrder = GuestOrder::where('guest_id', $guest->id)->get();
-        $subTotal = $guest->totalpayment - 1000;
-        return view('home.orderreceived', compact('guest', 'guestOrder', 'subTotal'));
+      $user = Auth::user();
+      if($user) {
+        return redirect('/user-order-received');
       }else{
-        return redirect('/items');
+        $pid = session('pid');
+        if($request->session()->has('pid')) {
+          $guest = Guest::findorFail($pid);
+          $guestOrder = GuestOrder::where('guest_id', $guest->id)->get();
+          $subTotal = $guest->totalpayment - 1000;
+          return view('home.orderreceived', compact('guest', 'guestOrder', 'subTotal'));
+        }else{
+          return redirect('/items');
+        }
       }
 
     }

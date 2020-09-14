@@ -2710,7 +2710,7 @@ $(document).ready(function () {
     axios.post('/updatecart', {
       iidAndValueArr: iidAndValueArr
     }).then(function (data) {
-      console.log(data);
+      //console.log(data);
       $("#myModal").css("display", "block");
       $('#loader-ring').removeClass("lds-ring");
     })["catch"](function (error) {

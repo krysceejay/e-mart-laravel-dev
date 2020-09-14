@@ -41,4 +41,9 @@ class Item extends Model
   {
     return $this->belongsToMany(Category::class);
   }
+
+  public function order()
+  {
+    return $this->hasMany(Order::class);
+  }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.home')
-
 @section('content')
 <main id="detail-sec" class="py-4">
+  @include('inc.msg')
       <h2>Item Details</h2>
       <div class="detail-sec-wrap py-4">
         <div class="image-sec">
@@ -68,6 +68,63 @@
               </button>
             </div>
           </div>
+
+          <div class="aside-review py-1">
+            <form class="" action="{{ route('user-review', $item->slug ) }}" method="post">
+              @csrf
+            <h4 class="py-1">Customer Review</h4>
+            <div class="user-ratings">
+              <input
+                id="star-5"
+                name="rating"
+                type="radio"
+                value="5"
+              /><label for="star-5" title="5 stars">
+                &#x2605;
+              </label>
+              <input
+                id="star-4"
+                name="rating"
+                type="radio"
+                value="4"
+              /><label for="star-4" title="4 stars">
+                &#x2605;
+              </label>
+              <input
+                id="star-3"
+                name="rating"
+                type="radio"
+                value="3"
+              /><label for="star-3" title="3 stars">
+                &#x2605;
+              </label>
+              <input
+                id="star-2"
+                name="rating"
+                type="radio"
+                value="2"
+              /><label for="star-2" title="2 stars">
+                &#x2605;
+              </label>
+              <input
+                id="star-1"
+                name="rating"
+                type="radio"
+                value="1"
+              /><label for="star-1" title="1 star">
+                &#x2605;
+              </label>
+            </div>
+            <div class="form-group py-1">
+              <label for="address">Add review</label>
+              <textarea name="review" placeholder="Add review">
+                {{ old('review') }}
+              </textarea>
+            </div>
+            <button type="submit" class="btn-shop-now">Review</button>
+          </form>
+          </div>
+
         </div>
       </div>
     </main>
