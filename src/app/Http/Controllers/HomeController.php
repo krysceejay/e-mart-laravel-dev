@@ -14,6 +14,7 @@ use App\Models\GuestOrder;
 use App\Models\Review;
 use App\Models\Category;
 use App\Models\ItemStatus;
+use App\Models\EmailSub;
 
 class HomeController extends Controller
 {
@@ -343,6 +344,24 @@ class HomeController extends Controller
       }
 
       return view('home.review', compact('reviews', 'count_rev', 'round_rate', 'percent_values'));
+    }
+
+    public function emailSub(Request $request)
+    {
+      $this->validate($request, [
+          'email' => ['required', 'string', 'email', 'max:255', 'unique:email_subs'],
+      ]);
+
+      $email = $request->input('email');
+      $addemail = Emailsub::create(
+        ['email' => $email]
+      );
+
+      if($addemail){
+        return back()->with('success', 'Thank you for subscribing, we will be in touch');
+      }else {
+        return back()->with('warning', 'An error occurred. please check your connection');
+      }
     }
 
 

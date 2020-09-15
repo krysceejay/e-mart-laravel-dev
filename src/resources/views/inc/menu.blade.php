@@ -84,9 +84,15 @@
     <li><a href="{{ route('home') }}" class="{{ Route::current()->getName() == 'home' ? 'current' : '' }}">Home</a></li>
     <li><a href="{{ route('items') }}" class="{{ Route::current()->getName() == 'items' || Route::current()->getName() == 'item' ? 'current' : '' }}">All Items</a></li>
     {{-- <li><a href="#">Kitchen</a></li>
-    <li><a href="#">Household</a></li> --}}
-    <li><a href="#">Faqs</a></li>
-    <li><a href="#">Contact</a></li>
+    <li><a href="#">Faqs</a></li> --}}
+    <li>
+      @guest
+        <a href="{{ route('user-cart') }}" class="{{ Route::current()->getName() == 'user-cart' || Route::current()->getName() == 'cart' ? 'current' : '' }}">Cart</a>
+      @else
+        <a href="{{ route('cart') }}" class="{{ Route::current()->getName() == 'user-cart' || Route::current()->getName() == 'cart' ? 'current' : '' }}">Cart</a>
+      @endguest
+    </li>
+    <li><a href="#contact" id="contact-us">Contact</a></li>
   </ul>
 
   <div class="menu-wrap">
@@ -100,8 +106,15 @@
             <li><a href="{{ route('items') }}" class="{{ Route::current()->getName() == 'items' || Route::current()->getName() == 'item' ? 'current' : '' }}">All Items</a></li>
             {{-- <li><a href="#">Kitchen</a></li>
             <li><a href="#">Household</a></li> --}}
-            <li><a href="#">Faqs</a></li>
-            <li><a href="#">Contact</a></li>
+            {{-- <li><a href="#">Faqs</a></li> --}}
+            <li>
+              @guest
+                <a href="{{ route('user-cart') }}" class="{{ Route::current()->getName() == 'user-cart' || Route::current()->getName() == 'cart' ? 'current' : '' }}">Cart</a>
+              @else
+                <a href="{{ route('cart') }}" class="{{ Route::current()->getName() == 'user-cart' || Route::current()->getName() == 'cart' ? 'current' : '' }}">Cart</a>
+              @endguest
+            </li>
+            <li><a href="#contact" id="contact-us">Contact</a></li>
           </ul>
         </div>
       </div>

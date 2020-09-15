@@ -31,6 +31,7 @@ Route::get('/order-received', 'HomeController@orderReceived')->name('order-recei
 Route::get('/gcarts', 'HomeController@removeFromGuest');
 Route::get('/filteritem', 'HomeController@filterItems')->name('filteritems');
 Route::get('/reviews/{slug}', 'HomeController@allReviews')->name('reviews');
+Route::post('/email-sub','HomeController@emailSub')->name('email-sub');
 
 Route::post('/paystack','HomeController@paystackWebHook');
 

@@ -32,7 +32,7 @@
             <h3>Contact Us</h3>
             <div>
               <i class="fa fa-map-marker"></i>
-              <span>123 Sebastian, USA.</span>
+              <span>New Road, Lekki, Lagos. Nigeria</span>
             </div>
             <div>
               <i class="fa fa-phone"></i>
@@ -40,27 +40,31 @@
             </div>
             <div>
               <i class="fa fa-envelope-o"></i>
-              <span>mail@example.com</span>
+              <span>mail@emart.com</span>
             </div>
           </div>
           <div class="info-links-quicklinks">
             <h3>Quick Links</h3>
             <ul>
               <li>
-                <a href="">Home</a>
+                <a href="{{ route('home') }}">Home</a>
               </li>
               <li>
-                <a href="">About</a>
+                <a href="{{ route('items') }}">All Items</a>
               </li>
               <li>
-                <a href="">Faq</a>
+                @guest
+                  <a href="{{ route('user-cart') }}">Cart</a>
+                @else
+                  <a href="{{ route('cart') }}">Cart</a>
+                @endguest
               </li>
-              <li>
+              {{-- <li>
                 <a href="">Terms Of Use</a>
               </li>
               <li>
                 <a href="">Privacy Policy</a>
-              </li>
+              </li> --}}
             </ul>
           </div>
           <div class="info-links-followus">
@@ -75,19 +79,20 @@
               <a href=""><i class="fa fa-whatsapp"></i></a>
             </div>
             <div class="app-platforms">
-              <h4>Download the App</h4>
+              {{-- <h4>Download the App</h4>
               <div class="appstore">
                 <img src="/storage/img/gplay.png" alt="" />
               </div>
               <div class="appstore">
                 <img src="/storage/img/apple.png" alt="" />
-              </div>
+              </div> --}}
             </div>
           </div>
           <div class="info-links-sub">
             <h3>Subscribe</h3>
             <p>Enter your email to subscribe to our newsletter</p>
-            <form name="sub-form" method="POST">
+            <form name="sub-form" action="{{ route('email-sub') }}" method="POST">
+              @csrf
               <div class="sub-form">
                 <span class="form-control-wrap">
                   <input
@@ -97,6 +102,7 @@
                     size="40"
                     class="form-sub"
                     placeholder="Your email"
+                    value="{{ old('email') }}"
                   />
                 </span>
                 <button type="submit" class="form-sub submit">
@@ -104,6 +110,11 @@
                 </button>
               </div>
             </form>
+            @error('email')
+              <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+              </span>
+            @enderror
           </div>
         </div>
       </div>

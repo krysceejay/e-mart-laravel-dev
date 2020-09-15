@@ -56,6 +56,12 @@ $(document).ready(function () {
     slideInterval = setInterval(nextSlide, intervalTime);
   }
 
+  $("#contact-us").click(function() {
+    $('html, body').animate({
+        scrollTop: $("#info").offset().top
+    }, 1000);
+});
+
 const containerForCart = (value, ex) => {
   let contain;
   switch (ex) {
