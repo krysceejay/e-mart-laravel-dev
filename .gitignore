@@ -3,3 +3,4 @@
 /mysql
 /nginx
 docker-compose.prod.yml
+/src/nova
