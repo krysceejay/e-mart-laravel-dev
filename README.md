@@ -4,6 +4,11 @@ Ecommerce laravel project using docker.
 - `docker-compose run --rm npm run dev`
 - `docker-compose run --rm artisan migrate`
 
+## To bring up the containers in production
+
+create a `docker-compose.prod.yml` file and run
+- `docker-compose -f docker-compose.prod.yml up -d --build`
+
 Containers created and their ports (if used) are as follows:
 
 - **nginx** - `:8080`

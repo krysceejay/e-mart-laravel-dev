@@ -1,0 +1,19 @@
+name: Continuous Deployment workflow
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: executing remote ssh commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_NAME }}
+          username: ${{ secrets.HOST_USER }}
+          key: ${{ secrets.MART_SECRET }}
+          port: 22
+          script: |
+            cd e-mart-laravel-dev
+            git pull origin master
