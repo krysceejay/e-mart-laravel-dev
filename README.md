@@ -1,8 +1,8 @@
 Ecommerce laravel project using docker.
 
-- `docker-compose run --rm composer update`
+- `docker-compose run --rm composer install`
 - `docker-compose run --rm npm install`
-- `docker-compose run --rm npm run dev`
+- `docker-compose run --rm npm run dev` or  `docker-compose run --rm npm run prod` in production
 - `docker-compose run --rm artisan migrate`
 
 ## To bring up the containers in production

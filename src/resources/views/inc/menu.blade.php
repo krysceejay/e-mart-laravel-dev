@@ -7,7 +7,7 @@
     <ul>
       <li><i class="fa fa-phone"></i> +234 123 456 7890</li>
       @guest
-        <li><a href="{{ route('login') }}">Sign-in</a></li>
+        <li><a href="{{ route('login') }}">Login</a></li>
         @if (Route::has('register'))
           <li><a href="{{ route('register') }}">Register</a></li>
         @endif
